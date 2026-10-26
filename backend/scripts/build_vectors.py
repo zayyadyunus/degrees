@@ -1,20 +1,22 @@
 """Build real word vectors for Degrees from a GloVe-format file.
 
-Reads a GloVe text file (each line: `word v1 v2 ... vd`), keeps only the words
-in the curated wordlist, L2-normalizes them, and writes:
+Reads a GloVe-format text file, optionally gzipped (each line:
+`word v1 v2 ... vd`), keeps only the words in the curated wordlist,
+L2-normalizes them, and writes:
     data/vectors.npy   (float32, shape [N, dim])
     data/words.json    (list[str], aligned with vectors rows)
 
-Download GloVe vectors first, e.g.:
-    curl -LO https://nlp.stanford.edu/data/glove.6B.zip
-    unzip glove.6B.zip            # gives glove.6B.50d.txt, .100d.txt, ...
+The shipped vectors come from ConceptNet Numberbatch (English, 300d):
+    curl -L -o data/numberbatch-en.txt.gz \\
+      https://conceptnet.s3.amazonaws.com/downloads/2019/numberbatch/numberbatch-en-19.08.txt.gz
+    python scripts/build_vectors.py --glove data/numberbatch-en.txt.gz
 
-Then:
-    python scripts/build_vectors.py --glove glove.6B.100d.txt
+GloVe works too, e.g. `--glove glove.6B.100d.txt`.
 """
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 from pathlib import Path
 
@@ -46,7 +48,8 @@ def main() -> None:
     print(f"Wordlist has {len(wanted)} words; scanning {args.glove} ...")
 
     found: dict[str, np.ndarray] = {}
-    with args.glove.open(encoding="utf-8") as fh:
+    opener = gzip.open if args.glove.suffix == ".gz" else open
+    with opener(args.glove, "rt", encoding="utf-8") as fh:
         for line in fh:
             space = line.find(" ")
             word = line[:space]

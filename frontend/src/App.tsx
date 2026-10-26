@@ -9,6 +9,24 @@ import { HowToPlayModal } from "./components/HowToPlayModal";
 
 const SEEN_HELP_KEY = "degrees:seen-help";
 
+// localStorage can throw (private mode, blocked storage); the help flag is a
+// nicety, so treat any failure as "not seen" and ignore failed writes.
+function hasSeenHelp(): boolean {
+  try {
+    return localStorage.getItem(SEEN_HELP_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+function markHelpSeen() {
+  try {
+    localStorage.setItem(SEEN_HELP_KEY, "1");
+  } catch {
+    // ignore
+  }
+}
+
 export default function App() {
   const [vocabulary, setVocabulary] = useState<string[]>([]);
   const [game, setGame] = useState<GameState | null>(null);
@@ -54,11 +72,11 @@ export default function App() {
       .then((v) => setVocabulary(v.words))
       .catch((e) => setError(e instanceof Error ? e.message : String(e)));
     void startNewGame();
-    if (!localStorage.getItem(SEEN_HELP_KEY)) setShowHelp(true);
+    if (!hasSeenHelp()) setShowHelp(true);
   }, [startNewGame]);
 
   function closeHelp() {
-    localStorage.setItem(SEEN_HELP_KEY, "1");
+    markHelpSeen();
     setShowHelp(false);
   }
 

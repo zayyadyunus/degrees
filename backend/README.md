@@ -21,23 +21,29 @@ few hops as possible. The limit is **6 connections (7 words total)**.
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
+python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 ```
 
-### Real embeddings (recommended for real gameplay)
+`requirements.txt` lists the direct dependencies; `requirements.lock` pins
+the exact versions deploys use (regenerate it from a fresh venv with
+`pip freeze` after changing `requirements.txt`).
 
-Without a vectors file the server falls back to **synthetic** embeddings: the
-API works end-to-end, but "connections" are meaningless (dev/testing only).
-Build real vectors from GloVe:
+### Word vectors
+
+`data/vectors.npy` + `data/words.json` ship in the repo: 300-d ConceptNet
+Numberbatch vectors for the words in `data/wordlist.txt`. Rebuild them after
+editing the wordlist:
 
 ```bash
-curl -LO https://nlp.stanford.edu/data/glove.6B.zip
-unzip glove.6B.zip
-python scripts/build_vectors.py --glove glove.6B.100d.txt
+curl -L -o data/numberbatch-en.txt.gz \
+  https://conceptnet.s3.amazonaws.com/downloads/2019/numberbatch/numberbatch-en-19.08.txt.gz
+python scripts/build_vectors.py --glove data/numberbatch-en.txt.gz
 ```
 
-This writes `data/vectors.npy` + `data/words.json`, which the server loads
-automatically on next start.
+Any GloVe-format file works (plain or `.gz`). Without a vectors file the
+server falls back to **synthetic** embeddings: the API works end-to-end, but
+"connections" are meaningless (dev/testing only).
 
 ### Typed-relation overlay (cross-domain links)
 
@@ -83,6 +89,7 @@ uvicorn app.main:app --reload
 | Method | Path                     | Purpose                                  |
 |--------|--------------------------|------------------------------------------|
 | GET    | `/health`                | vocab size, threshold, synthetic flag    |
+| GET    | `/vocabulary`            | all playable words (for autocomplete)    |
 | POST   | `/games`                 | new puzzle (optional `min/max_distance`) |
 | GET    | `/games/{id}`            | current game state                       |
 | POST   | `/games/{id}/moves`      | submit a word `{ "word": "..." }`        |
@@ -103,6 +110,8 @@ curl -s localhost:8000/games/$ID/hint
 A move is rejected (with a reason) when the word is out of vocabulary, already
 used in the chain, or not similar enough to the current word. The game ends as
 `won` when you reach the target, or `lost` if you use all 6 connections first.
+Words longer than 64 characters are rejected with a 422. `POST /games` and
+`POST /games/{id}/moves` are rate-limited per client IP (429 when exceeded).
 
 ## Config (env vars)
 
@@ -115,11 +124,23 @@ used in the chain, or not similar enough to the current word. The game ends as
 | `DEGREES_ALLOW_SYNTHETIC` | `1`     | allow synthetic fallback vectors         |
 | `DEGREES_USE_RELATIONS`   | `1`     | union the typed-relation overlay onto the graph |
 | `DEGREES_RELATIONS`       | `data/relations.json` | overlay edge file          |
+| `DEGREES_VECTORS`         | `data/vectors.npy` | embedding matrix              |
+| `DEGREES_WORDS`           | `data/words.json` | words aligned with vector rows |
+| `DEGREES_WORDLIST`        | `data/wordlist.txt` | source list for synthetic vectors |
+| `DEGREES_MAX_WORDS`       | `5000`  | cap on vocabulary size (dense similarity matrix) |
+| `DEGREES_SEED`            | `1234`  | RNG seed for puzzle generation           |
+| `DEGREES_STATIC_DIR`      | unset   | serve the built frontend from this directory |
+| `DEGREES_CORS_ORIGINS`    | unset   | comma-separated extra allowed origins    |
+| `DEGREES_DOCS`            | `1`     | expose `/docs`, `/redoc`, `/openapi.json` |
+| `DEGREES_GAME_TTL_HOURS`  | `24`    | drop games idle this long                |
+| `DEGREES_MAX_GAMES`       | `100000`| evict least-recently-used games past this |
+| `DEGREES_NEW_GAMES_PER_MIN` | `30`  | new games per client IP per minute (`0` = off) |
+| `DEGREES_MOVES_PER_MIN`   | `120`   | moves per client IP per minute (`0` = off) |
 
 ## Tests
 
 ```bash
-python -m pytest        # or: python tests/test_engine.py
+python -m pytest        # needs requirements-dev.txt
 ```
 
 ## Not yet built (future)

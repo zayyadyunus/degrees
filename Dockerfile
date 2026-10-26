@@ -17,11 +17,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     NLTK_DATA=/usr/local/share/nltk_data \
     DEGREES_ALLOW_SYNTHETIC=0 \
-    DEGREES_STATIC_DIR=/app/frontend/dist
+    DEGREES_STATIC_DIR=/app/frontend/dist \
+    DEGREES_DOCS=0
+# Trust X-Forwarded-For so rate limits key on the real client IP behind a
+# platform proxy. If the container is exposed directly, set this to the
+# proxy's address instead (clients could otherwise spoof their IP).
+ENV FORWARDED_ALLOW_IPS=*
 
 WORKDIR /app/backend
-COPY backend/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt \
+COPY backend/requirements.lock ./
+RUN pip install --no-cache-dir -r requirements.lock \
  && python -m nltk.downloader -d "$NLTK_DATA" wordnet omw-1.4
 
 COPY backend/app ./app

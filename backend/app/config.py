@@ -68,5 +68,17 @@ class Settings:
         Path(os.environ["DEGREES_STATIC_DIR"]) if os.environ.get("DEGREES_STATIC_DIR") else None
     )
 
+    # Expose /docs, /redoc and /openapi.json. Turn off in production.
+    enable_docs: bool = _env_bool("DEGREES_DOCS", True)
+
+    # --- Abuse limits -----------------------------------------------------
+    # Games idle this long are dropped; past max_games the oldest are evicted.
+    game_ttl_seconds: float = float(os.environ.get("DEGREES_GAME_TTL_HOURS", "24")) * 3600
+    max_games: int = int(os.environ.get("DEGREES_MAX_GAMES", "100000"))
+
+    # Requests per client IP per minute (0 disables).
+    new_games_per_minute: int = int(os.environ.get("DEGREES_NEW_GAMES_PER_MIN", "30"))
+    moves_per_minute: int = int(os.environ.get("DEGREES_MOVES_PER_MIN", "120"))
+
 
 settings = Settings()

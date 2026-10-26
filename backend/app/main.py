@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 
 import numpy as np
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -17,6 +17,7 @@ from .config import settings
 from .embeddings import Embeddings
 from .game import Engine, PuzzleUnavailable
 from .graph import WordGraph
+from .ratelimit import RateLimiter
 from .relations import RelationOverlay
 from .wordnet_relations import WordNetLabeler
 from .models import (
@@ -31,7 +32,14 @@ from .store import GameStore
 
 logging.basicConfig(level=logging.INFO)
 
-app = FastAPI(title="Degrees", version="0.1.0")
+_docs = settings.enable_docs
+app = FastAPI(
+    title="Degrees",
+    version="0.1.0",
+    docs_url="/docs" if _docs else None,
+    redoc_url="/redoc" if _docs else None,
+    openapi_url="/openapi.json" if _docs else None,
+)
 
 # Allow the Vite dev server (and other local origins) to call the API, plus
 # any deployed frontend origins listed in DEGREES_CORS_ORIGINS.
@@ -59,7 +67,9 @@ _graph = WordGraph(
 )
 _labeler = WordNetLabeler()
 _engine = Engine(_embeddings, _graph, settings, overlay=_overlay, labeler=_labeler)
-_store = GameStore()
+_store = GameStore(ttl_seconds=settings.game_ttl_seconds, max_games=settings.max_games)
+_limit_new_games = RateLimiter(settings.new_games_per_minute)
+_limit_moves = RateLimiter(settings.moves_per_minute)
 
 
 def _require_game(game_id: str):
@@ -87,7 +97,12 @@ def health() -> dict:
     }
 
 
-@app.post("/games", response_model=GameState, status_code=201)
+@app.post(
+    "/games",
+    response_model=GameState,
+    status_code=201,
+    dependencies=[Depends(_limit_new_games)],
+)
 def create_game(req: NewGameRequest | None = None) -> GameState:
     req = req or NewGameRequest()
     try:
@@ -103,7 +118,11 @@ def get_game(game_id: str) -> GameState:
     return GameState.from_game(_require_game(game_id))
 
 
-@app.post("/games/{game_id}/moves", response_model=MoveResponse)
+@app.post(
+    "/games/{game_id}/moves",
+    response_model=MoveResponse,
+    dependencies=[Depends(_limit_moves)],
+)
 def submit_move(game_id: str, req: MoveRequest) -> MoveResponse:
     game = _require_game(game_id)
     result = _engine.submit(game, req.word)

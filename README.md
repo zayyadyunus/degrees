@@ -59,23 +59,23 @@ The game is a Python (FastAPI) backend and a React (Vite) frontend.
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # pinned deps + pytest
 ```
 
-#### Real embeddings (recommended)
+#### Word vectors
 
-Without a vectors file, the server falls back to **synthetic** embeddings —
-the API works, but "connections" are meaningless (dev/testing only). Build
-real vectors from GloVe:
+Real vectors (`data/vectors.npy` + `data/words.json`, built from ConceptNet
+Numberbatch) ship in the repo, so this step is only needed to rebuild them,
+e.g. after editing `data/wordlist.txt`:
 
 ```bash
-curl -LO https://nlp.stanford.edu/data/glove.6B.zip
-unzip glove.6B.zip
-python scripts/build_vectors.py --glove glove.6B.100d.txt
+curl -L -o data/numberbatch-en.txt.gz \
+  https://conceptnet.s3.amazonaws.com/downloads/2019/numberbatch/numberbatch-en-19.08.txt.gz
+python scripts/build_vectors.py --glove data/numberbatch-en.txt.gz
 ```
 
-This writes `data/vectors.npy` + `data/words.json`, which the server loads
-on next start.
+Without a vectors file, the server falls back to **synthetic** embeddings —
+the API works, but "connections" are meaningless (dev/testing only).
 
 #### Start the server
 
@@ -140,7 +140,8 @@ All settable as environment variables on the backend:
 | `DEGREES_MAX_DISTANCE`    | `5`     | max optimal distance for a puzzle          |
 | `DEGREES_ALLOW_SYNTHETIC` | `1`     | allow synthetic fallback vectors           |
 
-Smaller `k` = fewer valid moves and longer paths = harder game.
+Smaller `k` = fewer valid moves and longer paths = harder game. The full list
+of settings is in `backend/README.md`.
 
 ## Deploying
 
@@ -160,11 +161,11 @@ Or by hand:
 cd frontend && npm ci && npm run build
 
 # Backend deps + WordNet corpus (for relation labels)
-cd ../backend && pip install -r requirements.txt
+cd ../backend && pip install -r requirements.lock
 python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
 
 # Run — one worker only: games are kept in process memory
-DEGREES_ALLOW_SYNTHETIC=0 DEGREES_STATIC_DIR=../frontend/dist \
+DEGREES_ALLOW_SYNTHETIC=0 DEGREES_STATIC_DIR=../frontend/dist DEGREES_DOCS=0 \
   uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
@@ -172,10 +173,23 @@ Ship `backend/data/vectors.npy`, `words.json` and `relations.json`; the raw
 `numberbatch-en.txt.gz` is only needed to rebuild vectors. Check `/health`
 reports `"synthetic_embeddings": false` after deploy.
 
-| Var                    | Meaning                                                   |
-|------------------------|-----------------------------------------------------------|
-| `DEGREES_STATIC_DIR`   | serve the built frontend from this directory              |
-| `DEGREES_CORS_ORIGINS` | comma-separated extra origins, if the UI is hosted elsewhere |
+Sizing: startup takes ~4 s and ~230 MB RAM; a full game store (100k games)
+adds ~65 MB, so a 512 MB instance is plenty.
+
+| Var                         | Default | Meaning                                              |
+|-----------------------------|---------|------------------------------------------------------|
+| `DEGREES_STATIC_DIR`        | unset   | serve the built frontend from this directory         |
+| `DEGREES_CORS_ORIGINS`      | unset   | comma-separated extra origins, if the UI is hosted elsewhere |
+| `DEGREES_DOCS`              | `1`     | expose `/docs` and `/openapi.json` (Docker image: `0`) |
+| `DEGREES_GAME_TTL_HOURS`    | `24`    | drop games idle this long                            |
+| `DEGREES_MAX_GAMES`         | `100000`| evict least-recently-used games past this count      |
+| `DEGREES_NEW_GAMES_PER_MIN` | `30`    | new games per client IP per minute (`0` = off)       |
+| `DEGREES_MOVES_PER_MIN`     | `120`   | moves per client IP per minute (`0` = off)           |
+| `FORWARDED_ALLOW_IPS`       | `127.0.0.1` | uvicorn: proxies trusted for the client IP (Docker image: `*`) |
+
+Rate limits key on the client IP. Behind a platform proxy, uvicorn must
+trust it via `FORWARDED_ALLOW_IPS` or every player shares the proxy's
+address and one budget.
 
 ## Repo layout
 

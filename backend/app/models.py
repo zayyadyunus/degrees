@@ -40,7 +40,7 @@ class GameState(BaseModel):
 
 
 class MoveRequest(BaseModel):
-    word: str
+    word: str = Field(max_length=64)
 
 
 class MoveResponse(BaseModel):
