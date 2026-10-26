@@ -7,6 +7,9 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+from fastapi import HTTPException
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.game import Game  # noqa: E402
@@ -74,3 +77,21 @@ def test_rate_limiter_blocks_then_resets():
 def test_rate_limiter_zero_disables():
     limiter = RateLimiter(limit=0)
     assert all(limiter.allow("ip") for _ in range(1000))
+
+
+def test_rate_limiter_keys_on_proxy_header():
+    from starlette.requests import Request
+
+    def request(ip_header: str) -> Request:
+        return Request({
+            "type": "http",
+            "headers": [(b"fly-client-ip", ip_header.encode())],
+            "client": ("10.0.0.1", 1234),  # the proxy, same for everyone
+        })
+
+    limiter = RateLimiter(limit=1, client_ip_header="Fly-Client-IP")
+    limiter(request("1.1.1.1"))
+    limiter(request("2.2.2.2"))  # different player behind the same proxy
+    with pytest.raises(HTTPException) as exc:
+        limiter(request("1.1.1.1"))
+    assert exc.value.status_code == 429

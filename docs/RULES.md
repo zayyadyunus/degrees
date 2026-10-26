@@ -22,14 +22,14 @@ Think of each move as filling in one of these blanks:
 
 A tenth, looser kind also counts when it's well known:
 
-| 10 | **Stands for** | "is a symbol of" | crown → king · heart → love · dove → peace |
+| 10 | **Stands for** | "is a symbol of" | crown → king · heart → love · white → peace |
 
 ## What does NOT count
 
 - **Rhymes / sounds alike** — *cat / hat*, *moon / spoon*
 - **Spelled alike** — *sale / sail*, *cat / cot*
 - **Starts with the same letter** — not a meaning at all
-- **Personal associations** — "my street is named Oak, so street → oak"
+- **Personal associations** — "my street is named Oak, so street / oak"
 - **Free association with no named relation** — every hop has to fit one of
   the ten patterns above
 
@@ -37,6 +37,10 @@ A tenth, looser kind also counts when it's well known:
 
 - When you're stuck, run down the list: *Is there a synonym? An opposite? A
   category? A part? Something it's made of, used for, found with, or leads to?*
-- The match meter (e.g. "84% match") shows how tight the link is — but any
-  accepted link counts as one hop, tight or loose.
-- Use **Hint** for a word that's on a shortest path to the target.
+- **Par** is the fewest connections the puzzle can be solved in. Match it for
+  a ⛳.
+- A real word that doesn't connect costs a **strike**; three strikes and the
+  puzzle is lost. Typos and words the game doesn't know are free.
+- **Hint** reveals a word on a shortest path to the target. It's always
+  available, but hints show on your result.
+- Win or lose, the end screen reveals a par route.

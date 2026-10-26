@@ -1,17 +1,29 @@
 """Game logic: puzzle generation, move validation, hints, scoring."""
 from __future__ import annotations
 
+import datetime as dt
+import logging
 import uuid
 from dataclasses import dataclass, field
 
 import numpy as np
 
 from .embeddings import Embeddings
-from .graph import WordGraph
+from .graph import WordGraph, bfs, trace_path
+
+logger = logging.getLogger("degrees.game")
 
 STATUS_IN_PROGRESS = "in_progress"
 STATUS_WON = "won"
 STATUS_LOST = "lost"
+
+# The generic label for edges nothing more specific can explain.
+UNNAMED = "Related"
+
+# Per-game event log, in order; drives the shareable emoji result.
+EVENT_MOVE = "move"
+EVENT_STRIKE = "strike"
+EVENT_HINT = "hint"
 
 
 @dataclass
@@ -22,8 +34,17 @@ class Game:
     optimal_distance: int
     optimal_path: list[str]
     max_connections: int
+    max_strikes: int = 3
     path: list[str] = field(default_factory=list)
     status: str = STATUS_IN_PROGRESS
+    # relations[i] names the edge path[i] -> path[i+1].
+    relations: list[str] = field(default_factory=list)
+    strikes: int = 0
+    # Chain positions (connections_used) at which a hint was revealed, so
+    # asking again for the same step doesn't count twice.
+    hint_steps: set[int] = field(default_factory=set)
+    events: list[str] = field(default_factory=list)
+    daily_number: int | None = None
 
     @property
     def current_word(self) -> str:
@@ -32,6 +53,10 @@ class Game:
     @property
     def connections_used(self) -> int:
         return len(self.path) - 1
+
+    @property
+    def hints_used(self) -> int:
+        return len(self.hint_steps)
 
 
 @dataclass
@@ -44,6 +69,7 @@ class MoveResult:
     reason: str | None = None
     similarity: float | None = None
     relation: str | None = None
+    strike: bool = False
 
 
 class PuzzleUnavailable(RuntimeError):
@@ -59,8 +85,32 @@ class Engine:
         self.labeler = labeler
         self.rng = np.random.default_rng(settings.seed)
 
-    def _label_edge(self, i: int, j: int) -> str:
-        """Name the relation behind an accepted edge.
+        # Label every edge once up front: labels feed puzzle generation, hints
+        # and move feedback, and WordNet lookups are too slow per request.
+        self._labels: dict[tuple[int, int], str] = {}
+        for i in range(graph.n):
+            for j in graph.neighbors(i):
+                if i < j:
+                    self._labels[(i, int(j))] = self._compute_label(i, int(j))
+
+        # The "named" subgraph keeps only edges we can explain (synonym, is-a,
+        # made-of, ...). Puzzles are only generated when a par route exists in
+        # it, so the solution revealed at the end always reads as sensible.
+        # Without a labeler (no WordNet, synthetic dev vectors) nearly every
+        # edge is unnamed, so fall back to the full graph.
+        if labeler is not None and getattr(labeler, "enabled", True):
+            self._named_adj: list[list[int]] = [[] for _ in range(graph.n)]
+            for (i, j), label in self._labels.items():
+                if label != UNNAMED:
+                    self._named_adj[i].append(j)
+                    self._named_adj[j].append(i)
+        else:
+            logger.warning("No relation labeler: par routes may use unexplained links.")
+            self._named_adj = [list(a) for a in graph.adjacency]
+        self._named_cache: dict[int, tuple[np.ndarray, np.ndarray]] = {}
+
+    def _compute_label(self, i: int, j: int) -> str:
+        """Name the relation behind an edge.
 
         Precedence: curated typed overlay -> WordNet -> generic "Related".
         Every accepted move gets a label so the UI never shows a bare cosine.
@@ -73,28 +123,46 @@ class Engine:
             label = self.labeler.classify(self.embeddings.words[i], self.embeddings.words[j])
             if label:
                 return label
-        return "Related"
+        return UNNAMED
+
+    def _label_edge(self, i: int, j: int) -> str:
+        return self._labels.get((min(i, j), max(i, j))) or self._compute_label(i, j)
+
+    def _named_distances(self, src: int) -> tuple[np.ndarray, np.ndarray]:
+        cached = self._named_cache.get(src)
+        if cached is None:
+            cached = self._named_cache[src] = bfs(self._named_adj, src)
+        return cached
 
     # -- puzzle generation ----------------------------------------------
-    def new_game(self, min_distance: int | None = None, max_distance: int | None = None) -> Game:
+    def new_game(
+        self,
+        min_distance: int | None = None,
+        max_distance: int | None = None,
+        rng: np.random.Generator | None = None,
+        daily_number: int | None = None,
+    ) -> Game:
+        rng = rng or self.rng
         min_d = min_distance or self.settings.min_puzzle_distance
         max_d = min(max_distance or self.settings.max_puzzle_distance, self.settings.max_connections)
         if min_d > max_d:
             raise ValueError("min_distance must be <= max_distance")
 
-        candidate_starts = [i for i, a in enumerate(self.graph.adjacency) if len(a) > 0]
+        candidate_starts = [i for i, a in enumerate(self._named_adj) if len(a) > 0]
         if not candidate_starts:
             raise PuzzleUnavailable("graph has no connected words")
 
-        self.rng.shuffle(candidate_starts)
+        rng.shuffle(candidate_starts)
         for start_idx in candidate_starts[:200]:
             dist, _ = self.graph.distances(start_idx)
-            reachable = np.flatnonzero((dist >= min_d) & (dist <= max_d))
+            named_dist, named_prev = self._named_distances(start_idx)
+            # Par comes from the full graph (no route is shorter), but the
+            # target must also be reachable in par steps using named links.
+            reachable = np.flatnonzero((dist >= min_d) & (dist <= max_d) & (named_dist == dist))
             if reachable.size == 0:
                 continue
-            target_idx = int(self.rng.choice(reachable))
-            path_idx = self.graph.shortest_path(start_idx, target_idx)
-            assert path_idx is not None
+            target_idx = int(rng.choice(reachable))
+            path_idx = trace_path(named_prev, start_idx, target_idx)
             words = self.embeddings.words
             return Game(
                 id=uuid.uuid4().hex,
@@ -103,11 +171,22 @@ class Engine:
                 optimal_distance=int(dist[target_idx]),
                 optimal_path=[words[i] for i in path_idx],
                 max_connections=self.settings.max_connections,
+                max_strikes=self.settings.max_strikes,
                 path=[words[start_idx]],
+                daily_number=daily_number,
             )
         raise PuzzleUnavailable(
             f"no puzzle found with optimal distance in [{min_d}, {max_d}]"
         )
+
+    def daily_number(self, day: dt.date) -> int:
+        """Puzzle #1 is the epoch date; one new puzzle per day after."""
+        return (day - self.settings.daily_epoch).days + 1
+
+    def daily_game(self, day: dt.date) -> Game:
+        """Today's shared puzzle: the same start/target for everyone on `day`."""
+        rng = np.random.default_rng([self.settings.seed, day.toordinal()])
+        return self.new_game(rng=rng, daily_number=self.daily_number(day))
 
     # -- moves -----------------------------------------------------------
     def submit(self, game: Game, raw_word: str) -> MoveResult:
@@ -118,6 +197,7 @@ class Engine:
             reason: str | None = None,
             similarity: float | None = None,
             relation: str | None = None,
+            strike: bool = False,
         ) -> MoveResult:
             return MoveResult(
                 accepted=accepted,
@@ -128,10 +208,13 @@ class Engine:
                 reason=reason,
                 similarity=similarity,
                 relation=relation,
+                strike=strike,
             )
 
         if game.status != STATUS_IN_PROGRESS:
             return result(False, "game is already over")
+        # Typos and repeats are free: only a real word that fails to connect
+        # costs a strike.
         if not word:
             return result(False, "empty word")
         if not self.embeddings.contains(word):
@@ -143,16 +226,23 @@ class Engine:
         word_idx = self.embeddings.index[word]
         similarity = float(self.embeddings.vectors[current_idx] @ self.embeddings.vectors[word_idx])
         if not self.graph.connected(current_idx, word_idx):
+            game.strikes += 1
+            game.events.append(EVENT_STRIKE)
+            if game.strikes >= game.max_strikes:
+                game.status = STATUS_LOST
             return result(
                 False,
-                f"'{word}' is not a close enough association of '{game.current_word}'",
+                f"'{word}' isn't connected to '{game.current_word}'",
                 similarity,
+                strike=True,
             )
 
         # Accept the move. Name the relation behind the edge so the UI can
         # explain the connection instead of showing a raw cosine.
         relation = self._label_edge(current_idx, word_idx)
         game.path.append(word)
+        game.relations.append(relation)
+        game.events.append(EVENT_MOVE)
         if word == game.target:
             game.status = STATUS_WON
         elif game.connections_used >= game.max_connections:
@@ -161,26 +251,40 @@ class Engine:
 
     # -- hint ------------------------------------------------------------
     def hint(self, game: Game) -> str | None:
-        """A valid next word that lies on a shortest path to the target."""
+        """A valid next word on a shortest path to the target.
+
+        Prefers a step that keeps a fully-named route to the target, so hints
+        read as sensible links. Revealing a hint is recorded on the game.
+        """
         if game.status != STATUS_IN_PROGRESS:
             return None
         target_idx = self.embeddings.index[game.target]
         current_idx = self.embeddings.index[game.current_word]
         dist_to_target, _ = self.graph.distances(target_idx)
+        named_to_target, _ = self._named_distances(target_idx)
         here = dist_to_target[current_idx]
         if here <= 0:
             return None
-        best: tuple[float, str] | None = None
+        best: tuple[bool, float, str] | None = None
         for nb in self.graph.neighbors(current_idx):
             if dist_to_target[nb] != here - 1:
                 continue
             word = self.embeddings.words[nb]
             if word in game.path:
                 continue
+            sensible = (
+                self._label_edge(current_idx, int(nb)) != UNNAMED
+                and named_to_target[nb] == here - 1
+            )
             sim = float(self.embeddings.vectors[current_idx] @ self.embeddings.vectors[nb])
-            if best is None or sim > best[0]:
-                best = (sim, word)
-        return best[1] if best else None
+            if best is None or (sensible, sim) > best[:2]:
+                best = (sensible, sim, word)
+        if best is None:
+            return None
+        if game.connections_used not in game.hint_steps:
+            game.hint_steps.add(game.connections_used)
+            game.events.append(EVENT_HINT)
+        return best[2]
 
     # -- scoring ---------------------------------------------------------
     def score(self, game: Game) -> dict:
@@ -192,4 +296,6 @@ class Engine:
             "optimal_distance": optimal,
             "over_optimal": max(0, used - optimal) if game.status == STATUS_WON else None,
             "is_optimal": game.status == STATUS_WON and used == optimal,
+            "strikes": game.strikes,
+            "hints_used": game.hints_used,
         }

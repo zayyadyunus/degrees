@@ -23,6 +23,32 @@ from .embeddings import Embeddings
 logger = logging.getLogger("degrees.graph")
 
 
+def bfs(adjacency, src: int) -> tuple[np.ndarray, np.ndarray]:
+    """BFS over any adjacency list. Returns (dist, prev); unreachable == -1."""
+    n = len(adjacency)
+    dist = np.full(n, -1, dtype=np.int32)
+    prev = np.full(n, -1, dtype=np.int32)
+    dist[src] = 0
+    queue: deque[int] = deque([src])
+    while queue:
+        node = queue.popleft()
+        for nb in adjacency[node]:
+            if dist[nb] == -1:
+                dist[nb] = dist[node] + 1
+                prev[nb] = node
+                queue.append(int(nb))
+    return dist, prev
+
+
+def trace_path(prev: np.ndarray, src: int, dst: int) -> list[int]:
+    """Walk a BFS prev array back from dst to src (dst must be reachable)."""
+    path = [dst]
+    while path[-1] != src:
+        path.append(int(prev[path[-1]]))
+    path.reverse()
+    return path
+
+
 class WordGraph:
     def __init__(
         self,
@@ -98,28 +124,12 @@ class WordGraph:
     def distances(self, src: int) -> tuple[np.ndarray, np.ndarray]:
         """BFS from src. Returns (dist, prev); unreachable == -1."""
         cached = self._dist_cache.get(src)
-        if cached is not None:
-            return cached
-        dist = np.full(self.n, -1, dtype=np.int32)
-        prev = np.full(self.n, -1, dtype=np.int32)
-        dist[src] = 0
-        queue: deque[int] = deque([src])
-        while queue:
-            node = queue.popleft()
-            for nb in self.adjacency[node]:
-                if dist[nb] == -1:
-                    dist[nb] = dist[node] + 1
-                    prev[nb] = node
-                    queue.append(int(nb))
-        self._dist_cache[src] = (dist, prev)
-        return dist, prev
+        if cached is None:
+            cached = self._dist_cache[src] = bfs(self.adjacency, src)
+        return cached
 
     def shortest_path(self, src: int, dst: int) -> list[int] | None:
         dist, prev = self.distances(src)
         if dist[dst] == -1:
             return None
-        path = [dst]
-        while path[-1] != src:
-            path.append(int(prev[path[-1]]))
-        path.reverse()
-        return path
+        return trace_path(prev, src, dst)

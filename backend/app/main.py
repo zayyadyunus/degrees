@@ -6,6 +6,7 @@ Interactive docs at http://localhost:8000/docs
 """
 from __future__ import annotations
 
+import datetime as dt
 import logging
 
 import numpy as np
@@ -68,8 +69,22 @@ _graph = WordGraph(
 _labeler = WordNetLabeler()
 _engine = Engine(_embeddings, _graph, settings, overlay=_overlay, labeler=_labeler)
 _store = GameStore(ttl_seconds=settings.game_ttl_seconds, max_games=settings.max_games)
-_limit_new_games = RateLimiter(settings.new_games_per_minute)
-_limit_moves = RateLimiter(settings.moves_per_minute)
+_limit_new_games = RateLimiter(
+    settings.new_games_per_minute, client_ip_header=settings.client_ip_header
+)
+_limit_moves = RateLimiter(settings.moves_per_minute, client_ip_header=settings.client_ip_header)
+
+
+def _daily_date(requested: dt.date | None) -> dt.date:
+    """The player's local date, allowed within a day of UTC (time zones)."""
+    today = dt.datetime.now(dt.timezone.utc).date()
+    if requested is None:
+        return today
+    if abs((requested - today).days) > 1:
+        raise HTTPException(status_code=400, detail="date must be today")
+    if requested < settings.daily_epoch:
+        raise HTTPException(status_code=400, detail="no daily puzzle for that date")
+    return requested
 
 
 def _require_game(game_id: str):
@@ -106,7 +121,10 @@ def health() -> dict:
 def create_game(req: NewGameRequest | None = None) -> GameState:
     req = req or NewGameRequest()
     try:
-        game = _engine.new_game(req.min_distance, req.max_distance)
+        if req.daily:
+            game = _engine.daily_game(_daily_date(req.date))
+        else:
+            game = _engine.new_game(req.min_distance, req.max_distance)
     except (PuzzleUnavailable, ValueError) as exc:
         raise HTTPException(status_code=503, detail=str(exc))
     _store.save(game)
@@ -126,24 +144,32 @@ def get_game(game_id: str) -> GameState:
 def submit_move(game_id: str, req: MoveRequest) -> MoveResponse:
     game = _require_game(game_id)
     result = _engine.submit(game, req.word)
-    if result.accepted:
-        _store.save(game)
+    _store.save(game)  # strikes change the game too
     return MoveResponse(
         accepted=result.accepted,
         reason=result.reason,
         similarity=result.similarity,
         relation=result.relation,
+        strike=result.strike,
         game=GameState.from_game(game),
     )
 
 
-@app.get("/games/{game_id}/hint", response_model=HintResponse)
+# POST: revealing a hint is recorded on the game (it shows on the result).
+@app.post(
+    "/games/{game_id}/hint",
+    response_model=HintResponse,
+    dependencies=[Depends(_limit_moves)],
+)
 def get_hint(game_id: str) -> HintResponse:
     game = _require_game(game_id)
     hint = _engine.hint(game)
-    if hint is None:
-        return HintResponse(hint=None, message="no hint available")
-    return HintResponse(hint=hint)
+    _store.save(game)
+    return HintResponse(
+        hint=hint,
+        message=None if hint else "no hint available",
+        game=GameState.from_game(game),
+    )
 
 
 @app.get("/games/{game_id}/score", response_model=ScoreResponse)

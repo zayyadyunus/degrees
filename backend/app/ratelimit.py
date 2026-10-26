@@ -20,10 +20,14 @@ class RateLimiter:
         limit: int,
         window_seconds: float = 60.0,
         clock: Callable[[], float] = time.monotonic,
+        client_ip_header: str | None = None,
     ) -> None:
         self.limit = limit
         self.window = window_seconds
         self._clock = clock
+        # A header the platform proxy sets to the real client IP (e.g.
+        # Fly-Client-IP). Unlike X-Forwarded-For, clients can't spoof it.
+        self._ip_header = client_ip_header
         # client -> (window start, hits in window)
         self._hits: dict[str, tuple[float, int]] = {}
         self._lock = threading.Lock()
@@ -47,7 +51,9 @@ class RateLimiter:
 
     def __call__(self, request: Request) -> None:
         """FastAPI dependency: 429 when the client is over its limit."""
-        client = request.client.host if request.client else "unknown"
+        client = self._ip_header and request.headers.get(self._ip_header)
+        if not client:
+            client = request.client.host if request.client else "unknown"
         if not self.allow(client):
             raise HTTPException(
                 status_code=429,

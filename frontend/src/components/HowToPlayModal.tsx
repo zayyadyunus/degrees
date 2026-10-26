@@ -18,7 +18,7 @@ const RELATIONS: Relation[] = [
   { name: "Stands for", examples: "crown → king · heart → love" },
 ];
 
-const EXAMPLE_CHAIN = ["night", "moon", "sun", "summer"];
+const EXAMPLE_CHAIN = ["night", "dark", "light", "sun"];
 
 export function HowToPlayModal({
   open,
@@ -31,7 +31,7 @@ export function HowToPlayModal({
     <Modal open={open} onClose={onClose} title="How to Play">
       <p className="howto-lede">
         Connect the <strong>start</strong> word to the <strong>target</strong>{" "}
-        word in 6 associations or fewer.
+        word in 6 associations or fewer. A new daily puzzle every day.
       </p>
       <ol className="howto-rules">
         <li>
@@ -39,7 +39,15 @@ export function HowToPlayModal({
           it.
         </li>
         <li>Every accepted word uses one of your 6 connections.</li>
-        <li>Reach the target before you run out to win.</li>
+        <li>
+          <strong>Par</strong> is the fewest connections possible. Match it for
+          a ⛳.
+        </li>
+        <li>
+          A real word that doesn’t connect is a <strong>strike</strong>. Three
+          strikes and you’re out. Typos are free.
+        </li>
+        <li>Hints are always there, but they show on your result.</li>
       </ol>
       <div className="howto-example" aria-label="Example chain">
         {EXAMPLE_CHAIN.map((word, i) => (

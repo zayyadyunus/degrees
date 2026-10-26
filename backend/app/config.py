@@ -5,6 +5,7 @@ dev (synthetic embeddings) and prod (real GloVe vectors) without edits.
 """
 from __future__ import annotations
 
+import datetime as dt
 import os
 from pathlib import Path
 
@@ -33,6 +34,12 @@ class Settings:
     # so puzzles are neither trivial nor unwinnable. Must be <= max_connections.
     min_puzzle_distance: int = int(os.environ.get("DEGREES_MIN_DISTANCE", "3"))
     max_puzzle_distance: int = int(os.environ.get("DEGREES_MAX_DISTANCE", "5"))
+
+    # Words that are real but don't connect cost a strike; this many loses.
+    max_strikes: int = int(os.environ.get("DEGREES_MAX_STRIKES", "3"))
+
+    # Daily puzzle #1 falls on this date (YYYY-MM-DD).
+    daily_epoch: dt.date = dt.date.fromisoformat(os.environ.get("DEGREES_DAILY_EPOCH", "2026-10-26"))
 
     # Cap the graph size to keep the dense similarity matrix affordable.
     max_words: int = int(os.environ.get("DEGREES_MAX_WORDS", "5000"))
@@ -79,6 +86,10 @@ class Settings:
     # Requests per client IP per minute (0 disables).
     new_games_per_minute: int = int(os.environ.get("DEGREES_NEW_GAMES_PER_MIN", "30"))
     moves_per_minute: int = int(os.environ.get("DEGREES_MOVES_PER_MIN", "120"))
+
+    # Header carrying the real client IP, set by the hosting proxy (e.g.
+    # "Fly-Client-IP"). Unset: use the connection / X-Forwarded-For address.
+    client_ip_header: str | None = os.environ.get("DEGREES_CLIENT_IP_HEADER") or None
 
 
 settings = Settings()

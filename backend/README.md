@@ -90,10 +90,10 @@ uvicorn app.main:app --reload
 |--------|--------------------------|------------------------------------------|
 | GET    | `/health`                | vocab size, threshold, synthetic flag    |
 | GET    | `/vocabulary`            | all playable words (for autocomplete)    |
-| POST   | `/games`                 | new puzzle (optional `min/max_distance`) |
+| POST   | `/games`                 | new puzzle (optional `min/max_distance`); `{"daily": true, "date": "YYYY-MM-DD"}` for the daily |
 | GET    | `/games/{id}`            | current game state                       |
 | POST   | `/games/{id}/moves`      | submit a word `{ "word": "..." }`        |
-| GET    | `/games/{id}/hint`       | a valid next word on a shortest path     |
+| POST   | `/games/{id}/hint`       | a valid next word on a shortest path (recorded) |
 | GET    | `/games/{id}/score`      | connections used vs. optimal             |
 
 ### Example
@@ -104,12 +104,19 @@ echo "$GAME"            # -> start, target, optimal_distance, ...
 ID=$(echo "$GAME" | python -c "import sys,json;print(json.load(sys.stdin)['id'])")
 curl -s -X POST localhost:8000/games/$ID/moves -H 'content-type: application/json' \
      -d '{"word":"ocean"}'
-curl -s localhost:8000/games/$ID/hint
+curl -s -X POST localhost:8000/games/$ID/hint
 ```
 
 A move is rejected (with a reason) when the word is out of vocabulary, already
-used in the chain, or not similar enough to the current word. The game ends as
-`won` when you reach the target, or `lost` if you use all 6 connections first.
+used in the chain, or not connected to the current word. Only the last costs a
+strike. The game ends as `won` when you reach the target, or `lost` after 6
+connections or 3 strikes. Once it's over, `solution` in the game state reveals
+a par route.
+
+Puzzles are only generated when a par route exists using links the labeler can
+name (anything but `Related`), so revealed solutions read as sensible. Daily
+puzzles are seeded by date: every request for the same date gets the same
+start/target as a fresh game.
 Words longer than 64 characters are rejected with a 422. `POST /games` and
 `POST /games/{id}/moves` are rate-limited per client IP (429 when exceeded).
 
@@ -135,7 +142,10 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_GAME_TTL_HOURS`  | `24`    | drop games idle this long                |
 | `DEGREES_MAX_GAMES`       | `100000`| evict least-recently-used games past this |
 | `DEGREES_NEW_GAMES_PER_MIN` | `30`  | new games per client IP per minute (`0` = off) |
-| `DEGREES_MOVES_PER_MIN`   | `120`   | moves per client IP per minute (`0` = off) |
+| `DEGREES_MOVES_PER_MIN`   | `120`   | moves + hints per client IP per minute (`0` = off) |
+| `DEGREES_CLIENT_IP_HEADER` | unset  | proxy header carrying the real client IP |
+| `DEGREES_MAX_STRIKES`     | `3`     | unconnected guesses allowed before losing |
+| `DEGREES_DAILY_EPOCH`     | `2026-10-26` | date of daily puzzle #1 |
 
 ## Tests
 

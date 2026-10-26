@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.config import settings  # noqa: E402
 from app.embeddings import Embeddings  # noqa: E402
-from app.game import STATUS_WON, Engine  # noqa: E402
+from app.game import STATUS_LOST, STATUS_WON, Engine  # noqa: E402
 from app.graph import WordGraph  # noqa: E402
 
 
@@ -60,6 +60,64 @@ def test_hint_is_a_valid_progressing_move():
     assert hint is not None
     result = engine.submit(game, hint)
     assert result.accepted, result.reason
+
+
+
+def _unconnected_word(engine: Engine, game) -> str:
+    """A real vocabulary word that doesn't connect to the current word."""
+    graph, index = engine.graph, engine.embeddings.index
+    here = index[game.current_word]
+    for word in engine.embeddings.words:
+        if word not in game.path and not graph.connected(here, index[word]):
+            return word
+    raise AssertionError("every word connects")
+
+
+def test_strikes_only_for_real_unconnected_words():
+    engine = build_engine()
+    game = engine.new_game()
+    engine.submit(game, "definitelynotaword")  # typo: free
+    engine.submit(game, game.start)            # repeat: free
+    assert game.strikes == 0
+    result = engine.submit(game, _unconnected_word(engine, game))
+    assert result.strike and game.strikes == 1
+
+
+def test_max_strikes_loses_and_reveals_solution():
+    from app.models import GameState
+
+    engine = build_engine()
+    game = engine.new_game()
+    assert GameState.from_game(game).solution is None
+    for _ in range(game.max_strikes):
+        engine.submit(game, _unconnected_word(engine, game))
+    assert game.status == STATUS_LOST
+    assert GameState.from_game(game).solution == game.optimal_path
+
+
+def test_hint_counted_once_per_step():
+    engine = build_engine()
+    game = engine.new_game()
+    first = engine.hint(game)
+    assert engine.hint(game) == first
+    assert game.hints_used == 1
+    engine.submit(game, first)
+    engine.hint(game)
+    assert game.hints_used == 2
+    assert game.events == ["hint", "move", "hint"]
+
+
+def test_daily_puzzle_is_deterministic_per_date():
+    import datetime as dt
+
+    engine = build_engine()
+    day = settings.daily_epoch + dt.timedelta(days=9)
+    a, b = engine.daily_game(day), engine.daily_game(day)
+    assert (a.start, a.target) == (b.start, b.target)
+    assert a.id != b.id  # separate games, same puzzle
+    assert a.daily_number == 10
+    days = [settings.daily_epoch + dt.timedelta(days=d) for d in range(5)]
+    assert len({(g.start, g.target) for g in map(engine.daily_game, days)}) > 1
 
 
 if __name__ == "__main__":

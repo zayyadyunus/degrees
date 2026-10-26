@@ -7,7 +7,9 @@ few hops as possible.
 ocean → … → … → … → forest
 ```
 
-You get **6 connections** (7 words total) to make it across.
+You get **6 connections** (7 words total) to make it across. There's a new
+**daily puzzle** every day (the same for everyone), plus unlimited practice
+puzzles.
 
 ## How to play
 
@@ -18,6 +20,9 @@ You get **6 connections** (7 words total) to make it across.
 3. Keep going. Each accepted word is one connection used.
 4. Reach the `target` word before you run out of connections to **win**.
 
+The full player-facing rules, including the ten kinds of connection, are in
+`docs/RULES.md`.
+
 ### What counts as a "connection"?
 
 Two words are connected when they are **mutual nearest neighbors** in a
@@ -27,28 +32,32 @@ cosine similarity (default `k=12`). This blocks generic shortcut words
 have to be genuine associations.
 
 Every puzzle the game hands out is guaranteed solvable within the 6-hop
-limit, and you can see the **best possible** (shortest) path length next to
-your remaining connections.
+limit, and its **par** (shortest path length) is shown up front. Puzzles are
+only chosen when a par route exists made entirely of links the game can name
+(synonym, is-a, part-of, made-of, ...), so the solution revealed at the end
+always reads as sensible.
 
 ### Rules of thumb
 
 - A move is **rejected** if the word is:
-  - not in the game's vocabulary,
-  - already used in your chain, or
-  - not similar enough to your current word.
-- "Connected (87% match)" feedback is the cosine similarity to the previous
-  word — higher means a tighter link, but anything above the threshold
-  counts equally for hops.
+  - not in the game's vocabulary (free),
+  - already used in your chain (free), or
+  - not connected to your current word — this costs a **strike**. Three
+    strikes and the puzzle is lost.
+- Each accepted move shows the relation behind it (same category, part of,
+  stands for, ...).
 - You can ask for a **hint** at any time. The hint is a valid next word that
-  lies on a shortest path to the target.
-- **New puzzle** starts a fresh game.
+  lies on a shortest path to the target; hints are recorded on your result.
+- The refresh button starts a **practice** puzzle (it asks first if that
+  would abandon one in progress). Games survive a page refresh.
 
 ### Scoring
 
-- **Optimal**: you tied the best possible path length.
-- **Over optimal**: you won, but used more hops than necessary.
-- **Lost**: you used all 6 connections without reaching the target. The game
-  tells you the distance it *could* have been solved in.
+- **Par ⛳**: you tied the shortest path without hints.
+- **Connected**: you won, over par or with hints.
+- **Lost**: you used all 6 connections or 3 strikes. Either way the end
+  screen reveals a par route.
+- **Share** copies a spoiler-free result: 🟩 move, 🟥 strike, 💡 hint.
 
 ## Running the game
 
@@ -111,8 +120,8 @@ curl -s -X POST localhost:8000/games/$ID/moves \
   -H 'content-type: application/json' \
   -d '{"word":"ocean"}'
 
-# Ask for a hint
-curl -s localhost:8000/games/$ID/hint
+# Ask for a hint (recorded on the game)
+curl -s -X POST localhost:8000/games/$ID/hint
 
 # Final score
 curl -s localhost:8000/games/$ID/score
@@ -122,10 +131,10 @@ curl -s localhost:8000/games/$ID/score
 |--------|-----------------------|-----------------------------------------|
 | GET    | `/health`             | vocab size, threshold, synthetic flag   |
 | GET    | `/vocabulary`         | all playable words                      |
-| POST   | `/games`              | new puzzle (optional min/max_distance)  |
+| POST   | `/games`              | new puzzle; `{"daily": true, "date": "YYYY-MM-DD"}` for the daily |
 | GET    | `/games/{id}`         | current game state                      |
 | POST   | `/games/{id}/moves`   | submit a word `{ "word": "..." }`       |
-| GET    | `/games/{id}/hint`    | a valid next word on a shortest path    |
+| POST   | `/games/{id}/hint`    | a valid next word on a shortest path    |
 | GET    | `/games/{id}/score`   | connections used vs. optimal            |
 
 ## Difficulty knobs
@@ -184,7 +193,8 @@ adds ~65 MB, so a 512 MB instance is plenty.
 | `DEGREES_GAME_TTL_HOURS`    | `24`    | drop games idle this long                            |
 | `DEGREES_MAX_GAMES`         | `100000`| evict least-recently-used games past this count      |
 | `DEGREES_NEW_GAMES_PER_MIN` | `30`    | new games per client IP per minute (`0` = off)       |
-| `DEGREES_MOVES_PER_MIN`     | `120`   | moves per client IP per minute (`0` = off)           |
+| `DEGREES_MOVES_PER_MIN`     | `120`   | moves + hints per client IP per minute (`0` = off)   |
+| `DEGREES_CLIENT_IP_HEADER`  | unset   | proxy header with the real client IP (`fly.toml`: `Fly-Client-IP`) |
 | `FORWARDED_ALLOW_IPS`       | `127.0.0.1` | uvicorn: proxies trusted for the client IP (Docker image: `*`) |
 
 Rate limits key on the client IP. Behind a platform proxy, uvicorn must

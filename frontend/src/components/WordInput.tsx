@@ -9,8 +9,11 @@ interface Props {
 }
 
 const MAX_SUGGESTIONS = 8;
+// Autocomplete only fixes spelling: it waits for a few letters and only
+// completes prefixes, so it can't be used to browse the word list.
+const MIN_PREFIX = 3;
 
-/** Free-text word entry with prefix-first autocomplete over the vocabulary. */
+/** Free-text word entry with prefix autocomplete over the vocabulary. */
 export function WordInput({ vocabulary, used, disabled, onSubmit }: Props) {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
@@ -21,16 +24,14 @@ export function WordInput({ vocabulary, used, disabled, onSubmit }: Props) {
 
   const suggestions = useMemo(() => {
     const q = value.trim().toLowerCase();
-    if (!q) return [];
-    const prefix: string[] = [];
-    const contains: string[] = [];
+    if (q.length < MIN_PREFIX) return [];
+    const matches: string[] = [];
     for (const w of vocabulary) {
-      if (used.has(w)) continue;
-      if (w.startsWith(q)) prefix.push(w);
-      else if (w.includes(q)) contains.push(w);
-      if (prefix.length >= MAX_SUGGESTIONS) break;
+      if (used.has(w) || !w.startsWith(q)) continue;
+      matches.push(w);
+      if (matches.length >= MAX_SUGGESTIONS) break;
     }
-    return [...prefix, ...contains].slice(0, MAX_SUGGESTIONS);
+    return matches;
   }, [value, vocabulary, used]);
 
   useEffect(() => setActive(0), [value]);

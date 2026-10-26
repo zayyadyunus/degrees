@@ -3,8 +3,6 @@ import type { GameState } from "../types";
 
 interface Props {
   game: GameState;
-  /** Relation label per accepted edge: relations[i] joins path[i] → path[i+1]. */
-  relations: (string | null)[];
   /** Current hint word (rendered as a ghost tile in the next open slot). */
   hint: string | null;
   onPlayHint: (word: string) => void;
@@ -21,6 +19,7 @@ const RELATION_LABELS: Record<string, string> = {
   UsedFor: "used for",
   AtLocation: "found together",
   Causes: "leads to",
+  SymbolOf: "stands for",
   HasProperty: "feature of",
   Related: "related",
 };
@@ -35,7 +34,8 @@ function labelFor(relation: string | null | undefined): string | null {
  * bottom, the player's chain growing between them through dashed slots
  * that make the remaining budget visible.
  */
-export function Board({ game, relations, hint, onPlayHint }: Props) {
+export function Board({ game, hint, onPlayHint }: Props) {
+  const relations = game.relations;
   const inProgress = game.status === "in_progress";
   const won = game.status === "won";
   const lost = game.status === "lost";

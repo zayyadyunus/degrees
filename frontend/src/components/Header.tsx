@@ -11,8 +11,8 @@ export function Header({ onHelp, onNewGame }: Props) {
       <div className="appbar-side right">
         <button
           className="icon-btn"
-          aria-label="New puzzle"
-          title="New puzzle"
+          aria-label="New practice puzzle"
+          title="New practice puzzle"
           onClick={onNewGame}
         >
           <RefreshIcon />
