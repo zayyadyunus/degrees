@@ -279,6 +279,231 @@
       "rel": "AtLocation",
       "a": "fish",
       "b": "sea"
+    },
+    {
+      "rel": "Related",
+      "a": "ice",
+      "b": "glass"
+    },
+    {
+      "rel": "Related",
+      "a": "crown",
+      "b": "head"
+    },
+    {
+      "rel": "Related",
+      "a": "crown",
+      "b": "cup"
+    },
+    {
+      "rel": "Related",
+      "a": "crown",
+      "b": "tooth"
+    },
+    {
+      "rel": "Related",
+      "a": "bee",
+      "b": "queen"
+    },
+    {
+      "rel": "Related",
+      "a": "bowl",
+      "b": "ball"
+    },
+    {
+      "rel": "Related",
+      "a": "fire",
+      "b": "fuel"
+    },
+    {
+      "rel": "Related",
+      "a": "arm",
+      "b": "sword"
+    },
+    {
+      "rel": "Related",
+      "a": "spring",
+      "b": "stream"
+    },
+    {
+      "rel": "Related",
+      "a": "autumn",
+      "b": "flower"
+    },
+    {
+      "rel": "Related",
+      "a": "class",
+      "b": "world"
+    },
+    {
+      "rel": "Related",
+      "a": "world",
+      "b": "human"
+    },
+    {
+      "rel": "Related",
+      "a": "question",
+      "b": "thought"
+    },
+    {
+      "rel": "Related",
+      "a": "head",
+      "b": "chair"
+    },
+    {
+      "rel": "Related",
+      "a": "root",
+      "b": "solution"
+    },
+    {
+      "rel": "Related",
+      "a": "root",
+      "b": "tooth"
+    },
+    {
+      "rel": "PartOf",
+      "a": "root",
+      "b": "tree"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "wall",
+      "b": "stone"
+    },
+    {
+      "rel": "PartOf",
+      "a": "nose",
+      "b": "head"
+    },
+    {
+      "rel": "PartOf",
+      "a": "brain",
+      "b": "head"
+    },
+    {
+      "rel": "Related",
+      "a": "bitter",
+      "b": "beer"
+    },
+    {
+      "rel": "Related",
+      "a": "coat",
+      "b": "paint"
+    },
+    {
+      "rel": "Related",
+      "a": "crowd",
+      "b": "circle"
+    },
+    {
+      "rel": "Related",
+      "a": "piano",
+      "b": "sound"
+    },
+    {
+      "rel": "Related",
+      "a": "skin",
+      "b": "coat"
+    },
+    {
+      "rel": "Related",
+      "a": "clean",
+      "b": "quiet"
+    },
+    {
+      "rel": "Related",
+      "a": "knowledge",
+      "b": "language"
+    },
+    {
+      "rel": "Related",
+      "a": "voice",
+      "b": "language"
+    },
+    {
+      "rel": "Related",
+      "a": "flower",
+      "b": "spring"
+    },
+    {
+      "rel": "Related",
+      "a": "quiet",
+      "b": "small"
+    },
+    {
+      "rel": "Related",
+      "a": "month",
+      "b": "moon"
+    },
+    {
+      "rel": "Related",
+      "a": "friend",
+      "b": "love"
+    },
+    {
+      "rel": "Related",
+      "a": "crowd",
+      "b": "team"
+    },
+    {
+      "rel": "PartOf",
+      "a": "engine",
+      "b": "car"
+    },
+    {
+      "rel": "Antonym",
+      "a": "lie",
+      "b": "truth"
+    },
+    {
+      "rel": "Related",
+      "a": "coat",
+      "b": "shield"
+    },
+    {
+      "rel": "Related",
+      "a": "shield",
+      "b": "screen"
+    },
+    {
+      "rel": "Related",
+      "a": "branch",
+      "b": "office"
+    },
+    {
+      "rel": "Related",
+      "a": "nation",
+      "b": "team"
+    },
+    {
+      "rel": "Related",
+      "a": "body",
+      "b": "shape"
+    },
+    {
+      "rel": "Related",
+      "a": "leaf",
+      "b": "paper"
+    },
+    {
+      "rel": "Related",
+      "a": "salt",
+      "b": "water"
+    },
+    {
+      "rel": "Related",
+      "a": "cloth",
+      "b": "skin"
+    },
+    {
+      "rel": "PartOf",
+      "a": "mouse",
+      "b": "computer"
+    },
+    {
+      "rel": "PartOf",
+      "a": "floor",
+      "b": "house"
     }
   ]
 }

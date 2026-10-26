@@ -41,6 +41,13 @@ class Settings:
     # Daily puzzle #1 falls on this date (YYYY-MM-DD).
     daily_epoch: dt.date = dt.date.fromisoformat(os.environ.get("DEGREES_DAILY_EPOCH", "2026-10-26"))
 
+    # Keep consecutive dailies feeling different: a word that started or
+    # ended a daily in the last N days can't start/end today's, and a word
+    # on any route in the last M days can't start, end or sit mid-route
+    # today. 0 disables either rule.
+    daily_fresh_ends_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ENDS_DAYS", "14"))
+    daily_fresh_route_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ROUTE_DAYS", "7"))
+
     # Cap the graph size to keep the dense similarity matrix affordable.
     max_words: int = int(os.environ.get("DEGREES_MAX_WORDS", "5000"))
 
@@ -54,6 +61,11 @@ class Settings:
     # the cross-domain links embeddings rank too low to catch on their own.
     relations_path: Path = Path(os.environ.get("DEGREES_RELATIONS", str(DATA_DIR / "relations.json")))
     use_relations: bool = _env_bool("DEGREES_USE_RELATIONS", True)
+
+    # WordNet senses (most common first) considered per part of speech when
+    # naming a link. Lower = fewer rare-sense mislabels but fewer puzzles.
+    # 0 = all senses.
+    wordnet_senses: int | None = int(os.environ.get("DEGREES_WORDNET_SENSES", "3")) or None
 
     # If real vectors are absent, fall back to deterministic synthetic vectors
     # so the API is runnable. Synthetic connections are MEANINGLESS — dev only.

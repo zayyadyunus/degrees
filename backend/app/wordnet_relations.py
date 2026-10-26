@@ -18,7 +18,14 @@ logger = logging.getLogger("degrees.wordnet")
 
 
 class WordNetLabeler:
-    def __init__(self) -> None:
+    def __init__(self, max_senses_per_pos: int | None = 3) -> None:
+        # WordNet lists each word's senses most-common first. Matching on
+        # rare senses produces links players read as nonsense (crown "is a"
+        # head: the crown of the head; foot ~ minute: units), so only the top
+        # senses per part of speech count. Per part of speech, not overall:
+        # "cold" lists the illness (noun) before the temperature (adjective).
+        # None considers every sense.
+        self._max_senses = max_senses_per_pos
         self._wn = None
         self._cache: dict[tuple[str, str], str | None] = {}
         try:
@@ -45,9 +52,21 @@ class WordNetLabeler:
         return label
 
     # -- internals -------------------------------------------------------
+    def _synsets(self, word: str) -> list:
+        """The word's most common senses, up to max_senses per part of speech."""
+        senses = self._wn.synsets(word)
+        if self._max_senses is None:
+            return senses
+        kept, per_pos = [], {}
+        for s in senses:
+            pos = "a" if s.pos() in ("a", "s") else s.pos()  # satellites are adjectives
+            if per_pos.get(pos, 0) < self._max_senses:
+                kept.append(s)
+                per_pos[pos] = per_pos.get(pos, 0) + 1
+        return kept
+
     def _classify(self, a: str, b: str) -> str | None:
-        wn = self._wn
-        A, B = wn.synsets(a), wn.synsets(b)
+        A, B = self._synsets(a), self._synsets(b)
         if not A or not B:
             return None
         setA, setB = set(A), set(B)

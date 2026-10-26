@@ -26,30 +26,10 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from app.bootstrap import build_engine  # noqa: E402
 from app.config import settings  # noqa: E402
-from app.embeddings import Embeddings  # noqa: E402
-from app.game import Engine  # noqa: E402
-from app.graph import WordGraph  # noqa: E402
-from app.relations import RelationOverlay  # noqa: E402
-from app.wordnet_relations import WordNetLabeler  # noqa: E402
 
 WEAK_PERCENTILE = 15
-
-
-def build_engine() -> Engine:
-    """Same construction as app/main.py."""
-    emb = Embeddings.load(settings)
-    overlay = (
-        RelationOverlay.load(settings.relations_path, emb)
-        if settings.use_relations
-        else RelationOverlay.empty()
-    )
-    graph = WordGraph(emb, k=settings.k, rng=np.random.default_rng(settings.seed),
-                      extra_edges=overlay.edges)
-    labeler = WordNetLabeler()
-    if not labeler.enabled:
-        sys.exit("WordNet corpus missing: these previews would not match production.")
-    return Engine(emb, graph, settings, overlay=overlay, labeler=labeler)
 
 
 def main() -> None:
@@ -59,7 +39,9 @@ def main() -> None:
     args = parser.parse_args()
 
     logging.disable(logging.INFO)
-    engine = build_engine()
+    engine = build_engine(settings)
+    if not engine.labeler.enabled:
+        sys.exit("WordNet corpus missing: these previews would not match production.")
     if engine.embeddings.synthetic:
         sys.exit("Synthetic embeddings loaded: build real vectors first.")
     vec, idx = engine.embeddings.vectors, engine.embeddings.index

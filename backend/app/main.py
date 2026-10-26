@@ -9,18 +9,14 @@ from __future__ import annotations
 import datetime as dt
 import logging
 
-import numpy as np
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from .bootstrap import build_engine
 from .config import settings
-from .embeddings import Embeddings
-from .game import Engine, PuzzleUnavailable
-from .graph import WordGraph
+from .game import PuzzleUnavailable
 from .ratelimit import RateLimiter
-from .relations import RelationOverlay
-from .wordnet_relations import WordNetLabeler
 from .models import (
     GameState,
     HintResponse,
@@ -54,20 +50,8 @@ app.add_middleware(
 
 # Built once at import: loading vectors and the dense similarity graph is the
 # expensive part, so we do it a single time and share it across requests.
-_embeddings = Embeddings.load(settings)
-_overlay = (
-    RelationOverlay.load(settings.relations_path, _embeddings)
-    if settings.use_relations
-    else RelationOverlay.empty()
-)
-_graph = WordGraph(
-    _embeddings,
-    k=settings.k,
-    rng=np.random.default_rng(settings.seed),
-    extra_edges=_overlay.edges,
-)
-_labeler = WordNetLabeler()
-_engine = Engine(_embeddings, _graph, settings, overlay=_overlay, labeler=_labeler)
+_engine = build_engine(settings)
+_embeddings, _graph, _overlay = _engine.embeddings, _engine.graph, _engine.overlay
 _store = GameStore(ttl_seconds=settings.game_ttl_seconds, max_games=settings.max_games)
 _limit_new_games = RateLimiter(
     settings.new_games_per_minute, client_ip_header=settings.client_ip_header

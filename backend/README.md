@@ -115,8 +115,17 @@ a par route.
 
 Puzzles are only generated when a par route exists using links the labeler can
 name (anything but `Related`), so revealed solutions read as sensible. Daily
-puzzles are seeded by date: every request for the same date gets the same
-start/target as a fresh game.
+puzzles are the same for everyone on a date. Each day is seeded by its date
+but also avoids words recent dailies used (see the `DEGREES_DAILY_FRESH_*`
+settings), so the schedule is generated in order from the epoch and cached;
+`scripts/preview_dailies.py` shows what's coming. Changing the word data
+changes every daily.
+
+Links are named by the typed overlay first, then WordNet using only each
+word's most common senses (`DEGREES_WORDNET_SENSES`), so rare meanings
+(crown = top of the head) don't produce links players read as nonsense.
+Curated `"Related"` entries in `relations.json` demote a link that WordNet
+still mislabels: it stays a valid move but never appears in a par route.
 Words longer than 64 characters are rejected with a 422. `POST /games` and
 `POST /games/{id}/moves` are rate-limited per client IP (429 when exceeded).
 
@@ -146,6 +155,9 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_CLIENT_IP_HEADER` | unset  | proxy header carrying the real client IP |
 | `DEGREES_MAX_STRIKES`     | `3`     | unconnected guesses allowed before losing |
 | `DEGREES_DAILY_EPOCH`     | `2026-10-26` | date of daily puzzle #1 |
+| `DEGREES_DAILY_FRESH_ENDS_DAYS` | `14` | a daily's start/target can't have started/ended a daily this recently |
+| `DEGREES_DAILY_FRESH_ROUTE_DAYS` | `7` | words on a route this recently can't appear in today's daily |
+| `DEGREES_WORDNET_SENSES`  | `3`     | WordNet senses per part of speech used to name links (`0` = all) |
 
 ## Tests
 

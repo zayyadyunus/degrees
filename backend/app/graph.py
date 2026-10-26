@@ -23,8 +23,12 @@ from .embeddings import Embeddings
 logger = logging.getLogger("degrees.graph")
 
 
-def bfs(adjacency, src: int) -> tuple[np.ndarray, np.ndarray]:
-    """BFS over any adjacency list. Returns (dist, prev); unreachable == -1."""
+def bfs(adjacency, src: int, no_pass: set[int] | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """BFS over any adjacency list. Returns (dist, prev); unreachable == -1.
+
+    Nodes in `no_pass` can be reached but not passed through: paths may end
+    at them, never route via them.
+    """
     n = len(adjacency)
     dist = np.full(n, -1, dtype=np.int32)
     prev = np.full(n, -1, dtype=np.int32)
@@ -32,6 +36,8 @@ def bfs(adjacency, src: int) -> tuple[np.ndarray, np.ndarray]:
     queue: deque[int] = deque([src])
     while queue:
         node = queue.popleft()
+        if no_pass and node in no_pass and node != src:
+            continue
         for nb in adjacency[node]:
             if dist[nb] == -1:
                 dist[nb] = dist[node] + 1

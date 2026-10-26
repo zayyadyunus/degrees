@@ -67,8 +67,9 @@ export function HowToPlayModal({
       </div>
       <p className="howto-heading">What counts as a connection</p>
       <p className="howto-lede" style={{ fontSize: "0.9rem" }}>
-        Words connect when they relate in one of these ways. Rhymes, spelling,
-        and “it just reminds me of…” don’t count.
+        Words connect when they relate in one of these ways, or are strongly
+        associated for most people. Rhymes, spelling, and “it just reminds me
+        of…” don’t count.
       </p>
       <ul className="relation-list">
         {RELATIONS.map((r) => (

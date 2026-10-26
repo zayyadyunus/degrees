@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as dt
 import logging
+import threading
 import uuid
 from dataclasses import dataclass, field
 
@@ -72,6 +73,15 @@ class MoveResult:
     strike: bool = False
 
 
+@dataclass(frozen=True)
+class Puzzle:
+    """A start/target pair and one par route (all words)."""
+    start: str
+    target: str
+    optimal_distance: int
+    optimal_path: tuple[str, ...]
+
+
 class PuzzleUnavailable(RuntimeError):
     pass
 
@@ -108,6 +118,9 @@ class Engine:
             logger.warning("No relation labeler: par routes may use unexplained links.")
             self._named_adj = [list(a) for a in graph.adjacency]
         self._named_cache: dict[int, tuple[np.ndarray, np.ndarray]] = {}
+        # Daily schedule from the epoch, generated in order on demand.
+        self._daily: list[Puzzle] = []
+        self._daily_lock = threading.Lock()
 
     def _compute_label(self, i: int, j: int) -> str:
         """Name the relation behind an edge.
@@ -140,53 +153,123 @@ class Engine:
         min_distance: int | None = None,
         max_distance: int | None = None,
         rng: np.random.Generator | None = None,
-        daily_number: int | None = None,
     ) -> Game:
-        rng = rng or self.rng
+        """A random practice puzzle."""
         min_d = min_distance or self.settings.min_puzzle_distance
         max_d = min(max_distance or self.settings.max_puzzle_distance, self.settings.max_connections)
         if min_d > max_d:
             raise ValueError("min_distance must be <= max_distance")
+        puzzle = self._find_puzzle(rng or self.rng, min_d, max_d)
+        if puzzle is None:
+            raise PuzzleUnavailable(f"no puzzle found with optimal distance in [{min_d}, {max_d}]")
+        return self._start_game(puzzle)
 
-        candidate_starts = [i for i, a in enumerate(self._named_adj) if len(a) > 0]
-        if not candidate_starts:
-            raise PuzzleUnavailable("graph has no connected words")
+    def _find_puzzle(
+        self,
+        rng: np.random.Generator,
+        min_d: int,
+        max_d: int,
+        avoid_ends: frozenset[int] = frozenset(),
+        avoid_via: frozenset[int] = frozenset(),
+    ) -> Puzzle | None:
+        """Pick a start/target whose par route uses only named links.
 
+        `avoid_ends` can't be the start or target; `avoid_via` can't appear
+        in the middle of the par route (the daily schedule uses these to keep
+        consecutive puzzles from feeling the same).
+        """
+        candidate_starts = [
+            i for i, a in enumerate(self._named_adj) if len(a) > 0 and i not in avoid_ends
+        ]
         rng.shuffle(candidate_starts)
         for start_idx in candidate_starts[:200]:
             dist, _ = self.graph.distances(start_idx)
-            named_dist, named_prev = self._named_distances(start_idx)
+            if avoid_via:
+                named_dist, named_prev = bfs(self._named_adj, start_idx, no_pass=set(avoid_via))
+            else:
+                named_dist, named_prev = self._named_distances(start_idx)
             # Par comes from the full graph (no route is shorter), but the
             # target must also be reachable in par steps using named links.
-            reachable = np.flatnonzero((dist >= min_d) & (dist <= max_d) & (named_dist == dist))
+            ok = (dist >= min_d) & (dist <= max_d) & (named_dist == dist)
+            if avoid_ends:
+                ok[list(avoid_ends)] = False
+            reachable = np.flatnonzero(ok)
             if reachable.size == 0:
                 continue
             target_idx = int(rng.choice(reachable))
-            path_idx = trace_path(named_prev, start_idx, target_idx)
             words = self.embeddings.words
-            return Game(
-                id=uuid.uuid4().hex,
+            return Puzzle(
                 start=words[start_idx],
                 target=words[target_idx],
                 optimal_distance=int(dist[target_idx]),
-                optimal_path=[words[i] for i in path_idx],
-                max_connections=self.settings.max_connections,
-                max_strikes=self.settings.max_strikes,
-                path=[words[start_idx]],
-                daily_number=daily_number,
+                optimal_path=tuple(words[i] for i in trace_path(named_prev, start_idx, target_idx)),
             )
-        raise PuzzleUnavailable(
-            f"no puzzle found with optimal distance in [{min_d}, {max_d}]"
+        return None
+
+    def _start_game(self, puzzle: Puzzle, daily_number: int | None = None) -> Game:
+        return Game(
+            id=uuid.uuid4().hex,
+            start=puzzle.start,
+            target=puzzle.target,
+            optimal_distance=puzzle.optimal_distance,
+            optimal_path=list(puzzle.optimal_path),
+            max_connections=self.settings.max_connections,
+            max_strikes=self.settings.max_strikes,
+            path=[puzzle.start],
+            daily_number=daily_number,
         )
 
+    # -- daily puzzles ---------------------------------------------------
     def daily_number(self, day: dt.date) -> int:
         """Puzzle #1 is the epoch date; one new puzzle per day after."""
         return (day - self.settings.daily_epoch).days + 1
 
     def daily_game(self, day: dt.date) -> Game:
-        """Today's shared puzzle: the same start/target for everyone on `day`."""
-        rng = np.random.default_rng([self.settings.seed, day.toordinal()])
-        return self.new_game(rng=rng, daily_number=self.daily_number(day))
+        """The day's shared puzzle: the same start/target for everyone."""
+        return self._start_game(self.daily_puzzle(day), daily_number=self.daily_number(day))
+
+    def daily_puzzle(self, day: dt.date) -> Puzzle:
+        """The puzzle for `day`, generating the schedule up to it if needed.
+
+        Each day is seeded by its date, but also avoids words recent dailies
+        used, so the schedule is built in order from the epoch and cached.
+        It's deterministic for a given dataset: everyone, every server
+        restart, sees the same sequence.
+        """
+        index = self.daily_number(day) - 1
+        if index < 0:
+            raise ValueError("no daily puzzle before the epoch")
+        with self._daily_lock:
+            while len(self._daily) <= index:
+                self._daily.append(self._next_daily(len(self._daily)))
+            return self._daily[index]
+
+    def _next_daily(self, index: int) -> Puzzle:
+        s = self.settings
+        day = s.daily_epoch + dt.timedelta(days=index)
+        I = self.embeddings.index
+        recent_ends = {I[w] for p in self._daily[-s.daily_fresh_ends_days:] for w in (p.start, p.target)} \
+            if s.daily_fresh_ends_days else set()
+        recent_route = {I[w] for p in self._daily[-s.daily_fresh_route_days:] for w in p.optimal_path} \
+            if s.daily_fresh_route_days else set()
+        # Strictest first; relax rather than fail if a day can't satisfy it.
+        attempts = [
+            (recent_ends | recent_route, recent_route),
+            (recent_ends, recent_route),
+            (recent_ends, set()),
+            (set(), set()),
+        ]
+        for level, (ends, via) in enumerate(attempts):
+            rng = np.random.default_rng([s.seed, day.toordinal()])
+            puzzle = self._find_puzzle(
+                rng, s.min_puzzle_distance, min(s.max_puzzle_distance, s.max_connections),
+                frozenset(ends), frozenset(via),
+            )
+            if puzzle is not None:
+                if level:
+                    logger.warning("Daily %s: relaxed repeat rules (level %d).", day, level)
+                return puzzle
+        raise PuzzleUnavailable(f"no daily puzzle for {day}")
 
     # -- moves -----------------------------------------------------------
     def submit(self, game: Game, raw_word: str) -> MoveResult:

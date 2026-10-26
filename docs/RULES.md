@@ -4,7 +4,7 @@ In **Degrees** you connect the current word to a new word by a *real semantic
 relationship*. A move lands when the two words relate in one of the ways below.
 Rhyming, spelling, and "it just reminds me of…" don't count.
 
-## The nine ways to connect
+## The ways to connect
 
 Think of each move as filling in one of these blanks:
 
@@ -24,14 +24,18 @@ A tenth, looser kind also counts when it's well known:
 
 | 10 | **Stands for** | "is a symbol of" | crown → king · heart → love · white → peace |
 
+Strong everyday associations that don't fit a pattern neatly can count too —
+the game marks those links **related**. Every puzzle can be solved at par
+using only the ten patterns above, so you never *need* a loose link.
+
 ## What does NOT count
 
 - **Rhymes / sounds alike** — *cat / hat*, *moon / spoon*
 - **Spelled alike** — *sale / sail*, *cat / cot*
 - **Starts with the same letter** — not a meaning at all
 - **Personal associations** — "my street is named Oak, so street / oak"
-- **Free association with no named relation** — every hop has to fit one of
-  the ten patterns above
+- **Weak hunches** — "it just reminds me of…" isn't enough; the two words
+  have to be closely associated for most people
 
 ## Tips
 

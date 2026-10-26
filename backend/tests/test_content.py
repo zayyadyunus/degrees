@@ -9,17 +9,13 @@ import re
 import sys
 from pathlib import Path
 
-import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from app.bootstrap import build_engine  # noqa: E402
 from app.config import settings  # noqa: E402
-from app.embeddings import Embeddings  # noqa: E402
 from app.game import UNNAMED, Engine  # noqa: E402
-from app.graph import WordGraph  # noqa: E402
-from app.relations import RelationOverlay  # noqa: E402
-from app.wordnet_relations import WordNetLabeler  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[2]
 HOW_TO_PLAY = REPO / "frontend/src/components/HowToPlayModal.tsx"
@@ -35,14 +31,10 @@ pytestmark = pytest.mark.skipif(
 
 @pytest.fixture(scope="module")
 def engine() -> Engine:
-    labeler = WordNetLabeler()
-    if not labeler.enabled:
+    engine = build_engine(settings)
+    if not engine.labeler.enabled:
         pytest.skip("WordNet corpus not installed")
-    emb = Embeddings.load(settings)
-    overlay = RelationOverlay.load(settings.relations_path, emb)
-    graph = WordGraph(emb, k=settings.k, rng=np.random.default_rng(settings.seed),
-                      extra_edges=overlay.edges)
-    return Engine(emb, graph, settings, overlay=overlay, labeler=labeler)
+    return engine
 
 
 def _check_pairs(engine: Engine, pairs: list[tuple[str, str]]) -> list[str]:
@@ -79,3 +71,15 @@ def test_par_routes_use_only_named_links(engine):
         assert len(path) - 1 == game.optimal_distance
         labels = [engine._label_edge(a, b) for a, b in zip(path, path[1:])]
         assert UNNAMED not in labels, (game.optimal_path, labels)
+
+
+def test_dailies_do_not_repeat_recent_words(engine):
+    import datetime as dt
+
+    s = settings
+    days = [engine.daily_puzzle(s.daily_epoch + dt.timedelta(days=d)) for d in range(60)]
+    for i, p in enumerate(days):
+        recent_ends = {w for q in days[max(0, i - s.daily_fresh_ends_days):i] for w in (q.start, q.target)}
+        recent_route = {w for q in days[max(0, i - s.daily_fresh_route_days):i] for w in q.optimal_path}
+        assert not {p.start, p.target} & (recent_ends | recent_route), (i + 1, p)
+        assert not set(p.optimal_path[1:-1]) & recent_route, (i + 1, p)

@@ -282,7 +282,6 @@ truth
 lie
 secret
 mystery
-work
 job
 money
 coin
@@ -312,8 +311,6 @@ saw
 clock
 time
 hour
-minute
-second
 day
 night
 week
@@ -336,7 +333,6 @@ war
 peace
 army
 soldier
-gun
 sword
 shield
 king
@@ -363,7 +359,6 @@ dress
 shoe
 hat
 coat
-button
 color
 red
 blue
@@ -372,13 +367,10 @@ yellow
 black
 white
 purple
-pink
 brown
 shape
 circle
-square
 line
-point
 big
 small
 fast

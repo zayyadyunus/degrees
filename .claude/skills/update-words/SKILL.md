@@ -39,6 +39,16 @@ word that's dropped isn't playable.
 explains (see `RELATION_LABELS` in `frontend/src/components/Board.tsx`).
 Both words must be in the vocabulary or the edge is silently dropped.
 
+To **demote** a link WordNet mislabels through a rare meaning (e.g.
+`coat/paint`), add it with `"rel": "Related"`: it stays a valid move but can
+never be part of a par route. To **relabel**, add the correct relation.
+Either way, first check the pair is already a link (`engine.graph.connected`
+via `app.bootstrap.build_engine`) — a curated entry for an unlinked pair
+*creates* a new move.
+
+Prefer demoting specific links over lowering `DEGREES_WORDNET_SENSES`: going
+from 3 to 2 un-names ~100 links, most of them fair.
+
 Do **not** run `scripts/build_relations.py` unless the user explicitly wants
 to replace the hand-authored file with a ConceptNet build — it overwrites
 `relations.json`.
