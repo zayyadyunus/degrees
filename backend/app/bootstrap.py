@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from .dailies import load_frozen
 from .embeddings import Embeddings
 from .game import Engine
 from .graph import WordGraph
@@ -14,7 +15,9 @@ from .relations import RelationOverlay
 from .wordnet_relations import WordNetLabeler
 
 
-def build_engine(settings) -> Engine:
+def build_engine(settings, strict: bool = True) -> Engine:
+    """strict: refuse frozen dailies that no longer match the data (the
+    app and tests); the freeze script passes False so it can repair them."""
     embeddings = Embeddings.load(settings)
     overlay = (
         RelationOverlay.load(settings.relations_path, embeddings)
@@ -28,4 +31,10 @@ def build_engine(settings) -> Engine:
         extra_edges=overlay.edges,
     )
     labeler = WordNetLabeler(max_senses_per_pos=settings.wordnet_senses)
-    return Engine(embeddings, graph, settings, overlay=overlay, labeler=labeler)
+    engine = Engine(
+        embeddings, graph, settings, overlay=overlay, labeler=labeler,
+        frozen_dailies=load_frozen(settings.dailies_path),
+    )
+    if strict:
+        engine.dailies.raise_if_invalid()
+    return engine

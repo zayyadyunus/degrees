@@ -34,16 +34,30 @@ Common real problems, beyond the automatic flags:
 - **Obscure targets** or a par route a player couldn't reconstruct even after
   seeing it.
 
-## 3. Fix
+## 3. Fix and freeze
 
-Fixes are data changes — follow the `update-words` skill:
-- Remove a word that keeps producing bad links from `data/wordlist.txt`.
-- Add a missing curated link to `data/relations.json` so a natural route
-  exists.
+Days in `backend/data/dailies.json` are **frozen**: served exactly as stored,
+so later data changes can't reshuffle them (the preview marks them
+`[frozen]`). Unfrozen days are generated, and *any* data change reshuffles
+all of them — so fix by re-rolling individual days, not by regenerating:
 
-**Any data change reshuffles every daily, past and future.** Before launch
-that's free. After launch it changes puzzles people already played — say so
-to the user before making the change, and re-run this preview afterwards.
+```bash
+cd backend
+# swap specific bad days (neighbours unchanged, no-repeat rules kept)
+.venv/bin/python scripts/freeze_dailies.py --reroll 2026-11-25 2026-12-02
+# first freeze of a window: freeze it, then re-roll the bad days in it
+.venv/bin/python scripts/freeze_dailies.py --through 2026-12-20
+```
+
+Re-rolled days are new and unreviewed: preview them again (or ask
+`puzzle-critic` about just those days) before calling the month done.
+
+Data fixes (`update-words` skill) are still worth making for *future*
+months — e.g. demoting a mislabelled link the critic keeps hitting. After
+one, run the tests: if a frozen day no longer works with the new data, the
+app refuses to start; repair with `freeze_dailies.py --reroll-invalid`.
+Never edit or regenerate already-played (past) frozen days without telling
+the user.
 
 ## Report
 

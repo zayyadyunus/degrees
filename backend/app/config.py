@@ -48,6 +48,14 @@ class Settings:
     daily_fresh_ends_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ENDS_DAYS", "14"))
     daily_fresh_route_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ROUTE_DAYS", "7"))
 
+    # Difficulty ramp: the par each weekday's daily aims for, Monday first.
+    daily_par_by_weekday: tuple[int, ...] = tuple(
+        int(x) for x in os.environ.get("DEGREES_DAILY_PAR_BY_WEEKDAY", "3,3,4,4,4,5,4").split(",")
+    )
+
+    # Reviewed dailies, served exactly as frozen (scripts/freeze_dailies.py).
+    dailies_path: Path = Path(os.environ.get("DEGREES_DAILIES", str(DATA_DIR / "dailies.json")))
+
     # Cap the graph size to keep the dense similarity matrix affordable.
     max_words: int = int(os.environ.get("DEGREES_MAX_WORDS", "5000"))
 

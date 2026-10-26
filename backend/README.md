@@ -118,8 +118,15 @@ name (anything but `Related`), so revealed solutions read as sensible. Daily
 puzzles are the same for everyone on a date. Each day is seeded by its date
 but also avoids words recent dailies used (see the `DEGREES_DAILY_FRESH_*`
 settings), so the schedule is generated in order from the epoch and cached;
-`scripts/preview_dailies.py` shows what's coming. Changing the word data
-changes every daily.
+Each weekday aims for its own par
+(easy Monday, hard Saturday). `scripts/preview_dailies.py` shows what's
+coming.
+
+Reviewed days are frozen in `data/dailies.json` (`scripts/freeze_dailies.py`)
+and served exactly as stored; only days past the frozen range are generated,
+and those change whenever the word data does. The app refuses to start if a
+data change breaks a frozen day (a word removed, a link gone, par changed);
+`freeze_dailies.py --reroll-invalid` repairs it.
 
 Links are named by the typed overlay first, then WordNet using only each
 word's most common senses (`DEGREES_WORDNET_SENSES`), so rare meanings
@@ -158,6 +165,8 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_DAILY_FRESH_ENDS_DAYS` | `14` | a daily's start/target can't have started/ended a daily this recently |
 | `DEGREES_DAILY_FRESH_ROUTE_DAYS` | `7` | words on a route this recently can't appear in today's daily |
 | `DEGREES_WORDNET_SENSES`  | `3`     | WordNet senses per part of speech used to name links (`0` = all) |
+| `DEGREES_DAILY_PAR_BY_WEEKDAY` | `3,3,4,4,4,5,4` | par each weekday's daily aims for, Monday first |
+| `DEGREES_DAILIES`         | `data/dailies.json` | frozen (reviewed) daily puzzles |
 
 ## Tests
 

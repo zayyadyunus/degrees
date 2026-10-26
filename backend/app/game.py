@@ -3,12 +3,12 @@ from __future__ import annotations
 
 import datetime as dt
 import logging
-import threading
 import uuid
 from dataclasses import dataclass, field
 
 import numpy as np
 
+from .dailies import DailySchedule
 from .embeddings import Embeddings
 from .graph import WordGraph, bfs, trace_path
 
@@ -87,7 +87,15 @@ class PuzzleUnavailable(RuntimeError):
 
 
 class Engine:
-    def __init__(self, embeddings: Embeddings, graph: WordGraph, settings, overlay=None, labeler=None):
+    def __init__(
+        self,
+        embeddings: Embeddings,
+        graph: WordGraph,
+        settings,
+        overlay=None,
+        labeler=None,
+        frozen_dailies: dict[dt.date, "Puzzle"] | None = None,
+    ):
         self.embeddings = embeddings
         self.graph = graph
         self.settings = settings
@@ -118,9 +126,7 @@ class Engine:
             logger.warning("No relation labeler: par routes may use unexplained links.")
             self._named_adj = [list(a) for a in graph.adjacency]
         self._named_cache: dict[int, tuple[np.ndarray, np.ndarray]] = {}
-        # Daily schedule from the epoch, generated in order on demand.
-        self._daily: list[Puzzle] = []
-        self._daily_lock = threading.Lock()
+        self.dailies = DailySchedule(self, settings, frozen_dailies)
 
     def _compute_label(self, i: int, j: int) -> str:
         """Name the relation behind an edge.
@@ -221,55 +227,14 @@ class Engine:
 
     # -- daily puzzles ---------------------------------------------------
     def daily_number(self, day: dt.date) -> int:
-        """Puzzle #1 is the epoch date; one new puzzle per day after."""
-        return (day - self.settings.daily_epoch).days + 1
-
-    def daily_game(self, day: dt.date) -> Game:
-        """The day's shared puzzle: the same start/target for everyone."""
-        return self._start_game(self.daily_puzzle(day), daily_number=self.daily_number(day))
+        return self.dailies.number(day)
 
     def daily_puzzle(self, day: dt.date) -> Puzzle:
-        """The puzzle for `day`, generating the schedule up to it if needed.
+        return self.dailies.puzzle(day)
 
-        Each day is seeded by its date, but also avoids words recent dailies
-        used, so the schedule is built in order from the epoch and cached.
-        It's deterministic for a given dataset: everyone, every server
-        restart, sees the same sequence.
-        """
-        index = self.daily_number(day) - 1
-        if index < 0:
-            raise ValueError("no daily puzzle before the epoch")
-        with self._daily_lock:
-            while len(self._daily) <= index:
-                self._daily.append(self._next_daily(len(self._daily)))
-            return self._daily[index]
-
-    def _next_daily(self, index: int) -> Puzzle:
-        s = self.settings
-        day = s.daily_epoch + dt.timedelta(days=index)
-        I = self.embeddings.index
-        recent_ends = {I[w] for p in self._daily[-s.daily_fresh_ends_days:] for w in (p.start, p.target)} \
-            if s.daily_fresh_ends_days else set()
-        recent_route = {I[w] for p in self._daily[-s.daily_fresh_route_days:] for w in p.optimal_path} \
-            if s.daily_fresh_route_days else set()
-        # Strictest first; relax rather than fail if a day can't satisfy it.
-        attempts = [
-            (recent_ends | recent_route, recent_route),
-            (recent_ends, recent_route),
-            (recent_ends, set()),
-            (set(), set()),
-        ]
-        for level, (ends, via) in enumerate(attempts):
-            rng = np.random.default_rng([s.seed, day.toordinal()])
-            puzzle = self._find_puzzle(
-                rng, s.min_puzzle_distance, min(s.max_puzzle_distance, s.max_connections),
-                frozenset(ends), frozenset(via),
-            )
-            if puzzle is not None:
-                if level:
-                    logger.warning("Daily %s: relaxed repeat rules (level %d).", day, level)
-                return puzzle
-        raise PuzzleUnavailable(f"no daily puzzle for {day}")
+    def daily_game(self, day: dt.date) -> Game:
+        """The day's shared puzzle as a fresh game: the same for everyone."""
+        return self._start_game(self.dailies.puzzle(day), daily_number=self.dailies.number(day))
 
     # -- moves -----------------------------------------------------------
     def submit(self, game: Game, raw_word: str) -> MoveResult:

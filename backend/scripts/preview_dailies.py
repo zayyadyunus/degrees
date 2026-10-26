@@ -78,8 +78,9 @@ def main() -> None:
                 flags.append(f"repeat '{word}'")
         flagged += bool(flags)
 
+        frozen = "  [frozen]" if engine.dailies.is_frozen(day) else ""
         print(f"#{game.daily_number:<4} {day} {day.strftime('%a')}  "
-              f"{game.start} -> {game.target}  par {game.optimal_distance}")
+              f"{game.start} -> {game.target}  par {game.optimal_distance}{frozen}")
         print(f"      {' '.join(links)} {route[-1]}")
         if flags:
             print(f"      FLAGS: {'; '.join(flags)}")

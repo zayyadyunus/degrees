@@ -120,6 +120,53 @@ def test_daily_puzzle_is_deterministic_per_date():
     assert len({(g.start, g.target) for g in map(engine.daily_game, days)}) > 1
 
 
+
+def test_frozen_dailies_served_as_stored():
+    import datetime as dt
+
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    later = engine.daily_puzzle(epoch + dt.timedelta(days=5))
+    frozen_engine = Engine(engine.embeddings, engine.graph, settings, frozen_dailies={epoch: later})
+    assert frozen_engine.dailies.problems == {}
+    assert frozen_engine.daily_puzzle(epoch) == later
+    assert frozen_engine.daily_game(epoch).daily_number == 1
+
+
+def test_frozen_dailies_that_break_are_reported():
+    import datetime as dt
+
+    import pytest
+    from app.game import Puzzle
+
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    good = engine.daily_puzzle(epoch)
+    bogus = Puzzle(start=good.start, target="notaword", optimal_distance=1,
+                   optimal_path=(good.start, "notaword"))
+    gap = {epoch: good, epoch + dt.timedelta(days=2): good}
+    for frozen in ({epoch: bogus}, gap):
+        broken = Engine(engine.embeddings, engine.graph, settings, frozen_dailies=frozen)
+        assert broken.dailies.problems
+        with pytest.raises(ValueError):
+            broken.dailies.raise_if_invalid()
+
+
+def test_reroll_replaces_one_day_and_keeps_neighbours_fresh():
+    import datetime as dt
+
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    days = [epoch + dt.timedelta(days=d) for d in range(3)]
+    frozen = {d: engine.daily_puzzle(d) for d in days}
+    schedule = Engine(engine.embeddings, engine.graph, settings, frozen_dailies=frozen).dailies
+    new = schedule.reroll(days[1], salt=1)
+    old = frozen[days[1]]
+    assert {new.start, new.target}.isdisjoint({old.start, old.target})
+    neighbour_ends = {w for d in (days[0], days[2]) for w in (frozen[d].start, frozen[d].target)}
+    assert {new.start, new.target}.isdisjoint(neighbour_ends)
+
+
 if __name__ == "__main__":
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):

@@ -83,3 +83,13 @@ def test_dailies_do_not_repeat_recent_words(engine):
         recent_route = {w for q in days[max(0, i - s.daily_fresh_route_days):i] for w in q.optimal_path}
         assert not {p.start, p.target} & (recent_ends | recent_route), (i + 1, p)
         assert not set(p.optimal_path[1:-1]) & recent_route, (i + 1, p)
+
+
+
+def test_dailies_follow_weekday_difficulty_ramp(engine):
+    import datetime as dt
+
+    for d in range(28):
+        day = settings.daily_epoch + dt.timedelta(days=d)
+        want = settings.daily_par_by_weekday[day.weekday()]
+        assert engine.daily_puzzle(day).optimal_distance == want, (day, day.strftime("%a"))
