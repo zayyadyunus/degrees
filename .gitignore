@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node / build output
+node_modules/
+frontend/dist/
+
+# Logs and local tooling
+*.log
+.claude/settings.local.json
+.DS_Store
+.env
+
+# Raw embedding source (~310 MB); only the built vectors.npy/words.json ship
+backend/data/numberbatch-en.txt.gz

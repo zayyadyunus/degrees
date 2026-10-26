@@ -1,0 +1,7 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+numpy>=1.26
+# Optional: names the relation behind embedding edges (synonym/antonym/is-a/...).
+# Without it (or its corpus) moves still work, just labeled "related".
+#   python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+nltk>=3.9

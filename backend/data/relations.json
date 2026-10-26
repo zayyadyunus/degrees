@@ -1,0 +1,284 @@
+{
+  "relations": [
+    {
+      "rel": "MadeOf",
+      "a": "glass",
+      "b": "sand"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "paper",
+      "b": "wood"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "wine",
+      "b": "grape"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "juice",
+      "b": "fruit"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "salad",
+      "b": "vegetable"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "ice",
+      "b": "water"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "coin",
+      "b": "gold"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "coin",
+      "b": "silver"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "butter",
+      "b": "milk"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "cheese",
+      "b": "milk"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "crown",
+      "b": "king"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "crown",
+      "b": "queen"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "crown",
+      "b": "prince"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "heart",
+      "b": "love"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "red",
+      "b": "love"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "red",
+      "b": "anger"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "white",
+      "b": "peace"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "diamond",
+      "b": "treasure"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "gold",
+      "b": "money"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "sword",
+      "b": "war"
+    },
+    {
+      "rel": "SymbolOf",
+      "a": "shield",
+      "b": "war"
+    },
+    {
+      "rel": "Causes",
+      "a": "seed",
+      "b": "tree"
+    },
+    {
+      "rel": "Causes",
+      "a": "fire",
+      "b": "ash"
+    },
+    {
+      "rel": "Causes",
+      "a": "sun",
+      "b": "heat"
+    },
+    {
+      "rel": "Causes",
+      "a": "winter",
+      "b": "snow"
+    },
+    {
+      "rel": "Causes",
+      "a": "flame",
+      "b": "fire"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "bitter",
+      "b": "coffee"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "sweet",
+      "b": "sugar"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "sweet",
+      "b": "honey"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "cold",
+      "b": "ice"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "cold",
+      "b": "snow"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "hot",
+      "b": "fire"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "loud",
+      "b": "noise"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "soft",
+      "b": "pillow"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "yellow",
+      "b": "lemon"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "yellow",
+      "b": "banana"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "red",
+      "b": "blood"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "white",
+      "b": "milk"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "green",
+      "b": "grass"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "blue",
+      "b": "sky"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "brown",
+      "b": "wood"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "saw",
+      "b": "wood"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "pen",
+      "b": "paper"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "hammer",
+      "b": "nail"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "lamp",
+      "b": "light"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "boat",
+      "b": "water"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "clock",
+      "b": "time"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "map",
+      "b": "travel"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "camera",
+      "b": "photo"
+    },
+    {
+      "rel": "UsedFor",
+      "a": "gun",
+      "b": "war"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "bee",
+      "b": "flower"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "shark",
+      "b": "ocean"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "snow",
+      "b": "mountain"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "star",
+      "b": "sky"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "sand",
+      "b": "beach"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "fish",
+      "b": "sea"
+    }
+  ]
+}
