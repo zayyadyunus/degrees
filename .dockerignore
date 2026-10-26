@@ -1,0 +1,15 @@
+.git
+.gitignore
+.claude
+.DS_Store
+**/*.log
+**/__pycache__
+**/.pytest_cache
+
+backend/.venv
+backend/data/numberbatch-en.txt.gz
+backend/scripts
+backend/tests
+
+frontend/node_modules
+frontend/dist

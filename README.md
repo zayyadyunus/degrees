@@ -145,7 +145,15 @@ Smaller `k` = fewer valid moves and longer paths = harder game.
 ## Deploying
 
 In production the backend serves the built frontend, so UI and API share one
-origin (no CORS or API URL config needed):
+origin (no CORS or API URL config needed). The `Dockerfile` does all of the
+below; it honors `$PORT` if your platform sets one:
+
+```bash
+docker build -t degrees .
+docker run -p 8000:8000 degrees
+```
+
+Or by hand:
 
 ```bash
 # Build the UI (calls its own origin by default; set VITE_API_URL to override)
