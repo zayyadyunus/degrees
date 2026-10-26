@@ -16,3 +16,6 @@ frontend/dist/
 
 # Raw embedding source (~310 MB); only the built vectors.npy/words.json ship
 backend/data/numberbatch-en.txt.gz
+
+# Playtest screenshots and logs
+playtest-output/
