@@ -10,6 +10,7 @@ puzzles that were reviewed or already played. Typical monthly loop:
 Commands (combine freely; applied in this order):
     --unfreeze-from DATE   drop frozen days from DATE on (pre-launch rework)
     --reroll DATE ...      replace frozen days with new picks; neighbours stay
+    --par N                with --reroll: use par N instead of the weekday's
     --reroll-invalid       re-roll every frozen day the current data breaks
     --through DATE         freeze generated days up to and including DATE
 """
@@ -41,6 +42,7 @@ def main() -> None:
     parser.add_argument("--unfreeze-from", type=dt.date.fromisoformat)
     parser.add_argument("--reroll", nargs="+", type=dt.date.fromisoformat, default=[])
     parser.add_argument("--reroll-invalid", action="store_true")
+    parser.add_argument("--par", type=int, help="par for --reroll days (default: weekday ramp)")
     parser.add_argument("--through", type=dt.date.fromisoformat)
     args = parser.parse_args()
     if not (args.unfreeze_from or args.reroll or args.reroll_invalid or args.through):
@@ -72,7 +74,7 @@ def main() -> None:
         old = frozen[day]
         reason = schedule.problems.get(day, "requested")
         for salt in range(1, MAX_REROLL_TRIES + 1):
-            new = schedule.reroll(day, salt)
+            new = schedule.reroll(day, salt, par=args.par if day in args.reroll else None)
             if (new.start, new.target) != (old.start, old.target):
                 break
         frozen[day] = new

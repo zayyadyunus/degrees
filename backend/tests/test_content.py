@@ -91,5 +91,16 @@ def test_dailies_follow_weekday_difficulty_ramp(engine):
 
     for d in range(28):
         day = settings.daily_epoch + dt.timedelta(days=d)
+        if engine.dailies.is_frozen(day):
+            continue  # reviewed days may deliberately differ (e.g. launch day)
         want = settings.daily_par_by_weekday[day.weekday()]
         assert engine.daily_puzzle(day).optimal_distance == want, (day, day.strftime("%a"))
+
+
+
+def test_daily_pairs_never_reused(engine):
+    import datetime as dt
+
+    pairs = [frozenset((p.start, p.target)) for p in
+             (engine.daily_puzzle(settings.daily_epoch + dt.timedelta(days=d)) for d in range(120))]
+    assert len(set(pairs)) == len(pairs)

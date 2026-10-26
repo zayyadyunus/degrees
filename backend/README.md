@@ -161,7 +161,7 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_MOVES_PER_MIN`   | `120`   | moves + hints per client IP per minute (`0` = off) |
 | `DEGREES_CLIENT_IP_HEADER` | unset  | proxy header carrying the real client IP |
 | `DEGREES_MAX_STRIKES`     | `3`     | unconnected guesses allowed before losing |
-| `DEGREES_DAILY_EPOCH`     | `2026-10-26` | date of daily puzzle #1 |
+| `DEGREES_DAILY_EPOCH`     | `2026-11-21` | date of daily puzzle #1 |
 | `DEGREES_DAILY_FRESH_ENDS_DAYS` | `14` | a daily's start/target can't have started/ended a daily this recently |
 | `DEGREES_DAILY_FRESH_ROUTE_DAYS` | `7` | words on a route this recently can't appear in today's daily |
 | `DEGREES_WORDNET_SENSES`  | `3`     | WordNet senses per part of speech used to name links (`0` = all) |

@@ -504,6 +504,91 @@
       "rel": "PartOf",
       "a": "floor",
       "b": "house"
+    },
+    {
+      "rel": "Related",
+      "a": "world",
+      "b": "market"
+    },
+    {
+      "rel": "Related",
+      "a": "fight",
+      "b": "race"
+    },
+    {
+      "rel": "Related",
+      "a": "race",
+      "b": "wheel"
+    },
+    {
+      "rel": "Related",
+      "a": "paper",
+      "b": "study"
+    },
+    {
+      "rel": "Related",
+      "a": "wall",
+      "b": "tower"
+    },
+    {
+      "rel": "Related",
+      "a": "tower",
+      "b": "hill"
+    },
+    {
+      "rel": "Related",
+      "a": "rocket",
+      "b": "engine"
+    },
+    {
+      "rel": "Related",
+      "a": "astronaut",
+      "b": "star"
+    },
+    {
+      "rel": "Related",
+      "a": "star",
+      "b": "jewel"
+    },
+    {
+      "rel": "Related",
+      "a": "old",
+      "b": "history"
+    },
+    {
+      "rel": "Related",
+      "a": "engine",
+      "b": "truck"
+    },
+    {
+      "rel": "Related",
+      "a": "line",
+      "b": "run"
+    },
+    {
+      "rel": "Related",
+      "a": "banana",
+      "b": "potato"
+    },
+    {
+      "rel": "Related",
+      "a": "picture",
+      "b": "map"
+    },
+    {
+      "rel": "Related",
+      "a": "travel",
+      "b": "plane"
+    },
+    {
+      "rel": "Related",
+      "a": "bus",
+      "b": "travel"
+    },
+    {
+      "rel": "Related",
+      "a": "map",
+      "b": "photo"
     }
   ]
 }

@@ -10,6 +10,8 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
+    /** The response's parsed `detail`, when the server sent JSON. */
+    public detail?: unknown,
   ) {
     super(message);
   }
@@ -24,8 +26,14 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     if (res.status === 429) {
       throw new ApiError(429, "You're going a bit fast — wait a moment and try again.");
     }
-    const detail = await res.text().catch(() => "");
-    throw new ApiError(res.status, `${res.status} ${res.statusText}${detail ? `: ${detail}` : ""}`);
+    const text = await res.text().catch(() => "");
+    let detail: unknown;
+    try {
+      detail = JSON.parse(text).detail;
+    } catch {
+      // not JSON
+    }
+    throw new ApiError(res.status, `${res.status} ${res.statusText}${text ? `: ${text}` : ""}`, detail);
   }
   return res.json() as Promise<T>;
 }
@@ -34,6 +42,13 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export function localDate(d = new Date()): string {
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+/** Before launch the server has no daily yet; returns the first daily's date. */
+export function dailyStartsOn(e: unknown): string | null {
+  if (!(e instanceof ApiError) || e.status !== 404) return null;
+  const d = e.detail as { error?: string; daily_starts?: string } | undefined;
+  return d?.error === "no_daily_yet" && d.daily_starts ? d.daily_starts : null;
 }
 
 export const api = {

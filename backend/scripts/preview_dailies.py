@@ -7,7 +7,7 @@ and cosine similarity of every link, then flags things worth a human look:
     weak     a non-curated link whose similarity is in the bottom 15% of all links
     repeat   start or target word already used by another daily in the window
 
-    python scripts/preview_dailies.py                 # next 14 days from today
+    python scripts/preview_dailies.py                 # next 14 days (from launch if not yet live)
     python scripts/preview_dailies.py --from 2026-11-01 --days 30
 
 Note: changing the word list, vectors, relations or DEGREES_SEED changes every
@@ -34,7 +34,8 @@ WEAK_PERCENTILE = 15
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--from", dest="start", type=dt.date.fromisoformat, default=dt.date.today())
+    parser.add_argument("--from", dest="start", type=dt.date.fromisoformat,
+                        default=max(dt.date.today(), settings.daily_epoch))
     parser.add_argument("--days", type=int, default=14)
     args = parser.parse_args()
 

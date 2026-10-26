@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { api, localDate } from "./api";
+import { api, dailyStartsOn, localDate } from "./api";
 import type { GameState } from "./types";
 import { Header } from "./components/Header";
 import { Board } from "./components/Board";
@@ -32,6 +32,8 @@ export default function App() {
   const [confirmNew, setConfirmNew] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Set before launch day: the date the first daily goes live.
+  const [dailyStarts, setDailyStarts] = useState<string | null>(null);
 
   function showToast(text: string) {
     setToast({ id: Date.now(), text });
@@ -76,7 +78,16 @@ export default function App() {
           const saved = await api.getGame(savedId).catch(() => null);
           if (saved) return show(saved, "daily");
         }
-        const fresh = await api.dailyGame(date);
+        let fresh: GameState;
+        try {
+          fresh = await api.dailyGame(date);
+        } catch (e) {
+          // Not launched yet: practice until the first daily.
+          const starts = dailyStartsOn(e);
+          if (!starts) throw e;
+          setDailyStarts(starts);
+          return show(await api.practiceGame(), "practice");
+        }
         saveDaily(date, fresh.id);
         show(fresh, "daily");
       }),
@@ -198,6 +209,12 @@ export default function App() {
 
       <main className="main">
         {error && <div className="banner error">{error}</div>}
+        {dailyStarts && (
+          <div className="banner notice">
+            Daily puzzles start on {formatDay(dailyStarts)}. Warm up with
+            practice puzzles until then.
+          </div>
+        )}
 
         {game && (
           <>
@@ -210,10 +227,14 @@ export default function App() {
                 ) : (
                   <>
                     <strong>Practice</strong>
-                    {" · "}
-                    <button className="link-btn" onClick={() => void openDaily()}>
-                      Today's puzzle
-                    </button>
+                    {!dailyStarts && (
+                      <>
+                        {" · "}
+                        <button className="link-btn" onClick={() => void openDaily()}>
+                          Today's puzzle
+                        </button>
+                      </>
+                    )}
                   </>
                 )}
               </span>
@@ -244,6 +265,7 @@ export default function App() {
               <ResultCard
                 game={game}
                 mode={mode}
+                dailyAvailable={!dailyStarts}
                 onShare={onShare}
                 onPractice={requestPractice}
                 onDaily={() => void openDaily()}
@@ -254,6 +276,14 @@ export default function App() {
       </main>
     </div>
   );
+}
+
+/** "2026-11-21" -> "21 November" in the player's locale. */
+function formatDay(isoDate: string): string {
+  return new Date(`${isoDate}T00:00:00`).toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "long",
+  });
 }
 
 function Strikes({ used, max }: { used: number; max: number }) {
@@ -271,12 +301,14 @@ function Strikes({ used, max }: { used: number; max: number }) {
 function ResultCard({
   game,
   mode,
+  dailyAvailable,
   onShare,
   onPractice,
   onDaily,
 }: {
   game: GameState;
   mode: Mode;
+  dailyAvailable: boolean;
   onShare: () => void;
   onPractice: () => void;
   onDaily: () => void;
@@ -339,7 +371,7 @@ function ResultCard({
         <button className="btn secondary" onClick={onPractice}>
           Practice puzzle
         </button>
-        {mode === "practice" && (
+        {mode === "practice" && dailyAvailable && (
           <button className="btn secondary" onClick={onDaily}>
             Today's puzzle
           </button>

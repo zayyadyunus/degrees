@@ -62,13 +62,16 @@ _limit_moves = RateLimiter(settings.moves_per_minute, client_ip_header=settings.
 def _daily_date(requested: dt.date | None) -> dt.date:
     """The player's local date, allowed within a day of UTC (time zones)."""
     today = dt.datetime.now(dt.timezone.utc).date()
-    if requested is None:
-        return today
-    if abs((requested - today).days) > 1:
+    day = today if requested is None else requested
+    if abs((day - today).days) > 1:
         raise HTTPException(status_code=400, detail="date must be today")
-    if requested < settings.daily_epoch:
-        raise HTTPException(status_code=400, detail="no daily puzzle for that date")
-    return requested
+    if day < settings.daily_epoch:
+        # Before launch: the UI falls back to practice and shows this date.
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "no_daily_yet", "daily_starts": settings.daily_epoch.isoformat()},
+        )
+    return day
 
 
 def _require_game(game_id: str):

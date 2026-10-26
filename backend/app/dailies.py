@@ -91,19 +91,20 @@ class DailySchedule:
                 self._days.append(self._pick(len(self._days), self._days, []))
             return self._days[index]
 
-    def reroll(self, day: dt.date, salt: int) -> "Puzzle":
+    def reroll(self, day: dt.date, salt: int, par: int | None = None) -> "Puzzle":
         """A replacement for a frozen `day` that keeps its neighbours valid.
 
         Avoids recent words on *both* sides, so swapping one reviewed day
         doesn't break the no-repeat rules for the frozen days after it, and
-        never returns the puzzle it replaces.
+        never returns the puzzle it replaces. `par` overrides the weekday's
+        par (e.g. a gentler launch day).
         """
         index = self.number(day) - 1
         days = [self.frozen[d] for d in sorted(self.frozen)]
         if not 0 <= index < len(days):
             raise ValueError(f"{day} is not a frozen day")
         current = days[index]
-        return self._pick(index, days[:index], days[index + 1:], salt=salt, exclude=current)
+        return self._pick(index, days[:index], days[index + 1:], salt=salt, exclude=current, par=par)
 
     # -- generation --------------------------------------------------------
     def _pick(
@@ -113,6 +114,7 @@ class DailySchedule:
         after: list["Puzzle"],
         salt: int = 0,
         exclude: "Puzzle | None" = None,
+        par: int | None = None,
     ) -> "Puzzle":
         s, engine = self.settings, self.engine
         day = self.epoch + dt.timedelta(days=index)
@@ -130,8 +132,14 @@ class DailySchedule:
             {I[w] for w in (exclude.start, exclude.target) if w in I} if exclude is not None else set()
         )
         recent_ends |= replaced_ends
+        # A start/target pair is never reused, in either direction, ever.
+        used_pairs = frozenset(
+            frozenset((I[p.start], I[p.target]))
+            for p in before + after
+            if p.start in I and p.target in I
+        )
 
-        want = s.daily_par_by_weekday[day.weekday()]
+        want = par if par is not None else s.daily_par_by_weekday[day.weekday()]
         lowest, highest = s.min_puzzle_distance, s.max_connections
         pars = [p for p in (want, want - 1, want + 1) if lowest <= p <= highest]
         # Strictest first: exact par before neighbouring pars; within a par,
@@ -143,16 +151,16 @@ class DailySchedule:
             (recent_ends, set()),
             (replaced_ends, set()),
         ]
-        for par in pars:
+        for got in pars:
             for level, (ends, via) in enumerate(rule_levels):
                 rng = np.random.default_rng([s.seed, day.toordinal(), salt])
-                puzzle = engine._find_puzzle(rng, par, par, frozenset(ends), frozenset(via))
+                puzzle = engine._find_puzzle(rng, got, got, frozenset(ends), frozenset(via), used_pairs)
                 if puzzle is None:
                     continue
-                if par != want or level:
+                if got != want or level:
                     logger.warning(
                         "Daily %s: wanted par %d, got par %d (rule relax level %d).",
-                        day, want, par, level,
+                        day, want, got, level,
                     )
                 return puzzle
         from .game import PuzzleUnavailable

@@ -177,12 +177,14 @@ class Engine:
         max_d: int,
         avoid_ends: frozenset[int] = frozenset(),
         avoid_via: frozenset[int] = frozenset(),
+        avoid_pairs: frozenset[frozenset[int]] = frozenset(),
     ) -> Puzzle | None:
         """Pick a start/target whose par route uses only named links.
 
         `avoid_ends` can't be the start or target; `avoid_via` can't appear
-        in the middle of the par route (the daily schedule uses these to keep
-        consecutive puzzles from feeling the same).
+        in the middle of the par route; `avoid_pairs` are start/target pairs
+        (either direction) that can't be used again. The daily schedule uses
+        these to keep puzzles from feeling the same.
         """
         candidate_starts = [
             i for i, a in enumerate(self._named_adj) if len(a) > 0 and i not in avoid_ends
@@ -199,6 +201,9 @@ class Engine:
             ok = (dist >= min_d) & (dist <= max_d) & (named_dist == dist)
             if avoid_ends:
                 ok[list(avoid_ends)] = False
+            for pair in avoid_pairs:
+                if start_idx in pair:
+                    ok[[i for i in pair if i != start_idx]] = False
             reachable = np.flatnonzero(ok)
             if reachable.size == 0:
                 continue

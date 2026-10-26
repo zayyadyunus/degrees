@@ -7,6 +7,10 @@
 #
 # Needs backend/.venv (requirements-dev.txt), frontend node_modules, and
 # Google Chrome installed.
+#
+# The playtest needs a daily for today, so it moves daily #1 to today
+# (PLAYTEST_EPOCH to override) and ignores the frozen schedule, whose dates
+# wouldn't line up. tests/test_content.py checks the real frozen file.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -21,6 +25,7 @@ echo "== build frontend"
 echo "== start server on $URL"
 cd "$ROOT/backend"
 DEGREES_ALLOW_SYNTHETIC=0 DEGREES_DOCS=0 DEGREES_STATIC_DIR="$ROOT/frontend/dist" \
+  DEGREES_DAILY_EPOCH="${PLAYTEST_EPOCH:-$(date +%F)}" DEGREES_DAILIES="$OUT/no-frozen-dailies.json" \
   "$PY" -m uvicorn app.main:app --port "$PORT" >"$OUT/server.log" 2>&1 &
 SERVER=$!
 trap 'kill $SERVER 2>/dev/null || true' EXIT

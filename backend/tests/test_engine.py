@@ -167,6 +167,18 @@ def test_reroll_replaces_one_day_and_keeps_neighbours_fresh():
     assert {new.start, new.target}.isdisjoint(neighbour_ends)
 
 
+
+def test_reroll_can_override_par():
+    import datetime as dt
+
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    frozen = {epoch + dt.timedelta(days=d): engine.daily_puzzle(epoch + dt.timedelta(days=d)) for d in range(3)}
+    schedule = Engine(engine.embeddings, engine.graph, settings, frozen_dailies=frozen).dailies
+    want = 3 if frozen[epoch].optimal_distance != 3 else 4
+    assert schedule.reroll(epoch, salt=1, par=want).optimal_distance == want
+
+
 if __name__ == "__main__":
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):
