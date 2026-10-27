@@ -198,6 +198,11 @@ class DailySchedule:
             if broken:
                 problems[day] = f"no longer linked: {', '.join(broken)}"
                 continue
+            # A demoted (unnamed) link can't be part of a par route.
+            unnamed = [f"{a}-{b}" for a, b in zip(route, route[1:]) if I[b] not in self.engine._named_adj[I[a]]]
+            if unnamed:
+                problems[day] = f"route uses unnamed links: {', '.join(unnamed)}"
+                continue
             par_now = int(graph.distances(I[p.start])[0][I[p.target]])
             if par_now != p.optimal_distance:
                 problems[day] = f"par is now {par_now}, frozen as {p.optimal_distance}"

@@ -589,6 +589,236 @@
       "rel": "Related",
       "a": "map",
       "b": "photo"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "pencil",
+      "b": "wood"
+    },
+    {
+      "rel": "Causes",
+      "a": "sun",
+      "b": "day"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "sun",
+      "b": "hot"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "cloud",
+      "b": "white"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "clock",
+      "b": "wall"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "wine",
+      "b": "dinner"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "lamp",
+      "b": "desk"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "chair",
+      "b": "room"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "chicken",
+      "b": "rice"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "machine",
+      "b": "metal"
+    },
+    {
+      "rel": "IsA",
+      "a": "hope",
+      "b": "emotion"
+    },
+    {
+      "rel": "Antonym",
+      "a": "ice",
+      "b": "fire"
+    },
+    {
+      "rel": "SameCategory",
+      "a": "lemon",
+      "b": "apple"
+    },
+    {
+      "rel": "SameCategory",
+      "a": "ocean",
+      "b": "river"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "turtle",
+      "b": "ocean"
+    },
+    {
+      "rel": "Related",
+      "a": "spring",
+      "b": "rain"
+    },
+    {
+      "rel": "Related",
+      "a": "sun",
+      "b": "summer"
+    },
+    {
+      "rel": "Related",
+      "a": "fire",
+      "b": "sun"
+    },
+    {
+      "rel": "Related",
+      "a": "flame",
+      "b": "sun"
+    },
+    {
+      "rel": "Related",
+      "a": "river",
+      "b": "rain"
+    },
+    {
+      "rel": "Related",
+      "a": "stream",
+      "b": "rain"
+    },
+    {
+      "rel": "Related",
+      "a": "cup",
+      "b": "wine"
+    },
+    {
+      "rel": "Related",
+      "a": "peace",
+      "b": "love"
+    },
+    {
+      "rel": "Related",
+      "a": "butter",
+      "b": "pasta"
+    },
+    {
+      "rel": "Related",
+      "a": "computer",
+      "b": "robot"
+    },
+    {
+      "rel": "Related",
+      "a": "bird",
+      "b": "cat"
+    },
+    {
+      "rel": "Related",
+      "a": "shark",
+      "b": "tiger"
+    },
+    {
+      "rel": "IsA",
+      "a": "robot",
+      "b": "machine"
+    },
+    {
+      "rel": "MadeOf",
+      "a": "ocean",
+      "b": "water"
+    },
+    {
+      "rel": "Related",
+      "a": "lunch",
+      "b": "tea"
+    },
+    {
+      "rel": "Related",
+      "a": "salad",
+      "b": "lunch"
+    },
+    {
+      "rel": "Related",
+      "a": "white",
+      "b": "light"
+    },
+    {
+      "rel": "Related",
+      "a": "lamp",
+      "b": "chair"
+    },
+    {
+      "rel": "Related",
+      "a": "ice",
+      "b": "warm"
+    },
+    {
+      "rel": "Antonym",
+      "a": "white",
+      "b": "dark"
+    },
+    {
+      "rel": "Related",
+      "a": "meat",
+      "b": "pasta"
+    },
+    {
+      "rel": "Causes",
+      "a": "sun",
+      "b": "light"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "beer",
+      "b": "dinner"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "shark",
+      "b": "water"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "whale",
+      "b": "water"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "dolphin",
+      "b": "water"
+    },
+    {
+      "rel": "Related",
+      "a": "cold",
+      "b": "water"
+    },
+    {
+      "rel": "AtLocation",
+      "a": "car",
+      "b": "street"
+    },
+    {
+      "rel": "Related",
+      "a": "bone",
+      "b": "stone"
+    },
+    {
+      "rel": "Related",
+      "a": "heat",
+      "b": "light"
+    },
+    {
+      "rel": "Related",
+      "a": "light",
+      "b": "day"
     }
   ]
 }

@@ -152,6 +152,24 @@ def test_frozen_dailies_that_break_are_reported():
             broken.dailies.raise_if_invalid()
 
 
+def test_frozen_daily_with_demoted_link_is_reported():
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    good = engine.daily_puzzle(epoch)
+    demoted = {good.optimal_path[0], good.optimal_path[1]}
+
+    class Labeler:
+        """Names every link except the frozen route's first one."""
+        enabled = True
+
+        def classify(self, a: str, b: str) -> str | None:
+            return None if {a, b} == demoted else "IsA"
+
+    relabelled = Engine(engine.embeddings, engine.graph, settings, labeler=Labeler(),
+                        frozen_dailies={epoch: good})
+    assert "unnamed" in relabelled.dailies.problems[epoch]
+
+
 def test_reroll_replaces_one_day_and_keeps_neighbours_fresh():
     import datetime as dt
 
