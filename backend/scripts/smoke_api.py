@@ -1,8 +1,9 @@
 """End-to-end API smoke test against a running server.
 
 Plays today's daily (typo, strike, hints, win), checks daily determinism and
-the solution reveal, then strikes out a practice game. Exits non-zero on
-failure.
+the solution reveal, then strikes out a practice game. Before launch day,
+when there's no daily yet, checks the "no daily yet" reply and plays a
+practice game instead. Exits non-zero on failure.
 
     python scripts/smoke_api.py http://localhost:8000
 """
@@ -59,11 +60,16 @@ check(status == 200 and not health["synthetic_embeddings"], "health: real embedd
 
 # -- daily ----------------------------------------------------------------
 today = dt.date.today().isoformat()
-_, game = call("POST", "/games", {"daily": True, "date": today})
-_, again = call("POST", "/games", {"daily": True, "date": today})
-check((game["start"], game["target"]) == (again["start"], again["target"]),
-      "daily is the same puzzle on every request",
-      f"#{game['daily_number']} {game['start']} -> {game['target']}, par {game['optimal_distance']}")
+status, game = call("POST", "/games", {"daily": True, "date": today})
+if status == 404 and "no_daily_yet" in game:
+    starts = json.loads(game)["detail"]["daily_starts"]
+    check(starts > today, "before launch: no daily yet", f"dailies start {starts}")
+    _, game = call("POST", "/games", {})
+else:
+    _, again = call("POST", "/games", {"daily": True, "date": today})
+    check((game["start"], game["target"]) == (again["start"], again["target"]),
+          "daily is the same puzzle on every request",
+          f"#{game['daily_number']} {game['start']} -> {game['target']}, par {game['optimal_distance']}")
 check(game["solution"] is None, "solution hidden while playing")
 status, _ = call("POST", "/games", {"daily": True, "date": "2099-01-01"})
 check(status == 400, "future daily refused", str(status))
