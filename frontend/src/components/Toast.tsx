@@ -3,7 +3,7 @@ export interface ToastData {
   text: string;
 }
 
-/** NYT-style transient black pill, top-center. Re-animates per toast id. */
+/** NYT-style transient black pill over the app bar. Re-animates per toast id. */
 export function Toast({ toast }: { toast: ToastData | null }) {
   if (!toast) return null;
   return (

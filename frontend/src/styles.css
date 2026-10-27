@@ -392,12 +392,17 @@ button {
 /* ------------------------------------------------------------------ */
 /* Toast                                                               */
 /* ------------------------------------------------------------------ */
+/* Over the app bar, so it never hides the meter or the board. Even a
+   two-line message ends above the meter (appbar + 30px down). */
 .toast {
   position: fixed;
   z-index: 50;
-  top: calc(var(--appbar-h) + 14px);
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  text-align: center;
   background: var(--ink);
   color: var(--bg);
   padding: 11px 18px;
