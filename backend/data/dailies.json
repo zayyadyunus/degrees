@@ -865,51 +865,47 @@
     },
     {
       "date": "2026-12-26",
-      "start": "science",
-      "target": "head",
+      "start": "stranger",
+      "target": "country",
       "par": 4,
       "route": [
-        "science",
-        "knowledge",
-        "mind",
-        "brain",
-        "head"
+        "stranger",
+        "person",
+        "people",
+        "nation",
+        "country"
       ],
       "tiles": [
-        "student",
-        "face",
-        "memory",
-        "dream",
-        "school",
-        "bone",
-        "language",
-        "mind",
-        "knowledge",
-        "brain"
+        "surprise",
+        "people",
+        "nation",
+        "mystery",
+        "soldier",
+        "person"
       ]
     },
     {
       "date": "2026-12-27",
-      "start": "fox",
-      "target": "cat",
+      "start": "sofa",
+      "target": "dark",
       "par": 3,
       "route": [
-        "fox",
-        "wolf",
-        "bear",
-        "cat"
+        "sofa",
+        "lamp",
+        "light",
+        "dark"
       ],
       "tiles": [
-        "sheep",
-        "dolphin",
-        "wolf",
-        "news",
-        "keyboard",
-        "elephant",
-        "screen",
-        "computer",
-        "bear",
-        "program"
+        "flame",
+        "brown",
+        "lamp",
+        "room",
+        "day",
+        "white",
+        "sun",
+        "red",
+        "light",
+        "desk"
       ]
     },
     {
