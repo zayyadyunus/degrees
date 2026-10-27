@@ -1,6 +1,6 @@
 """End-to-end API smoke test against a running server.
 
-Plays today's daily (typo, strike, hints, win), checks daily determinism and
+Plays today's daily (off-board word, strike, back, hints, win), checks daily determinism and
 the solution reveal, then strikes out a practice game. Before launch day,
 when there's no daily yet, checks the "no daily yet" reply and plays a
 practice game instead. Exits non-zero on failure.
@@ -17,11 +17,8 @@ import urllib.request
 
 BASE = sys.argv[1].rstrip("/") if len(sys.argv) > 1 else "http://localhost:8000"
 
-# Real words that rarely connect to anything random. One may still connect by
-# chance (~2-3% each), so strike() tries them in turn.
-FAR_WORDS = ("banana", "volcano", "pencil", "elephant", "carrot", "bridge", "violin", "blanket")
-
 failures: list[str] = []
+linked: set[tuple[str, str]] = set()  # (game id, tile) known to link from the start
 
 
 def call(method: str, path: str, body=None):
@@ -42,15 +39,18 @@ def check(ok: bool, label: str, detail: str = "") -> None:
 
 
 def strike(game: dict) -> tuple[dict, dict]:
-    """Play far words until one is rejected with a strike. Returns (response, game)."""
-    for word in FAR_WORDS:
-        if word in game["path"] or word == game["target"]:
+    """Play tiles until one is rejected with a strike, taking back any that
+    connect. Returns (response, game)."""
+    for word in game["tiles"]:
+        if word in game["path"] or (game["id"], word) in linked:
             continue
         _, r = call("POST", f"/games/{game['id']}/moves", {"word": word})
         game = r["game"]
         if r["strike"] or game["status"] != "in_progress":
             return r, game
-    raise SystemExit("every far word connected; pick different FAR_WORDS")
+        linked.add((game["id"], word))  # don't spend another move on it
+        _, game = call("POST", f"/games/{game['id']}/back")
+    raise SystemExit("every tile connects to the start; no strike to test")
 
 
 # -- health ---------------------------------------------------------------
@@ -71,20 +71,23 @@ else:
           "daily is the same puzzle on every request",
           f"#{game['daily_number']} {game['start']} -> {game['target']}, par {game['optimal_distance']}")
 check(game["solution"] is None, "solution hidden while playing")
+check(len(game["tiles"]) >= game["optimal_distance"] - 1, "board has tiles", ", ".join(game["tiles"]))
 status, _ = call("POST", "/games", {"daily": True, "date": "2099-01-01"})
 check(status == 400, "future daily refused", str(status))
 
-# -- typos, strikes, validation --------------------------------------------
+# -- off-board words, strikes, back, validation ------------------------------
 _, r = call("POST", f"/games/{game['id']}/moves", {"word": "zzzzqx"})
-check(not r["strike"] and r["game"]["strikes"] == 0, "typo is free")
+check(not r["strike"] and r["game"]["strikes"] == 0, "off-board word is free", r["reason"] or "")
+status, _ = call("POST", f"/games/{game['id']}/back")
+check(status == 409, "nothing to take back at the start", str(status))
 r, game = strike(r["game"])
-check(game["strikes"] == 1, "unconnected word costs a strike", r["reason"] or "")
+check(game["strikes"] == 1, "unconnected tile costs a strike", r["reason"] or "")
 status, _ = call("POST", f"/games/{game['id']}/moves", {"word": "x" * 65})
 check(status == 422, "over-long word rejected", str(status))
 
 # -- hints to the finish ----------------------------------------------------
-accidental = game["connections_used"]  # far words that happened to connect
-for _ in range(game["max_connections"]):
+accidental = game["moves"]  # tiles strike() played and took back
+for _ in range(game["max_moves"]):
     _, h = call("POST", f"/games/{game['id']}/hint")
     if not h["hint"]:
         break
@@ -94,7 +97,10 @@ for _ in range(game["max_connections"]):
         break
 check(game["status"] == "won", "following hints wins", " -> ".join(game["path"]))
 if accidental == 0:
-    check(game["connections_used"] == game["optimal_distance"], "hints reach par")
+    check(game["moves"] == game["optimal_distance"], "hints reach par")
+else:
+    check("back" in game["events"] and game["moves"] == game["optimal_distance"] + accidental,
+          "taken-back moves still count", f"{accidental} taken back")
 check(game["hints_used"] >= 1 and "hint" in game["events"], "hints are recorded",
       f"{game['hints_used']} hints")
 check(bool(game["solution"]), "solution revealed at the end", " -> ".join(game["solution"] or []))

@@ -284,70 +284,60 @@ button {
 }
 
 /* ------------------------------------------------------------------ */
-/* Word entry                                                          */
+/* Tile grid                                                           */
 /* ------------------------------------------------------------------ */
-.word-input {
-  position: relative;
-  max-width: 360px;
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 8px;
+  max-width: 440px;
   margin: 0 auto;
 }
 
-.entry-row {
-  display: flex;
-  gap: 8px;
-}
-
-.entry-row.shake {
-  animation: shake 0.45s ease;
-}
-
-.word-input input {
-  flex: 1;
-  min-width: 0;
-  padding: 0 16px;
-  height: 52px;
-  font-size: 1rem;
-  font-family: inherit;
-  border: 2px solid var(--line-strong);
+.pick {
+  height: 48px;
+  padding: 0 8px;
   border-radius: var(--radius);
-  outline: none;
+  border: 2px solid var(--line-strong);
   background: var(--surface);
   color: var(--ink);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
 
-.word-input input:focus {
+.pick:hover:not(:disabled) {
   border-color: var(--ink);
 }
 
-.word-input input::placeholder {
-  color: var(--muted);
+.pick:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
-.suggestions {
-  position: absolute;
-  z-index: 5;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  list-style: none;
-  margin: 0;
-  padding: 6px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  text-align: left;
+.pick:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
-.suggestions li {
-  padding: 10px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.95rem;
+.pick.target {
+  border-style: dashed;
+  color: var(--accent-deep);
+  border-color: var(--accent);
 }
 
-.suggestions li.active {
+.pick.struck {
+  border-color: var(--bad);
+  color: var(--bad);
+  animation: shake 0.45s ease;
+}
+
+.pick.hinted {
+  border-style: dashed;
+  border-color: var(--accent);
   background: var(--accent-soft);
   color: var(--accent-deep);
 }

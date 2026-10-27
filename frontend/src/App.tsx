@@ -3,7 +3,7 @@ import { api, dailyStartsOn, localDate } from "./api";
 import type { GameState } from "./types";
 import { Header } from "./components/Header";
 import { Board } from "./components/Board";
-import { WordInput } from "./components/WordInput";
+import { TileGrid } from "./components/TileGrid";
 import { Toast, type ToastData } from "./components/Toast";
 import { HowToPlayModal } from "./components/HowToPlayModal";
 import { Modal } from "./components/Modal";
@@ -23,10 +23,11 @@ function errorText(e: unknown): string {
 }
 
 export default function App() {
-  const [vocabulary, setVocabulary] = useState<string[]>([]);
   const [game, setGame] = useState<GameState | null>(null);
   const [mode, setMode] = useState<Mode>("daily");
   const [hint, setHint] = useState<string | null>(null);
+  // The tile that just cost a strike (shakes until the next play).
+  const [struck, setStruck] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastData | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
@@ -51,6 +52,7 @@ export default function App() {
     setGame(next);
     setMode(nextMode);
     setHint(null);
+    setStruck(null);
     setToast(null);
     setError(null);
     saveCurrent({ mode: nextMode, id: next.id });
@@ -102,13 +104,9 @@ export default function App() {
     [show, withBusy],
   );
 
-  // Initial load: vocabulary (for autocomplete), then resume an unfinished
-  // practice game if there is one, otherwise today's daily.
+  // Initial load: resume an unfinished practice game if there is one,
+  // otherwise today's daily.
   useEffect(() => {
-    api
-      .vocabulary()
-      .then((v) => setVocabulary(v.words))
-      .catch((e) => setError(errorText(e)));
     const current = loadCurrent();
     void (async () => {
       if (current?.mode === "practice") {
@@ -138,25 +136,40 @@ export default function App() {
 
   const used = useMemo(() => new Set(game?.path ?? []), [game]);
 
-  async function submit(word: string): Promise<boolean> {
-    if (!game || game.status !== "in_progress") return false;
+  async function submit(word: string) {
+    if (!game || game.status !== "in_progress" || busy) return;
+    setBusy(true);
+    setStruck(null);
     try {
       const res = await api.submitMove(game.id, word);
       setGame(res.game);
       if (!res.accepted) {
         const reason = res.reason ?? "Invalid move";
+        if (res.strike) setStruck(word);
         showToast(
           res.strike && res.game.status === "in_progress"
             ? `${reason} — strike ${res.game.strikes} of ${res.game.max_strikes}`
             : reason,
         );
-        return false;
+        return;
       }
       setHint(null);
-      return true;
     } catch (e) {
       showToast(errorText(e));
-      return false;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  /** Take back the last word (out of a dead end); the move still counts. */
+  async function back() {
+    if (!game || game.status !== "in_progress" || game.path.length < 2) return;
+    try {
+      setGame(await api.back(game.id));
+      setHint(null);
+      setStruck(null);
+    } catch (e) {
+      showToast(errorText(e));
     }
   }
 
@@ -248,18 +261,31 @@ export default function App() {
 
             {game.status === "in_progress" ? (
               <>
-                <WordInput
-                  vocabulary={vocabulary}
+                <TileGrid
+                  tiles={game.tiles}
+                  target={game.target}
                   used={used}
+                  hint={hint}
+                  struck={struck}
                   disabled={busy}
-                  onSubmit={submit}
+                  onPlay={(w) => void submit(w)}
                 />
                 <div className="actions">
+                  <button
+                    className="btn secondary"
+                    onClick={() => void back()}
+                    disabled={game.path.length < 2}
+                  >
+                    Back
+                  </button>
                   <button className="btn secondary" onClick={getHint}>
                     Hint{game.hints_used > 0 && ` · ${game.hints_used} used`}
                   </button>
                 </div>
-                <p className="fine-print">Hints show on your result.</p>
+                <p className="fine-print">
+                  {game.connections_left} {game.connections_left === 1 ? "move" : "moves"} left.
+                  Going back still counts the move; hints show on your result.
+                </p>
               </>
             ) : (
               <ResultCard
@@ -314,7 +340,7 @@ function ResultCard({
   onDaily: () => void;
 }) {
   const won = game.status === "won";
-  const used = game.connections_used;
+  const used = game.moves;
   const par = game.optimal_distance;
   const matchedPar = won && used === par;
   const unaidedPar = matchedPar && game.hints_used === 0;
@@ -327,17 +353,16 @@ function ResultCard({
 
   // Reveal a par route unless the player's own chain was one.
   const solution = game.solution;
-  const showSolution =
-    solution !== null && !(matchedPar && solution.join() === game.path.join());
+  const showSolution = solution !== null && !(won && solution.join() === game.path.join());
 
   return (
     <div className="result-card">
-      <h2>{unaidedPar ? "Par! ⛳" : won ? "Connected!" : struckOut ? "Three strikes" : "Out of connections"}</h2>
+      <h2>{unaidedPar ? "Par! ⛳" : won ? "Connected!" : struckOut ? "Three strikes" : "Out of moves"}</h2>
       <p className="result-line">
         {won
           ? matchedPar
-            ? `You matched par in ${used} connections.`
-            : `${used} connections — par was ${par}.`
+            ? `You matched par in ${used} moves.`
+            : `${used} moves — par was ${par}.`
           : `It could be done in ${par}.`}
         {extras.length > 0 && <span className="result-extras"> {extras.join(" · ")}</span>}
       </p>

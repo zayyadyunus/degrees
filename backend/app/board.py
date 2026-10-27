@@ -200,6 +200,36 @@ def build_board(
     )
 
 
+def board_for(engine: "Engine", puzzle: "Puzzle") -> Board:
+    """A stored puzzle's board, with each tile's role worked out again.
+
+    Roles aren't stored, so they're inferred: on a par route is route/alt,
+    linked to the start is a trap/lure, linked to the target is bait, else
+    an echo (or lure, if it links to a route word).
+    """
+    I, graph = engine.embeddings.index, engine.graph
+    s, t, par = I[puzzle.start], I[puzzle.target], puzzle.optimal_distance
+    d_s, _ = graph.distances(s)
+    d_t, _ = graph.distances(t)
+    route = {I[w] for w in puzzle.optimal_path[1:-1]}
+    roles: dict[str, str] = {}
+    for w in puzzle.tiles:
+        i = I[w]
+        if i in route:
+            roles[w] = "route"
+        elif d_s[i] + d_t[i] == par:
+            roles[w] = "alt"
+        elif graph.connected(i, s):
+            roles[w] = "trap"
+        elif graph.connected(i, t):
+            roles[w] = "bait"
+        elif any(graph.connected(i, r) for r in route):
+            roles[w] = "lure"
+        else:
+            roles[w] = "echo"
+    return Board(puzzle.start, puzzle.target, par, list(puzzle.tiles), roles)
+
+
 def assess(engine: "Engine", board: Board, rng: np.random.Generator, walks: int = 2000) -> Assessment:
     """How the board plays: solutions, a greedy player, random play."""
     I, vec, graph = engine.embeddings.index, engine.embeddings.vectors, engine.graph

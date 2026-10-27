@@ -32,7 +32,7 @@ function labelFor(relation: string | null | undefined): string | null {
 /**
  * The vertical ladder: start word pinned on top, target pinned on the
  * bottom, the player's chain growing between them through dashed slots
- * that make the remaining budget visible.
+ * that show how far par is.
  */
 export function Board({ game, hint, onPlayHint }: Props) {
   const relations = game.relations;
@@ -44,11 +44,11 @@ export function Board({ game, hint, onPlayHint }: Props) {
   // the target itself, which renders as the bottom tile instead of a slot.
   const steps = won ? game.path.slice(1, -1) : game.path.slice(1);
 
-  // The last connection is reserved for reaching the target, so the open
-  // intermediate slots are one fewer than the connections left.
+  // Open slots show how far par is: the steps a par chain still needs
+  // before the target. None once the chain is at or past par.
   const showHint = inProgress && hint !== null;
   const emptyCount = inProgress
-    ? Math.max(game.connections_left - 1 - (showHint ? 1 : 0), 0)
+    ? Math.max(game.optimal_distance - 1 - steps.length - (showHint ? 1 : 0), 0)
     : 0;
 
   const targetIndex = steps.length + (showHint ? 1 : 0) + 1;

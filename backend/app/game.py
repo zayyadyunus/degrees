@@ -4,10 +4,12 @@ from __future__ import annotations
 import datetime as dt
 import logging
 import uuid
-from dataclasses import dataclass, field
+from collections import deque
+from dataclasses import dataclass, field, replace
 
 import numpy as np
 
+from .board import build_board
 from .dailies import DailySchedule
 from .embeddings import Embeddings
 from .graph import WordGraph, bfs, trace_path
@@ -25,6 +27,7 @@ UNNAMED = "Related"
 EVENT_MOVE = "move"
 EVENT_STRIKE = "strike"
 EVENT_HINT = "hint"
+EVENT_BACK = "back"
 
 
 @dataclass
@@ -36,13 +39,17 @@ class Game:
     optimal_path: list[str]
     max_connections: int
     max_strikes: int = 3
+    # The board's middle tiles: the only words that can be played, besides
+    # the target.
+    tiles: list[str] = field(default_factory=list)
+    max_moves: int = 8
     path: list[str] = field(default_factory=list)
     status: str = STATUS_IN_PROGRESS
     # relations[i] names the edge path[i] -> path[i+1].
     relations: list[str] = field(default_factory=list)
     strikes: int = 0
-    # Chain positions (connections_used) at which a hint was revealed, so
-    # asking again for the same step doesn't count twice.
+    # Move counts at which a hint was revealed, so asking again before the
+    # next move doesn't count twice.
     hint_steps: set[int] = field(default_factory=set)
     events: list[str] = field(default_factory=list)
     daily_number: int | None = None
@@ -58,6 +65,11 @@ class Game:
     @property
     def hints_used(self) -> int:
         return len(self.hint_steps)
+
+    @property
+    def moves(self) -> int:
+        """Accepted moves, including ones later taken back: the score."""
+        return self.events.count(EVENT_MOVE)
 
 
 @dataclass
@@ -75,11 +87,12 @@ class MoveResult:
 
 @dataclass(frozen=True)
 class Puzzle:
-    """A start/target pair and one par route (all words)."""
+    """A start/target pair, one par route (all words) and the board's tiles."""
     start: str
     target: str
     optimal_distance: int
     optimal_path: tuple[str, ...]
+    tiles: tuple[str, ...] = ()
 
 
 class PuzzleUnavailable(RuntimeError):
@@ -165,10 +178,18 @@ class Engine:
         max_d = min(max_distance or self.settings.max_puzzle_distance, self.settings.max_connections)
         if min_d > max_d:
             raise ValueError("min_distance must be <= max_distance")
-        puzzle = self._find_puzzle(rng or self.rng, min_d, max_d)
+        rng = rng or self.rng
+        puzzle = self._find_puzzle(rng, min_d, max_d)
         if puzzle is None:
             raise PuzzleUnavailable(f"no puzzle found with optimal distance in [{min_d}, {max_d}]")
-        return self._start_game(puzzle)
+        return self._start_game(self.with_board(puzzle, rng))
+
+    def with_board(
+        self, puzzle: Puzzle, rng: np.random.Generator, avoid: frozenset[str] = frozenset()
+    ) -> Puzzle:
+        """The puzzle with a word board (see app/board.py) to play it on."""
+        board = build_board(self, puzzle, rng, size=self.settings.board_size, avoid=avoid)
+        return replace(puzzle, tiles=tuple(board.tiles))
 
     def _find_puzzle(
         self,
@@ -226,6 +247,8 @@ class Engine:
             optimal_path=list(puzzle.optimal_path),
             max_connections=self.settings.max_connections,
             max_strikes=self.settings.max_strikes,
+            tiles=list(puzzle.tiles),
+            max_moves=self.settings.max_moves,
             path=[puzzle.start],
             daily_number=daily_number,
         )
@@ -257,7 +280,7 @@ class Engine:
                 status=game.status,
                 current_word=game.current_word,
                 connections_used=game.connections_used,
-                connections_left=game.max_connections - game.connections_used,
+                connections_left=game.max_moves - game.moves,
                 reason=reason,
                 similarity=similarity,
                 relation=relation,
@@ -266,12 +289,11 @@ class Engine:
 
         if game.status != STATUS_IN_PROGRESS:
             return result(False, "game is already over")
-        # Typos and repeats are free: only a real word that fails to connect
-        # costs a strike.
+        # Only a board tile that fails to connect costs a strike.
         if not word:
             return result(False, "empty word")
-        if not self.embeddings.contains(word):
-            return result(False, "word is not in the game's vocabulary")
+        if word != game.target and word not in game.tiles:
+            return result(False, f"'{word}' isn't on the board")
         if word in game.path:
             return result(False, "word already used in this chain")
 
@@ -298,54 +320,67 @@ class Engine:
         game.events.append(EVENT_MOVE)
         if word == game.target:
             game.status = STATUS_WON
-        elif game.connections_used >= game.max_connections:
+        elif game.moves >= game.max_moves:
             game.status = STATUS_LOST
         return result(True, similarity=similarity, relation=relation)
 
+    def back(self, game: Game) -> bool:
+        """Take back the last word, to get out of a dead end.
+
+        The move still counts (see Game.moves), so backing out isn't free.
+        """
+        if game.status != STATUS_IN_PROGRESS or len(game.path) < 2:
+            return False
+        game.path.pop()
+        game.relations.pop()
+        game.events.append(EVENT_BACK)
+        return True
+
     # -- hint ------------------------------------------------------------
     def hint(self, game: Game) -> str | None:
-        """A valid next word on a shortest path to the target.
+        """The next tile on a shortest route to the target over the board.
 
-        Prefers a step that keeps a fully-named route to the target, so hints
-        read as sensible links. Revealing a hint is recorded on the game.
+        Only unused tiles count, so a hint never points somewhere the player
+        can't go. Prefers named links. None when the target can't be reached
+        from here any more (a dead end: the player needs to go back).
+        Revealing a hint is recorded on the game.
         """
         if game.status != STATUS_IN_PROGRESS:
             return None
-        target_idx = self.embeddings.index[game.target]
-        current_idx = self.embeddings.index[game.current_word]
-        dist_to_target, _ = self.graph.distances(target_idx)
-        named_to_target, _ = self._named_distances(target_idx)
-        here = dist_to_target[current_idx]
-        if here <= 0:
+        I = self.embeddings.index
+        current, target = I[game.current_word], I[game.target]
+        open_tiles = [I[w] for w in game.tiles if w not in game.path] + [target]
+        # BFS back from the target, through unused tiles only.
+        dist = {target: 0}
+        queue = deque([target])
+        while queue:
+            node = queue.popleft()
+            for other in open_tiles + [current]:
+                if other not in dist and self.graph.connected(node, other):
+                    dist[other] = dist[node] + 1
+                    if other != current:
+                        queue.append(other)
+        if current not in dist:
             return None
-        best: tuple[bool, float, str] | None = None
-        for nb in self.graph.neighbors(current_idx):
-            if dist_to_target[nb] != here - 1:
-                continue
-            word = self.embeddings.words[nb]
-            if word in game.path:
-                continue
-            sensible = (
-                self._label_edge(current_idx, int(nb)) != UNNAMED
-                and named_to_target[nb] == here - 1
-            )
-            sim = float(self.embeddings.vectors[current_idx] @ self.embeddings.vectors[nb])
-            if best is None or (sensible, sim) > best[:2]:
-                best = (sensible, sim, word)
-        if best is None:
-            return None
-        if game.connections_used not in game.hint_steps:
-            game.hint_steps.add(game.connections_used)
+        steps = [n for n in open_tiles if dist.get(n) == dist[current] - 1 and self.graph.connected(current, n)]
+        vec = self.embeddings.vectors
+        best = max(
+            steps,
+            key=lambda n: (self._label_edge(current, n) != UNNAMED, float(vec[current] @ vec[n])),
+        )
+        if game.moves not in game.hint_steps:
+            game.hint_steps.add(game.moves)
             game.events.append(EVENT_HINT)
-        return best[2]
+        return self.embeddings.words[best]
 
     # -- scoring ---------------------------------------------------------
     def score(self, game: Game) -> dict:
-        used = game.connections_used
+        used = game.moves
         optimal = game.optimal_distance
         return {
             "status": game.status,
-            "connections_used": used,
+            "connections_used": game.connections_used,
+            "moves": used,
             "optimal_distance": optimal,
             "over_optimal": max(0, used - optimal) if game.status == STATUS_WON else None,
             "is_optimal": game.status == STATUS_WON and used == optimal,

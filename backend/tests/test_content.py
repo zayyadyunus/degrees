@@ -104,3 +104,19 @@ def test_daily_pairs_never_reused(engine):
     pairs = [frozenset((p.start, p.target)) for p in
              (engine.daily_puzzle(settings.daily_epoch + dt.timedelta(days=d)) for d in range(120))]
     assert len(set(pairs)) == len(pairs)
+
+
+def test_daily_boards_are_fair(engine):
+    """Every daily board holds its par route and has no unfair pairs: two
+    visible words that look linked but aren't (see app.board.near_misses)."""
+    import datetime as dt
+
+    import numpy as np
+    from app.board import assess, board_for
+
+    for d in range(60):
+        puzzle = engine.daily_puzzle(settings.daily_epoch + dt.timedelta(days=d))
+        assert set(puzzle.optimal_path[1:-1]) <= set(puzzle.tiles), (d + 1, puzzle)
+        a = assess(engine, board_for(engine, puzzle), np.random.default_rng(0), walks=1)
+        assert a.par_solutions, (d + 1, puzzle)
+        assert a.unfair == [], (d + 1, puzzle.start, puzzle.target, a.unfair)

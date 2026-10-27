@@ -25,14 +25,19 @@ class GameState(BaseModel):
     path: list[str]
     relations: list[str]
     status: str
+    # The board's middle tiles, in display order (start and target aside).
+    tiles: list[str]
+    # Words in the chain now (path length - 1).
     connections_used: int
+    # Accepted moves so far, including taken-back ones: the score.
+    moves: int
+    max_moves: int
     connections_left: int
-    max_connections: int
     optimal_distance: int
     strikes: int
     max_strikes: int
     hints_used: int
-    # Ordered "move" / "strike" / "hint" events, for the share grid.
+    # Ordered "move" / "strike" / "hint" / "back" events, for the share grid.
     events: list[str]
     daily_number: int | None
     # A par route, revealed only once the game is over.
@@ -48,9 +53,11 @@ class GameState(BaseModel):
             path=list(game.path),
             relations=list(game.relations),
             status=game.status,
+            tiles=list(game.tiles),
             connections_used=game.connections_used,
-            connections_left=game.max_connections - game.connections_used,
-            max_connections=game.max_connections,
+            moves=game.moves,
+            max_moves=game.max_moves,
+            connections_left=game.max_moves - game.moves,
             optimal_distance=game.optimal_distance,
             strikes=game.strikes,
             max_strikes=game.max_strikes,
@@ -70,7 +77,7 @@ class MoveResponse(BaseModel):
     reason: str | None = None
     similarity: float | None = None
     relation: str | None = None
-    # True when the rejection cost a strike (a real word that didn't connect).
+    # True when the rejection cost a strike (a tile that didn't connect).
     strike: bool = False
     game: GameState
 
@@ -84,6 +91,7 @@ class HintResponse(BaseModel):
 class ScoreResponse(BaseModel):
     status: str
     connections_used: int
+    moves: int
     optimal_distance: int
     over_optimal: int | None
     is_optimal: bool

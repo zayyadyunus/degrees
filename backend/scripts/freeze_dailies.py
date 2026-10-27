@@ -12,6 +12,7 @@ Commands (combine freely; applied in this order):
     --reroll DATE ...      replace frozen days with new picks; neighbours stay
     --par N                with --reroll: use par N instead of the weekday's
     --reroll-invalid       re-roll every frozen day the current data breaks
+    --add-boards           give frozen days without board tiles a board
     --through DATE         freeze generated days up to and including DATE
 """
 from __future__ import annotations
@@ -43,9 +44,10 @@ def main() -> None:
     parser.add_argument("--reroll", nargs="+", type=dt.date.fromisoformat, default=[])
     parser.add_argument("--reroll-invalid", action="store_true")
     parser.add_argument("--par", type=int, help="par for --reroll days (default: weekday ramp)")
+    parser.add_argument("--add-boards", action="store_true")
     parser.add_argument("--through", type=dt.date.fromisoformat)
     args = parser.parse_args()
-    if not (args.unfreeze_from or args.reroll or args.reroll_invalid or args.through):
+    if not (args.unfreeze_from or args.reroll or args.reroll_invalid or args.add_boards or args.through):
         parser.error("nothing to do")
 
     logging.disable(logging.INFO)
@@ -64,10 +66,22 @@ def main() -> None:
             del frozen[d]
         print(f"Unfroze {len(dropped)} days from {args.unfreeze_from}.")
 
+    if args.add_boards:
+        schedule = rebuild()
+        days = sorted(frozen)
+        added = 0
+        for i, day in enumerate(days):
+            if not frozen[day].tiles:
+                frozen[day] = schedule._boarded(i, frozen[day], [frozen[d] for d in days[:i]])
+                added += 1
+        print(f"Added boards to {added} frozen days.")
+
     schedule = rebuild()
     if schedule.problems.get(None):
         sys.exit(f"Schedule problem: {schedule.problems[None]}")
-    to_reroll = sorted(set(args.reroll) | (set(schedule.problems) - {None} if args.reroll_invalid else set()))
+    # Missing boards are --add-boards' job, not a reason to re-roll.
+    invalid = {d for d, msg in schedule.problems.items() if d is not None and msg != "no board tiles"}
+    to_reroll = sorted(set(args.reroll) | (invalid if args.reroll_invalid else set()))
     for day in to_reroll:
         if day not in frozen:
             sys.exit(f"{day} isn't frozen; only frozen days can be re-rolled.")

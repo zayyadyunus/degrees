@@ -1,24 +1,29 @@
 # Degrees
 
 Connect a **start** word to a **target** word by semantic association, in as
-few hops as possible.
+few moves as possible, using the tiles on the board.
 
 ```
 ocean → … → … → … → forest
 ```
 
-You get **6 connections** (7 words total) to make it across. There's a new
+You get **8 moves** to make it across. There's a new
 **daily puzzle** every day (the same for everyone), plus unlimited practice
 puzzles.
 
 ## How to play
 
-1. The game gives you two words: a `start` and a `target`.
-2. Type a word that is **semantically related** to the current word in the
-   chain. If the association is close enough, the word is accepted and becomes
-   the new "current" word.
-3. Keep going. Each accepted word is one connection used.
-4. Reach the `target` word before you run out of connections to **win**.
+1. The game gives you two words, a `start` and a `target`, and a board of
+   about 10 tiles.
+2. Tap a tile that is **semantically related** to the current word in the
+   chain. If they connect, the tile is added and becomes the new "current"
+   word.
+3. Keep going. Each accepted tile is one move.
+4. Reach the `target` word before you run out of moves to **win**.
+
+The board holds a par route plus decoys: tiles that link to the start or the
+target but lead nowhere in par. **Back** undoes the last step when you hit a
+dead end, but the move still counts.
 
 The full player-facing rules, including the ten kinds of connection, are in
 `docs/RULES.md`.
@@ -31,8 +36,8 @@ cosine similarity (default `k=12`). This blocks generic shortcut words
 ("good", "thing", "time"…) from linking everything to everything, so links
 have to be genuine associations.
 
-Every puzzle the game hands out is guaranteed solvable within the 6-hop
-limit, and its **par** (shortest path length) is shown up front. Puzzles are
+Every puzzle the game hands out is guaranteed solvable on its board, and its
+**par** (shortest path length) is shown up front. Puzzles are
 only chosen when a par route exists made entirely of links the game can name
 (synonym, is-a, part-of, made-of, ...), so the solution revealed at the end
 always reads as sensible.
@@ -40,24 +45,27 @@ always reads as sensible.
 ### Rules of thumb
 
 - A move is **rejected** if the word is:
-  - not in the game's vocabulary (free),
+  - not on the board (free; only possible through the API),
   - already used in your chain (free), or
   - not connected to your current word — this costs a **strike**. Three
     strikes and the puzzle is lost.
 - Each accepted move shows the relation behind it (same category, part of,
   stands for, ...).
-- You can ask for a **hint** at any time. The hint is a valid next word that
-  lies on a shortest path to the target; hints are recorded on your result.
+- You can ask for a **hint** at any time. The hint is the next tile on a
+  shortest route from where you are; at a dead end it tells you to go back.
+  Hints are recorded on your result.
 - The refresh button starts a **practice** puzzle (it asks first if that
   would abandon one in progress). Games survive a page refresh.
 
 ### Scoring
 
+- Your score is **moves**: every accepted tile, including ones you took back.
 - **Par ⛳**: you tied the shortest path without hints.
 - **Connected**: you won, over par or with hints.
-- **Lost**: you used all 6 connections or 3 strikes. Either way the end
-  screen reveals a par route.
-- **Share** copies a spoiler-free result: 🟩 move, 🟥 strike, 💡 hint.
+- **Lost**: you used all 8 moves or 3 strikes. Either way the end screen
+  reveals a par route.
+- **Share** copies a spoiler-free result: 🟩 move, 🟥 strike, 💡 hint,
+  ↩️ back.
 
 ## Running the game
 
@@ -133,9 +141,10 @@ curl -s localhost:8000/games/$ID/score
 | GET    | `/vocabulary`         | all playable words                      |
 | POST   | `/games`              | new puzzle; `{"daily": true, "date": "YYYY-MM-DD"}` for the daily |
 | GET    | `/games/{id}`         | current game state                      |
-| POST   | `/games/{id}/moves`   | submit a word `{ "word": "..." }`       |
-| POST   | `/games/{id}/hint`    | a valid next word on a shortest path    |
-| GET    | `/games/{id}/score`   | connections used vs. optimal            |
+| POST   | `/games/{id}/moves`   | play a tile `{ "word": "..." }`         |
+| POST   | `/games/{id}/back`    | take back the last word (still counts)  |
+| POST   | `/games/{id}/hint`    | the next tile on a shortest route       |
+| GET    | `/games/{id}/score`   | moves used vs. optimal                  |
 
 ## Difficulty knobs
 

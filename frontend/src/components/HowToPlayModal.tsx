@@ -30,22 +30,24 @@ export function HowToPlayModal({
   return (
     <Modal open={open} onClose={onClose} title="How to Play">
       <p className="howto-lede">
-        Connect the <strong>start</strong> word to the <strong>target</strong>{" "}
-        word in 6 associations or fewer. A new daily puzzle every day.
+        Link the <strong>start</strong> word to the <strong>target</strong>{" "}
+        using the tiles on the board. A new daily puzzle every day.
       </p>
       <ol className="howto-rules">
         <li>
-          Each word you play must be closely associated with the word before
-          it.
-        </li>
-        <li>Every accepted word uses one of your 6 connections.</li>
-        <li>
-          <strong>Par</strong> is the fewest connections possible. Match it for
-          a ⛳.
+          Tap a tile to add it to your chain. Each one must be closely
+          associated with the word before it.
         </li>
         <li>
-          A real word that doesn’t connect is a <strong>strike</strong>. Three
-          strikes and you’re out. Typos are free.
+          <strong>Par</strong> is the fewest moves possible. Match it for a ⛳.
+        </li>
+        <li>
+          Not every tile helps — some lead nowhere. <strong>Back</strong>{" "}
+          undoes a step, but the move still counts.
+        </li>
+        <li>
+          A tile that doesn’t connect is a <strong>strike</strong>. Three
+          strikes and you’re out.
         </li>
         <li>Hints are always there, but they show on your result.</li>
       </ol>

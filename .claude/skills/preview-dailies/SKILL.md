@@ -19,6 +19,16 @@ Each day shows the par route with every link's relation label and cosine
 similarity. FLAGS mark `weak` links (non-curated, bottom 15% similarity) and
 `repeat` words (same start/target as another daily in the window).
 
+Then the boards players will see:
+
+```bash
+.venv/bin/python scripts/preview_boards.py --days 14          # roles, solutions, greedy/random play
+.venv/bin/python scripts/preview_boards.py --days 14 --blind  # tiles only, for play-testing
+```
+
+`UNFAIR` lines list visible words that look linked but aren't: every such
+pair is a strike a player didn't deserve. Fix with a curated link.
+
 ## 2. Review
 
 For more than a handful of days, hand the full output to the

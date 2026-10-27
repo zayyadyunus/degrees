@@ -2,7 +2,7 @@
 
 export type GameStatus = "in_progress" | "won" | "lost";
 
-export type GameEvent = "move" | "strike" | "hint";
+export type GameEvent = "move" | "strike" | "hint" | "back";
 
 export interface GameState {
   id: string;
@@ -13,9 +13,15 @@ export interface GameState {
   /** relations[i] names the edge path[i] → path[i+1]. */
   relations: string[];
   status: GameStatus;
+  /** The board's middle tiles, in display order. */
+  tiles: string[];
+  /** Words in the chain now. */
   connections_used: number;
+  /** Accepted moves, including taken-back ones: the score. */
+  moves: number;
+  max_moves: number;
+  /** Moves left in the budget. */
   connections_left: number;
-  max_connections: number;
   optimal_distance: number;
   strikes: number;
   max_strikes: number;

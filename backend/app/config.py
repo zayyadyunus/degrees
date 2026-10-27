@@ -35,8 +35,17 @@ class Settings:
     min_puzzle_distance: int = int(os.environ.get("DEGREES_MIN_DISTANCE", "3"))
     max_puzzle_distance: int = int(os.environ.get("DEGREES_MAX_DISTANCE", "5"))
 
-    # Words that are real but don't connect cost a strike; this many loses.
+    # Tiles that don't connect cost a strike; this many loses.
     max_strikes: int = int(os.environ.get("DEGREES_MAX_STRIKES", "3"))
+
+    # Word boards: middle tiles per puzzle, and how many previous dailies'
+    # tiles a new board avoids reusing.
+    board_size: int = int(os.environ.get("DEGREES_BOARD_SIZE", "10"))
+    board_recent: int = int(os.environ.get("DEGREES_BOARD_RECENT", "3"))
+
+    # Move budget. Every accepted move counts, including ones later taken
+    # back, so backing out of a dead end costs moves, not just time.
+    max_moves: int = int(os.environ.get("DEGREES_MAX_MOVES", "8"))
 
     # Daily puzzle #1 falls on this date (YYYY-MM-DD).
     daily_epoch: dt.date = dt.date.fromisoformat(os.environ.get("DEGREES_DAILY_EPOCH", "2026-11-21"))

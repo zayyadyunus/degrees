@@ -40,7 +40,11 @@ relationships **in the words' everyday meanings**.
    enough for a daily?
 3. **Satisfaction.** Would seeing the par route produce "oh, of course" or
    "how was I supposed to get that"?
-4. **The week.** Repeated words, too many par-5s in a row, or a dull run.
+4. **The board** (`scripts/preview_boards.py`). Players build the chain
+   from ~10 tiles. Are the decoys tempting but fair? Flag any decoy a
+   player would expect to link to a visible word but doesn't (verify with
+   `graph.connected` before claiming it), and boards with one obvious line.
+5. **The week.** Repeated words, too many par-5s in a row, or a dull run.
 
 ## Output
 

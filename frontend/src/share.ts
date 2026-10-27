@@ -1,6 +1,6 @@
 import type { GameState } from "./types";
 
-const EMOJI = { move: "🟩", strike: "🟥", hint: "💡" } as const;
+const EMOJI = { move: "🟩", strike: "🟥", hint: "💡", back: "↩️" } as const;
 
 /**
  * Spoiler-free result text, e.g.
@@ -11,7 +11,7 @@ const EMOJI = { move: "🟩", strike: "🟥", hint: "💡" } as const;
  */
 export function shareText(game: GameState, url: string): string {
   const title = game.daily_number ? `Degrees #${game.daily_number}` : "Degrees (practice)";
-  const used = game.connections_used;
+  const used = game.moves;
   const par = game.optimal_distance;
   let score: string;
   if (game.status === "won") {

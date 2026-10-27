@@ -9,6 +9,8 @@ Days past the frozen range are generated in order, each one:
 - avoiding words recent dailies used (`daily_fresh_*_days`),
 
 relaxing those preferences rather than failing when a day can't meet them.
+Each day also gets a word board (app/board.py) whose decoys avoid the
+previous `board_recent` days' tiles; frozen days store their tiles too.
 Generation is deterministic for a given dataset, so previews match what
 players will get. `scripts/freeze_dailies.py` freezes, re-rolls and unfreezes.
 """
@@ -41,6 +43,7 @@ def load_frozen(path: Path) -> dict[dt.date, "Puzzle"]:
             target=d["target"],
             optimal_distance=int(d["par"]),
             optimal_path=tuple(d["route"]),
+            tiles=tuple(d.get("tiles", ())),
         )
         for d in raw["dailies"]
     }
@@ -54,6 +57,7 @@ def save_frozen(path: Path, frozen: dict[dt.date, "Puzzle"]) -> None:
             "target": p.target,
             "par": p.optimal_distance,
             "route": list(p.optimal_path),
+            "tiles": list(p.tiles),
         }
         for day, p in sorted(frozen.items())
     ]
@@ -88,7 +92,8 @@ class DailySchedule:
             raise ValueError("no daily puzzle before the epoch")
         with self._lock:
             while len(self._days) <= index:
-                self._days.append(self._pick(len(self._days), self._days, []))
+                n = len(self._days)
+                self._days.append(self._boarded(n, self._pick(n, self._days, []), self._days))
             return self._days[index]
 
     def reroll(self, day: dt.date, salt: int, par: int | None = None) -> "Puzzle":
@@ -104,7 +109,16 @@ class DailySchedule:
         if not 0 <= index < len(days):
             raise ValueError(f"{day} is not a frozen day")
         current = days[index]
-        return self._pick(index, days[:index], days[index + 1:], salt=salt, exclude=current, par=par)
+        puzzle = self._pick(index, days[:index], days[index + 1:], salt=salt, exclude=current, par=par)
+        return self._boarded(index, puzzle, days[:index])
+
+    def _boarded(self, index: int, puzzle: "Puzzle", before: list["Puzzle"]) -> "Puzzle":
+        """The day's puzzle with its board; decoys skip recent days' tiles."""
+        day = self.epoch + dt.timedelta(days=index)
+        recent = before[-self.settings.board_recent:] if self.settings.board_recent else []
+        avoid = frozenset(w for p in recent for w in p.tiles)
+        rng = np.random.default_rng([self.settings.seed, day.toordinal(), 7])
+        return self.engine.with_board(puzzle, rng, avoid)
 
     # -- generation --------------------------------------------------------
     def _pick(
@@ -206,6 +220,13 @@ class DailySchedule:
             par_now = int(graph.distances(I[p.start])[0][I[p.target]])
             if par_now != p.optimal_distance:
                 problems[day] = f"par is now {par_now}, frozen as {p.optimal_distance}"
+                continue
+            if not p.tiles:
+                problems[day] = "no board tiles"
+                continue
+            bad_tiles = [w for w in p.tiles if w not in I or w in (p.start, p.target)]
+            if bad_tiles or len(set(p.tiles)) != len(p.tiles) or not set(route[1:-1]) <= set(p.tiles):
+                problems[day] = f"board tiles don't fit the puzzle: {', '.join(bad_tiles) or 'route missing'}"
         return problems
 
     def raise_if_invalid(self) -> None:

@@ -43,7 +43,7 @@ def test_optimal_path_wins_optimally():
     assert game.status == STATUS_WON
     score = engine.score(game)
     assert score["is_optimal"] is True
-    assert score["connections_used"] == game.optimal_distance
+    assert score["moves"] == score["connections_used"] == game.optimal_distance
 
 
 def test_invalid_moves_rejected():
@@ -63,24 +63,79 @@ def test_hint_is_a_valid_progressing_move():
 
 
 
-def _unconnected_word(engine: Engine, game) -> str:
-    """A real vocabulary word that doesn't connect to the current word."""
+def _unconnected_tile(engine: Engine, game) -> str:
+    """A board tile that doesn't connect to the current word."""
     graph, index = engine.graph, engine.embeddings.index
     here = index[game.current_word]
-    for word in engine.embeddings.words:
+    for word in game.tiles:
         if word not in game.path and not graph.connected(here, index[word]):
             return word
-    raise AssertionError("every word connects")
+    raise AssertionError("every tile connects")
 
 
-def test_strikes_only_for_real_unconnected_words():
+def test_board_holds_the_par_route():
     engine = build_engine()
     game = engine.new_game()
-    engine.submit(game, "definitelynotaword")  # typo: free
-    engine.submit(game, game.start)            # repeat: free
+    assert set(game.optimal_path[1:-1]) <= set(game.tiles)
+    assert game.start not in game.tiles and game.target not in game.tiles
+    assert len(game.tiles) > len(game.optimal_path) - 2  # decoys too
+
+
+def test_strikes_only_for_unconnected_tiles():
+    engine = build_engine()
+    game = engine.new_game()
+    off_board = next(w for w in engine.embeddings.words if w not in game.tiles and w not in (game.start, game.target))
+    assert "isn't on the board" in engine.submit(game, off_board).reason  # free
+    engine.submit(game, game.start)                                         # repeat: free
     assert game.strikes == 0
-    result = engine.submit(game, _unconnected_word(engine, game))
+    result = engine.submit(game, _unconnected_tile(engine, game))
     assert result.strike and game.strikes == 1
+
+
+def test_back_undoes_a_move_but_it_still_counts():
+    engine = build_engine()
+    game = engine.new_game()
+    assert engine.back(game) is False  # nothing to take back
+    engine.submit(game, game.optimal_path[1])
+    assert engine.back(game) is True
+    assert game.path == [game.start] and game.relations == []
+    assert game.moves == 1 and game.events == ["move", "back"]
+    for word in game.optimal_path[1:]:
+        engine.submit(game, word)
+    assert game.status == STATUS_WON
+    assert engine.score(game)["is_optimal"] is False  # par + 1 moves
+
+
+def test_move_budget_counts_taken_back_moves():
+    engine = build_engine()
+    game = engine.new_game()
+    step = game.optimal_path[1]
+    for _ in range(game.max_moves):
+        engine.submit(game, step)
+        if game.status != "in_progress":
+            break
+        engine.back(game)
+    assert game.status == STATUS_LOST
+
+
+def test_hint_stays_on_the_board():
+    engine = build_engine()
+    game = engine.new_game()
+    while game.status == "in_progress":
+        hint = engine.hint(game)
+        assert hint == game.target or hint in game.tiles
+        assert engine.submit(game, hint).accepted
+    assert game.status == STATUS_WON and game.moves == game.optimal_distance
+
+
+def test_hint_at_a_dead_end_is_none():
+    engine = build_engine()
+    game = engine.new_game()
+    # Strand the player: mark every other tile used.
+    game.path += [w for w in game.tiles]
+    assert engine.hint(game) is None or engine.graph.connected(
+        engine.embeddings.index[game.current_word], engine.embeddings.index[game.target]
+    )
 
 
 def test_max_strikes_loses_and_reveals_solution():
@@ -90,7 +145,7 @@ def test_max_strikes_loses_and_reveals_solution():
     game = engine.new_game()
     assert GameState.from_game(game).solution is None
     for _ in range(game.max_strikes):
-        engine.submit(game, _unconnected_word(engine, game))
+        engine.submit(game, _unconnected_tile(engine, game))
     assert game.status == STATUS_LOST
     assert GameState.from_game(game).solution == game.optimal_path
 

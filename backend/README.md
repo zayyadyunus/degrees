@@ -1,7 +1,8 @@
 # Degrees — backend
 
 Connect a **start** word to a **target** word by semantic association, in as
-few hops as possible. The limit is **6 connections (7 words total)**.
+few moves as possible, playing only the tiles on the puzzle's word board.
+The limit is **8 moves**; taking a word back still counts its move.
 
 ## How it works
 
@@ -89,29 +90,36 @@ uvicorn app.main:app --reload
 | Method | Path                     | Purpose                                  |
 |--------|--------------------------|------------------------------------------|
 | GET    | `/health`                | vocab size, threshold, synthetic flag    |
-| GET    | `/vocabulary`            | all playable words (for autocomplete)    |
+| GET    | `/vocabulary`            | all words in the graph                   |
 | POST   | `/games`                 | new puzzle (optional `min/max_distance`); `{"daily": true, "date": "YYYY-MM-DD"}` for the daily |
 | GET    | `/games/{id}`            | current game state                       |
-| POST   | `/games/{id}/moves`      | submit a word `{ "word": "..." }`        |
-| POST   | `/games/{id}/hint`       | a valid next word on a shortest path (recorded) |
-| GET    | `/games/{id}/score`      | connections used vs. optimal             |
+| POST   | `/games/{id}/moves`      | play a tile `{ "word": "..." }`          |
+| POST   | `/games/{id}/back`       | take back the last word (the move still counts) |
+| POST   | `/games/{id}/hint`       | the next tile on a shortest route over unused tiles (recorded) |
+| GET    | `/games/{id}/score`      | moves used vs. optimal                   |
 
 ### Example
 
 ```bash
 GAME=$(curl -s -X POST localhost:8000/games)
-echo "$GAME"            # -> start, target, optimal_distance, ...
+echo "$GAME"            # -> start, target, tiles, optimal_distance, ...
 ID=$(echo "$GAME" | python -c "import sys,json;print(json.load(sys.stdin)['id'])")
 curl -s -X POST localhost:8000/games/$ID/moves -H 'content-type: application/json' \
      -d '{"word":"ocean"}'
 curl -s -X POST localhost:8000/games/$ID/hint
 ```
 
-A move is rejected (with a reason) when the word is out of vocabulary, already
-used in the chain, or not connected to the current word. Only the last costs a
-strike. The game ends as `won` when you reach the target, or `lost` after 6
-connections or 3 strikes. Once it's over, `solution` in the game state reveals
-a par route.
+A move is rejected (with a reason) when the word isn't on the board, is already
+used in the chain, or isn't connected to the current word. Only the last costs
+a strike. The game ends as `won` when you reach the target, or `lost` after 8
+moves or 3 strikes. Once it's over, `solution` in the game state reveals a par
+route.
+
+Each puzzle's board (`tiles`, built by `app/board.py`) holds a par route plus
+decoys: a trap and a lure off the start, lures off route words, bait linked to
+the target, and echoes two links from it. A fairness gate keeps decoys away
+from words they look linked to but aren't. Frozen dailies store their tiles;
+`scripts/preview_boards.py` shows upcoming boards.
 
 Puzzles are only generated when a par route exists using links the labeler can
 name (anything but `Related`), so revealed solutions read as sensible. Daily
@@ -141,7 +149,10 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | Var                       | Default | Meaning                                  |
 |---------------------------|---------|------------------------------------------|
 | `DEGREES_K`               | `12`    | mutual-kNN neighbors per word (difficulty) |
-| `DEGREES_MAX_CONNECTIONS` | `6`     | hop limit                                |
+| `DEGREES_MAX_CONNECTIONS` | `6`     | longest par a puzzle can have            |
+| `DEGREES_MAX_MOVES`       | `8`     | move budget (taken-back moves count)     |
+| `DEGREES_BOARD_SIZE`      | `10`    | middle tiles per board                   |
+| `DEGREES_BOARD_RECENT`    | `3`     | daily decoys avoid this many previous boards' tiles |
 | `DEGREES_MIN_DISTANCE`    | `3`     | min optimal distance for a puzzle        |
 | `DEGREES_MAX_DISTANCE`    | `5`     | max optimal distance for a puzzle        |
 | `DEGREES_ALLOW_SYNTHETIC` | `1`     | allow synthetic fallback vectors         |

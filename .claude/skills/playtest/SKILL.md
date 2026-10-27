@@ -6,7 +6,8 @@ description: Play Degrees end to end in production mode — API smoke test plus 
 # Playtest Degrees
 
 Runs the real game the way players get it: built UI served by the backend,
-real vectors, docs off. Covers daily determinism, typos vs strikes, hints,
+real vectors, docs off. Covers daily determinism, the word board
+(off-board words vs strikes, back), hints,
 win/lose, solution reveal, refresh-resume, share text and the practice
 confirm dialog.
 

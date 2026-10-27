@@ -1,10 +1,11 @@
-"""Preview word boards (prototype) for upcoming dailies.
+"""Preview the word boards of upcoming dailies, as players will get them.
 
-For each day: the board as a player would see it, then each tile's role, the
-par solutions the tiles allow, and how a greedy player and random play fare.
+For each day: the board as a player would see it, then each tile's role
+(inferred, see app.board.board_for), the par solutions the tiles allow, and
+how a greedy player and random play fare.
 
     python scripts/preview_boards.py                       # launch week
-    python scripts/preview_boards.py --from 2026-11-21 --days 7 --size 10
+    python scripts/preview_boards.py --from 2026-11-21 --days 7
     python scripts/preview_boards.py --blind               # boards only, for play-testing on paper
 """
 from __future__ import annotations
@@ -19,11 +20,9 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.board import ROLES, assess, build_board  # noqa: E402
+from app.board import ROLES, assess, board_for  # noqa: E402
 from app.bootstrap import build_engine  # noqa: E402
 from app.config import settings  # noqa: E402
-
-RECENT_BOARDS = 3  # decoys avoid tiles from this many previous boards
 
 
 def main() -> None:
@@ -31,7 +30,6 @@ def main() -> None:
     parser.add_argument("--from", dest="start", type=dt.date.fromisoformat,
                         default=max(dt.date.today(), settings.daily_epoch))
     parser.add_argument("--days", type=int, default=7)
-    parser.add_argument("--size", type=int, default=10, help="middle tiles per board")
     parser.add_argument("--blind", action="store_true", help="hide roles and analysis")
     args = parser.parse_args()
 
@@ -43,14 +41,11 @@ def main() -> None:
 
     greedy_wins = unfair_days = 0
     sizes: list[int] = []
-    recent: list[list[str]] = []  # tiles of the last few boards
     for d in range(args.days):
         day = args.start + dt.timedelta(days=d)
         puzzle = engine.daily_puzzle(day)
         rng = np.random.default_rng([settings.seed, day.toordinal(), 7])
-        board = build_board(engine, puzzle, rng, size=args.size,
-                            avoid=frozenset(w for tiles in recent[-RECENT_BOARDS:] for w in tiles))
-        recent.append(board.tiles)
+        board = board_for(engine, puzzle)
         a = assess(engine, board, rng)
         greedy_wins += a.greedy_solves_at_par
         sizes.append(len(board.tiles))

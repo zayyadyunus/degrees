@@ -1,8 +1,9 @@
 # What counts as a connection
 
-In **Degrees** you connect the current word to a new word by a *real semantic
-relationship*. A move lands when the two words relate in one of the ways below.
-Rhyming, spelling, and "it just reminds me of…" don't count.
+In **Degrees** you build a chain from the start word to the target using the
+tiles on the board, and each tile must connect to the word before it by a
+*real semantic relationship*. A move lands when the two words relate in one of
+the ways below. Rhyming, spelling, and "it just reminds me of…" don't count.
 
 ## The ways to connect
 
@@ -41,10 +42,13 @@ using only the ten patterns above, so you never *need* a loose link.
 
 - When you're stuck, run down the list: *Is there a synonym? An opposite? A
   category? A part? Something it's made of, used for, found with, or leads to?*
-- **Par** is the fewest connections the puzzle can be solved in. Match it for
-  a ⛳.
-- A real word that doesn't connect costs a **strike**; three strikes and the
-  puzzle is lost. Typos and words the game doesn't know are free.
-- **Hint** reveals a word on a shortest path to the target. It's always
-  available, but hints show on your result.
+- Work from both ends: several tiles may link to the target, but not all of
+  them can be reached from the start in par.
+- **Par** is the fewest moves the puzzle can be solved in. Match it for a ⛳.
+- Not every tile helps. Some are dead ends — **Back** undoes your last step,
+  but the move still counts towards your score and your 8-move budget.
+- A tile that doesn't connect costs a **strike**; three strikes and the
+  puzzle is lost.
+- **Hint** reveals the next tile on a shortest route from where you are. It's
+  always available, but hints show on your result.
 - Win or lose, the end screen reveals a par route.

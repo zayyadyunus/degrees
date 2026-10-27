@@ -52,8 +52,6 @@ export function dailyStartsOn(e: unknown): string | null {
 }
 
 export const api = {
-  vocabulary: () => request<{ words: string[] }>("/vocabulary"),
-
   dailyGame: (date: string) =>
     request<GameState>("/games", {
       method: "POST",
@@ -69,6 +67,9 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ word }),
     }),
+
+  back: (gameId: string) =>
+    request<GameState>(`/games/${gameId}/back`, { method: "POST" }),
 
   hint: (gameId: string) =>
     request<HintResponse>(`/games/${gameId}/hint`, { method: "POST" }),

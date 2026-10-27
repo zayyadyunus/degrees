@@ -142,6 +142,20 @@ def submit_move(game_id: str, req: MoveRequest) -> MoveResponse:
     )
 
 
+@app.post(
+    "/games/{game_id}/back",
+    response_model=GameState,
+    dependencies=[Depends(_limit_moves)],
+)
+def take_back(game_id: str) -> GameState:
+    """Undo the last word (out of a dead end). The move still counts."""
+    game = _require_game(game_id)
+    if not _engine.back(game):
+        raise HTTPException(status_code=409, detail="nothing to take back")
+    _store.save(game)
+    return GameState.from_game(game)
+
+
 # POST: revealing a hint is recorded on the game (it shows on the result).
 @app.post(
     "/games/{game_id}/hint",
@@ -154,7 +168,9 @@ def get_hint(game_id: str) -> HintResponse:
     _store.save(game)
     return HintResponse(
         hint=hint,
-        message=None if hint else "no hint available",
+        message=None if hint else (
+            "Dead end — go back a step" if game.status == "in_progress" else "game is already over"
+        ),
         game=GameState.from_game(game),
     )
 
