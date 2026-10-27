@@ -6,7 +6,8 @@ Days past the frozen range are generated in order, each one:
 
 - aiming for the par its weekday asks for (an easy-Monday to hard-Saturday
   ramp, `daily_par_by_weekday`), and
-- avoiding words recent dailies used (`daily_fresh_*_days`),
+- avoiding words and par-route links recent dailies used
+  (`daily_fresh_*_days`),
 
 relaxing those preferences rather than failing when a day can't meet them.
 Each day also gets a word board (app/board.py) whose decoys avoid the
@@ -146,6 +147,12 @@ class DailySchedule:
             {I[w] for w in (exclude.start, exclude.target) if w in I} if exclude is not None else set()
         )
         recent_ends |= replaced_ends
+        recent_links = frozenset(
+            frozenset((I[a], I[b]))
+            for p in window(s.daily_fresh_link_days)
+            for a, b in zip(p.optimal_path, p.optimal_path[1:])
+            if a in I and b in I
+        )
         # A start/target pair is never reused, in either direction, ever.
         used_pairs = frozenset(
             frozenset((I[p.start], I[p.target]))
@@ -156,19 +163,24 @@ class DailySchedule:
         want = par if par is not None else s.daily_par_by_weekday[day.weekday()]
         lowest, highest = s.min_puzzle_distance, s.max_connections
         pars = [p for p in (want, want - 1, want + 1) if lowest <= p <= highest]
-        # Strictest first: exact par before neighbouring pars; within a par,
-        # drop the mid-route rule, then the route-word rule, then all but
-        # "not the puzzle being replaced".
+        # Freshness beats exact par: a neighbouring par under all the rules
+        # before relaxing any. Relax in order the mid-route rule, then the
+        # repeated-link rule, then the route-word rule, then all but "not
+        # the puzzle being replaced".
+        none = frozenset()
         rule_levels = [
-            (recent_ends | recent_route, recent_route),
-            (recent_ends, recent_route),
-            (recent_ends, set()),
-            (replaced_ends, set()),
+            (recent_ends | recent_route, recent_route, recent_links),
+            (recent_ends, recent_route, recent_links),
+            (recent_ends, recent_route, none),
+            (recent_ends, set(), none),
+            (replaced_ends, set(), none),
         ]
-        for got in pars:
-            for level, (ends, via) in enumerate(rule_levels):
+        for level, (ends, via, links) in enumerate(rule_levels):
+            for got in pars:
                 rng = np.random.default_rng([s.seed, day.toordinal(), salt])
-                puzzle = engine._find_puzzle(rng, got, got, frozenset(ends), frozenset(via), used_pairs)
+                puzzle = engine._find_puzzle(
+                    rng, got, got, frozenset(ends), frozenset(via), used_pairs, links
+                )
                 if puzzle is None:
                     continue
                 if got != want or level:

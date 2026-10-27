@@ -86,6 +86,29 @@ def test_dailies_do_not_repeat_recent_words(engine):
 
 
 
+
+def test_generated_dailies_do_not_reuse_recent_links(engine):
+    import datetime as dt
+
+    s = settings
+    days = [s.daily_epoch + dt.timedelta(days=d) for d in range(90)]
+    puzzles = [engine.daily_puzzle(day) for day in days]
+
+    def links(p):
+        return {frozenset(pair) for pair in zip(p.optimal_path, p.optimal_path[1:])}
+
+    repeats = []
+    for i, (day, p) in enumerate(zip(days, puzzles)):
+        if engine.dailies.is_frozen(day):
+            continue  # hand-picked; reviewed for repeats instead
+        recent = set().union(*map(links, puzzles[max(0, i - s.daily_fresh_link_days):i]))
+        if links(p) & recent:
+            repeats.append((i + 1, p.optimal_path))
+    # The rule relaxes rather than fail when a day has no fresh option. That
+    # should be rare; if it isn't, the window is too long for the data.
+    assert len(repeats) <= 2, repeats
+
+
 def test_dailies_follow_weekday_difficulty_ramp(engine):
     import datetime as dt
 

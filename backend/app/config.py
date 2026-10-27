@@ -53,9 +53,11 @@ class Settings:
     # Keep consecutive dailies feeling different: a word that started or
     # ended a daily in the last N days can't start/end today's, and a word
     # on any route in the last M days can't start, end or sit mid-route
-    # today. 0 disables either rule.
+    # today, and a link on a par route in the last L days (glass -> sand)
+    # can't be on today's. 0 disables a rule.
     daily_fresh_ends_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ENDS_DAYS", "14"))
     daily_fresh_route_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_ROUTE_DAYS", "7"))
+    daily_fresh_link_days: int = int(os.environ.get("DEGREES_DAILY_FRESH_LINK_DAYS", "45"))
 
     # Difficulty ramp: the par each weekday's daily aims for, Monday first.
     daily_par_by_weekday: tuple[int, ...] = tuple(

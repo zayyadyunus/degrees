@@ -199,22 +199,30 @@ class Engine:
         avoid_ends: frozenset[int] = frozenset(),
         avoid_via: frozenset[int] = frozenset(),
         avoid_pairs: frozenset[frozenset[int]] = frozenset(),
+        avoid_links: frozenset[frozenset[int]] = frozenset(),
     ) -> Puzzle | None:
         """Pick a start/target whose par route uses only named links.
 
         `avoid_ends` can't be the start or target; `avoid_via` can't appear
         in the middle of the par route; `avoid_pairs` are start/target pairs
-        (either direction) that can't be used again. The daily schedule uses
-        these to keep puzzles from feeling the same.
+        (either direction) that can't be used again; `avoid_links` can't be
+        on the par route. The daily schedule uses these to keep puzzles from
+        feeling the same.
         """
+        named_adj = self._named_adj
+        if avoid_links:
+            named_adj = [
+                [n for n in nbs if frozenset((i, n)) not in avoid_links]
+                for i, nbs in enumerate(self._named_adj)
+            ]
         candidate_starts = [
             i for i, a in enumerate(self._named_adj) if len(a) > 0 and i not in avoid_ends
         ]
         rng.shuffle(candidate_starts)
         for start_idx in candidate_starts[:200]:
             dist, _ = self.graph.distances(start_idx)
-            if avoid_via:
-                named_dist, named_prev = bfs(self._named_adj, start_idx, no_pass=set(avoid_via))
+            if avoid_via or avoid_links:
+                named_dist, named_prev = bfs(named_adj, start_idx, no_pass=set(avoid_via))
             else:
                 named_dist, named_prev = self._named_distances(start_idx)
             # Par comes from the full graph (no route is shorter), but the

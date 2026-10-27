@@ -819,6 +819,36 @@
       "rel": "Related",
       "a": "light",
       "b": "day"
+    },
+    {
+      "rel": "Related",
+      "a": "star",
+      "b": "player"
+    },
+    {
+      "rel": "Related",
+      "a": "ash",
+      "b": "fuel"
+    },
+    {
+      "rel": "Antonym",
+      "a": "loud",
+      "b": "quiet"
+    },
+    {
+      "rel": "PartOf",
+      "a": "branch",
+      "b": "tree"
+    },
+    {
+      "rel": "PartOf",
+      "a": "leaf",
+      "b": "tree"
+    },
+    {
+      "rel": "HasProperty",
+      "a": "egg",
+      "b": "white"
     }
   ]
 }

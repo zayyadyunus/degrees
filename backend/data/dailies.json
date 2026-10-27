@@ -689,6 +689,349 @@
         "history",
         "bone"
       ]
+    },
+    {
+      "date": "2026-12-19",
+      "start": "potato",
+      "target": "storm",
+      "par": 5,
+      "route": [
+        "potato",
+        "cheese",
+        "egg",
+        "white",
+        "cloud",
+        "storm"
+      ],
+      "tiles": [
+        "winter",
+        "sun",
+        "weather",
+        "cloud",
+        "goat",
+        "cheese",
+        "moon",
+        "carrot",
+        "white",
+        "egg"
+      ]
+    },
+    {
+      "date": "2026-12-20",
+      "start": "feeling",
+      "target": "shield",
+      "par": 4,
+      "route": [
+        "feeling",
+        "hope",
+        "peace",
+        "war",
+        "shield"
+      ],
+      "tiles": [
+        "sword",
+        "fear",
+        "hope",
+        "castle",
+        "war",
+        "peace",
+        "soldier",
+        "tower",
+        "crown",
+        "thought"
+      ]
+    },
+    {
+      "date": "2026-12-21",
+      "start": "salad",
+      "target": "beer",
+      "par": 3,
+      "route": [
+        "salad",
+        "meal",
+        "dinner",
+        "beer"
+      ],
+      "tiles": [
+        "window",
+        "dinner",
+        "lamp",
+        "glass",
+        "meal",
+        "metal",
+        "cup",
+        "race",
+        "pasta",
+        "tomato"
+      ]
+    },
+    {
+      "date": "2026-12-22",
+      "start": "dance",
+      "target": "loud",
+      "par": 3,
+      "route": [
+        "dance",
+        "music",
+        "noise",
+        "loud"
+      ],
+      "tiles": [
+        "quiet",
+        "jump",
+        "noise",
+        "strong",
+        "violin",
+        "music",
+        "instrument",
+        "small",
+        "ear",
+        "mouth"
+      ]
+    },
+    {
+      "date": "2026-12-23",
+      "start": "chair",
+      "target": "city",
+      "par": 4,
+      "route": [
+        "chair",
+        "room",
+        "house",
+        "village",
+        "city"
+      ],
+      "tiles": [
+        "sofa",
+        "room",
+        "house",
+        "table",
+        "history",
+        "desk",
+        "village",
+        "kitchen",
+        "nation",
+        "earth"
+      ]
+    },
+    {
+      "date": "2026-12-24",
+      "start": "sweet",
+      "target": "meat",
+      "par": 4,
+      "route": [
+        "sweet",
+        "honey",
+        "butter",
+        "bread",
+        "meat"
+      ],
+      "tiles": [
+        "honey",
+        "bread",
+        "bee",
+        "dog",
+        "soup",
+        "horse",
+        "butter",
+        "beautiful",
+        "pig"
+      ]
+    },
+    {
+      "date": "2026-12-25",
+      "start": "jewel",
+      "target": "engine",
+      "par": 4,
+      "route": [
+        "jewel",
+        "silver",
+        "metal",
+        "machine",
+        "engine"
+      ],
+      "tiles": [
+        "boat",
+        "drum",
+        "silver",
+        "plane",
+        "heart",
+        "machine",
+        "eagle",
+        "prince",
+        "instrument",
+        "metal"
+      ]
+    },
+    {
+      "date": "2026-12-26",
+      "start": "science",
+      "target": "head",
+      "par": 4,
+      "route": [
+        "science",
+        "knowledge",
+        "mind",
+        "brain",
+        "head"
+      ],
+      "tiles": [
+        "student",
+        "face",
+        "memory",
+        "dream",
+        "school",
+        "bone",
+        "language",
+        "mind",
+        "knowledge",
+        "brain"
+      ]
+    },
+    {
+      "date": "2026-12-27",
+      "start": "fox",
+      "target": "cat",
+      "par": 3,
+      "route": [
+        "fox",
+        "wolf",
+        "bear",
+        "cat"
+      ],
+      "tiles": [
+        "sheep",
+        "dolphin",
+        "wolf",
+        "news",
+        "keyboard",
+        "elephant",
+        "screen",
+        "computer",
+        "bear",
+        "program"
+      ]
+    },
+    {
+      "date": "2026-12-28",
+      "start": "evening",
+      "target": "heat",
+      "par": 3,
+      "route": [
+        "evening",
+        "day",
+        "sun",
+        "heat"
+      ],
+      "tiles": [
+        "night",
+        "hour",
+        "sun",
+        "spring",
+        "flame",
+        "wood",
+        "fire",
+        "day",
+        "ash",
+        "hot"
+      ]
+    },
+    {
+      "date": "2026-12-29",
+      "start": "cold",
+      "target": "ash",
+      "par": 3,
+      "route": [
+        "cold",
+        "hot",
+        "fire",
+        "ash"
+      ],
+      "tiles": [
+        "light",
+        "wind",
+        "sweet",
+        "rock",
+        "wood",
+        "hot",
+        "lamp",
+        "stone",
+        "weather",
+        "fire"
+      ]
+    },
+    {
+      "date": "2026-12-30",
+      "start": "treasure",
+      "target": "grass",
+      "par": 4,
+      "route": [
+        "treasure",
+        "gold",
+        "purple",
+        "green",
+        "grass"
+      ],
+      "tiles": [
+        "purple",
+        "tree",
+        "green",
+        "branch",
+        "rock",
+        "gold",
+        "seed",
+        "metal",
+        "money",
+        "coin"
+      ]
+    },
+    {
+      "date": "2026-12-31",
+      "start": "milk",
+      "target": "vegetable",
+      "par": 3,
+      "route": [
+        "milk",
+        "cheese",
+        "pasta",
+        "vegetable"
+      ],
+      "tiles": [
+        "sugar",
+        "carrot",
+        "garden",
+        "coffee",
+        "building",
+        "house",
+        "pasta",
+        "cheese",
+        "home"
+      ]
+    },
+    {
+      "date": "2027-01-01",
+      "start": "rabbit",
+      "target": "stream",
+      "par": 4,
+      "route": [
+        "rabbit",
+        "turtle",
+        "whale",
+        "water",
+        "stream"
+      ],
+      "tiles": [
+        "shore",
+        "ice",
+        "whale",
+        "water",
+        "spring",
+        "rain",
+        "mouse",
+        "turtle",
+        "cold",
+        "boat"
+      ]
     }
   ]
 }

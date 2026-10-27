@@ -175,6 +175,7 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_DAILY_EPOCH`     | `2026-11-21` | date of daily puzzle #1 |
 | `DEGREES_DAILY_FRESH_ENDS_DAYS` | `14` | a daily's start/target can't have started/ended a daily this recently |
 | `DEGREES_DAILY_FRESH_ROUTE_DAYS` | `7` | words on a route this recently can't appear in today's daily |
+| `DEGREES_DAILY_FRESH_LINK_DAYS` | `45` | links on a par route this recently can't be on today's |
 | `DEGREES_WORDNET_SENSES`  | `3`     | WordNet senses per part of speech used to name links (`0` = all) |
 | `DEGREES_DAILY_PAR_BY_WEEKDAY` | `3,3,4,4,4,5,4` | par each weekday's daily aims for, Monday first |
 | `DEGREES_DAILIES`         | `data/dailies.json` | frozen (reviewed) daily puzzles |
