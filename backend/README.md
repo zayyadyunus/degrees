@@ -186,7 +186,33 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 python -m pytest        # needs requirements-dev.txt
 ```
 
+## Growing the vocabulary
+
+`data/wordlist.next.txt` holds the next vocabulary: 819 words, against 389
+today, for the January release, once the reviewed launch month (frozen
+through 2027-01-01) has been played.
+
+Growing the word list changes the graph under every puzzle, so plan for it:
+
+- **`k` must grow with the vocabulary.** Links are mutual k-nearest
+  neighbours, so new similar words crowd out existing links. At 819 words
+  with `k=12`, only 60% of today's links survive (`fruit-apple`,
+  `apple-banana` and `winter-ice` vanish). `k=24` keeps 95%, which doubles
+  the links per word (median 9 to 19), so replay and re-tune difficulty.
+- **Frozen days still to be served break.** New words open shortcuts (par
+  drops) and remove links. Played days are exempt: validation only covers
+  days from yesterday on (`DailySchedule.served_from`), so switch once the
+  old frozen days are past.
+
+To switch: copy `wordlist.next.txt` over `wordlist.txt`, rebuild vectors,
+set `DEGREES_K`, then generate, review (`preview-dailies` skill) and freeze
+the new month, and deploy the day after the last old frozen day. On that day
+players behind UTC can still open yesterday's puzzle, so make the last old
+frozen day a **bridge day**: a puzzle (route, par and board) that fits both
+the old and the new data. Run `pytest` before deploying: it fails while any
+frozen day still to be served doesn't fit the new data.
+
 ## Not yet built (future)
 
-Persistence (games are in-memory), daily puzzle, accounts/streaks, LLM-judge
-fallback for borderline connections.
+Persistence (games are in-memory), accounts/streaks, LLM-judge fallback for
+borderline connections.

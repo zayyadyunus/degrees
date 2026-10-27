@@ -12,6 +12,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.config import settings  # noqa: E402
+from app.dailies import DailySchedule  # noqa: E402
 from app.embeddings import Embeddings  # noqa: E402
 from app.game import STATUS_LOST, STATUS_WON, Engine  # noqa: E402
 from app.graph import WordGraph  # noqa: E402
@@ -201,10 +202,27 @@ def test_frozen_dailies_that_break_are_reported():
                    optimal_path=(good.start, "notaword"))
     gap = {epoch: good, epoch + dt.timedelta(days=2): good}
     for frozen in ({epoch: bogus}, gap):
-        broken = Engine(engine.embeddings, engine.graph, settings, frozen_dailies=frozen)
-        assert broken.dailies.problems
+        broken = DailySchedule(engine, settings, frozen, today=epoch)
+        assert broken.problems
         with pytest.raises(ValueError):
-            broken.dailies.raise_if_invalid()
+            broken.raise_if_invalid()
+
+
+def test_played_frozen_dailies_are_not_validated():
+    """Days before yesterday are never served again, so the word data can
+    change under them."""
+    import datetime as dt
+
+    from app.game import Puzzle
+
+    engine = build_engine()
+    epoch = settings.daily_epoch
+    good = engine.daily_puzzle(epoch)
+    bogus = Puzzle(start=good.start, target="notaword", optimal_distance=1,
+                   optimal_path=(good.start, "notaword"))
+    frozen = {epoch: bogus, epoch + dt.timedelta(days=1): good}
+    assert DailySchedule(engine, settings, frozen, today=epoch + dt.timedelta(days=2)).problems == {}
+    assert epoch in DailySchedule(engine, settings, frozen, today=epoch + dt.timedelta(days=1)).problems
 
 
 def test_frozen_daily_with_demoted_link_is_reported():
@@ -220,9 +238,9 @@ def test_frozen_daily_with_demoted_link_is_reported():
         def classify(self, a: str, b: str) -> str | None:
             return None if {a, b} == demoted else "IsA"
 
-    relabelled = Engine(engine.embeddings, engine.graph, settings, labeler=Labeler(),
-                        frozen_dailies={epoch: good})
-    assert "unnamed" in relabelled.dailies.problems[epoch]
+    relabelled = Engine(engine.embeddings, engine.graph, settings, labeler=Labeler())
+    schedule = DailySchedule(relabelled, settings, {epoch: good}, today=epoch)
+    assert "unnamed" in schedule.problems[epoch]
 
 
 def test_reroll_replaces_one_day_and_keeps_neighbours_fresh():

@@ -137,8 +137,10 @@ def test_daily_boards_are_fair(engine):
     import numpy as np
     from app.board import assess, board_for
 
+    # Only days still to be served: played days needn't fit current data.
+    first = max(settings.daily_epoch, engine.dailies.served_from)
     for d in range(60):
-        puzzle = engine.daily_puzzle(settings.daily_epoch + dt.timedelta(days=d))
+        puzzle = engine.daily_puzzle(first + dt.timedelta(days=d))
         assert set(puzzle.optimal_path[1:-1]) <= set(puzzle.tiles), (d + 1, puzzle)
         a = assess(engine, board_for(engine, puzzle), np.random.default_rng(0), walks=1)
         assert a.par_solutions, (d + 1, puzzle)

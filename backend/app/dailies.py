@@ -66,11 +66,24 @@ def save_frozen(path: Path, frozen: dict[dt.date, "Puzzle"]) -> None:
 
 
 class DailySchedule:
-    def __init__(self, engine: "Engine", settings, frozen: dict[dt.date, "Puzzle"] | None = None):
+    def __init__(
+        self,
+        engine: "Engine",
+        settings,
+        frozen: dict[dt.date, "Puzzle"] | None = None,
+        today: dt.date | None = None,
+    ):
         self.engine = engine
         self.settings = settings
         self.epoch: dt.date = settings.daily_epoch
         self.frozen = dict(frozen or {})
+        # Players can ask for the daily up to a day either side of UTC today
+        # (see main._daily_date), so only days from yesterday on are ever
+        # served. Older frozen days are history: they still count for the
+        # no-repeat rules but needn't fit the current word data, which lets
+        # the vocabulary change after they're played.
+        today = today or dt.datetime.now(dt.timezone.utc).date()
+        self.served_from: dt.date = today - dt.timedelta(days=1)
         # Frozen days that no longer match the word data. The app refuses to
         # start with any (see bootstrap); the freeze script uses this list to
         # re-roll them.
@@ -195,7 +208,7 @@ class DailySchedule:
 
     # -- validation ---------------------------------------------------------
     def _check_frozen(self) -> dict[dt.date | None, str]:
-        """Frozen days must still be playable exactly as reviewed.
+        """Frozen days still to be served must be playable exactly as reviewed.
 
         Returns {day: problem}; the None key is a schedule-wide problem.
         """
@@ -211,6 +224,8 @@ class DailySchedule:
                 f"(got {days[0]} .. {days[-1]}, {len(days)} days)"
             )
         for day in days:
+            if day < self.served_from:
+                continue
             p = self.frozen[day]
             route = p.optimal_path
             missing = [w for w in route if w not in I]
