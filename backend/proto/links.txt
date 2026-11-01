@@ -1,0 +1,344 @@
+# Degrees prototype: hand-typed links for the six-type rule.
+#
+# The six link types a player can spend (each once per puzzle):
+#
+#   kind     a is a kind of b                    dog -> animal
+#   family   a and b are the same kind of thing  lion <-> tiger
+#   part     a is part of b / a is made of b     wheel -> car, glass -> sand
+#   feature  a and b share a feature             tomato <-> blood (both red)
+#            "red feature: tomato blood fire" links every pair in the list;
+#            adjectives are never tiles, they only name what's shared.
+#            List a word only if most people would give the feature as THE
+#            answer to "what colour / texture / ... is X?" (snow: white; not
+#            wine, fire is orange, butter isn't soft from the fridge). No
+#            category words (fruit isn't sweet: lemon is a fruit), and no
+#            relative features (big, small): every pair in a list is a link.
+#   use      a is used for b / a makes b         hammer -> nail, bee -> honey
+#   found    a is found in / with b              sand -> beach, salt -> pepper
+#
+# Syntax
+#   kinds NAME: w1 w2 ...       each word is a kind of NAME, but NOT one family
+#                               (a dog and an eagle are both animals; calling
+#                               them "the same family" reads badly)
+#   category NAME: w1 w2 ...    each word is a kind of NAME, and the words are
+#                               one family. "kind" passes up the categories
+#                               (eagle -> bird -> animal: eagle is a kind of
+#                               animal); "family" needs the SAME category
+#                               (eagle/owl yes, eagle/dog no).
+#                               ~NAME is a family with no word of its own
+#                               (~vehicle: car, bus... but "vehicle" isn't a tile).
+#   family: w1 w2 ...           a family that needs no category
+#   avoid: a b                  never put a and b on one board: a real phrase
+#                               that isn't one of the six types (fruit salad
+#                               + banana), so players would try it and strike
+#   A REL: b c d                one line per word and relation, REL in
+#                               part made feature use makes in with kind
+#                               (made -> part, makes -> use, in/with -> found)
+#
+# One word, one meaning
+#   A word's links all describe the same thing. Words with two strong,
+#   unrelated meanings (orange: the colour and the fruit) are left out
+#   altogether: keeping one meaning would strike players for the other,
+#   which they can't un-know. Related meanings are fine: a drinking glass is
+#   made of glass, so cup -> glass -> sand is one thing, not a pun.
+#   Watch: spring (season / water / coil), light (noun / not heavy) are kept
+#   with one meaning each; the board check should catch the other.
+
+# ---- categories --------------------------------------------------------
+kinds animal: dog cat horse cow pig sheep goat lion tiger bear wolf fox deer elephant monkey rabbit mouse snake frog turtle spider whale dolphin bird insect fish
+category ~pet: dog cat rabbit mouse
+category ~farm_animal: cow pig sheep goat horse
+category ~wild_animal: lion tiger bear wolf fox deer elephant monkey
+category ~big_cat: lion tiger
+category ~dog_family: dog wolf fox
+category ~sea_creature: whale dolphin shark
+category ~reptile: snake turtle
+category ~creepy_crawly: spider ant snake
+category bird: eagle owl duck chicken
+category insect: bee ant butterfly
+category fish: shark
+category fruit: apple banana grape lemon berry
+category vegetable: carrot potato tomato onion
+kinds food: fruit vegetable bread cheese meat rice soup salad egg butter honey sugar fish
+kinds meat: chicken
+category drink: coffee tea juice wine milk water
+category color: red blue green yellow black white brown purple
+category metal: gold silver
+category jewel: diamond
+category instrument: piano drum guitar violin
+category tool: hammer saw
+category season: winter summer spring autumn
+category meal: breakfast lunch dinner
+category weather: rain snow storm wind
+category building: house castle tower
+category plant: tree flower grass
+category emotion: love fear anger joy
+category star: sun
+category planet: earth
+category money: coin
+category music: song
+category ~vehicle: car truck bus train plane boat ship bike
+category ~cutlery: fork knife spoon
+category ~dish: plate bowl cup glass
+category ~furniture: table chair bed desk
+category ~in_the_sky: sun moon star planet
+category ~body_of_water: ocean sea river lake
+category ~land: mountain hill valley island
+category ~royalty: king queen prince
+category ~writing: pen pencil
+category ~time: day night morning evening
+category ~temperature: hot cold warm
+category ~size: big small
+category ~speed: fast slow
+category ~texture: soft hard
+category ~sound: loud quiet
+category ~taste: sweet bitter sour
+category ~stone: rock stone
+category ~body: hand foot
+category ~limb: arm leg
+category ~face: eye ear nose mouth
+category ~bedding: pillow blanket
+category ~flavour: salt pepper
+
+
+# ---- part / made -------------------------------------------------------
+wheel part: car truck bus bike train
+engine part: car truck plane ship train bus
+trunk part: tree elephant
+leaf part: tree flower plant
+branch part: tree
+wood part: tree
+root part: tree plant flower
+seed part: fruit apple grape lemon berry
+page part: book
+finger part: hand
+hand part: arm body
+foot part: leg body
+arm part: body
+leg part: body table chair desk bed
+head part: body
+eye part: face head
+ear part: head
+nose part: face head
+mouth part: face head
+face part: head
+tooth part: mouth
+hair part: head
+brain part: head body
+heart part: body
+bone part: body
+skin part: body
+blood part: body
+door part: house room building car
+window part: house room building car
+wall part: house room building castle
+floor part: house room building
+roof part: house building
+room part: house building
+tower part: castle
+wave part: ocean sea
+keyboard part: computer
+screen part: computer phone
+ink part: pen
+glass made: sand
+paper made: wood tree
+book made: paper
+wine made: grape
+juice made: fruit apple lemon grape
+cheese made: milk
+butter made: milk
+ice made: water
+snow made: water ice
+cloud made: water
+coin made: gold silver metal
+crown made: gold
+house made: wood stone
+castle made: stone rock
+tower made: stone
+table made: wood
+chair made: wood
+bed made: wood
+desk made: wood
+pencil made: wood
+salad made: vegetable tomato carrot onion potato fruit
+soup made: vegetable water tomato
+tea made: leaf water
+sword made: metal
+saw made: metal
+knife made: metal
+shield made: metal wood
+sand made: rock stone
+shirt made: cloth
+coat made: cloth
+bridge made: stone wood
+
+# ---- feature -----------------------------------------------------------
+red feature: tomato apple blood heart berry
+yellow feature: banana lemon sun butter cheese
+green feature: grass leaf tree frog grape
+blue feature: sky ocean sea
+white feature: snow milk cloud sugar salt paper rice tooth egg moon
+black feature: ink night shadow
+brown feature: bear wood coffee
+purple feature: grape
+hot feature: fire sun summer flame
+cold feature: ice snow winter
+warm feature: summer spring
+sweet feature: honey sugar banana apple grape berry
+bitter feature: coffee
+sour feature: lemon
+soft feature: pillow blanket bed bread
+hard feature: rock stone diamond bone tooth
+loud feature: drum storm engine
+quiet feature: mouse night
+fast feature: car train plane horse rabbit rocket
+slow feature: turtle
+dark feature: night shadow space
+sharp feature: knife sword saw tooth
+
+# ---- use / makes -------------------------------------------------------
+hammer use: nail
+saw use: wood tree
+knife use: bread meat cheese
+fork use: food meat salad
+spoon use: soup sugar
+cup use: tea coffee
+glass use: wine water juice milk
+bowl use: food soup rice
+plate use: food
+pen use: paper
+pencil use: paper
+boat in: river lake sea ocean
+ship in: sea ocean
+car in: road
+bus in: road
+truck in: road
+bike in: road
+plane in: sky
+pillow use: head
+clock use: time
+money use: shop
+sword use: war fight
+shield use: war fight
+camera use: photo picture
+paint use: picture art
+fuel use: car engine plane fire
+wood use: fire
+salt use: food meat
+pepper use: food
+sugar use: coffee tea
+butter use: bread
+honey use: tea
+lemon use: tea
+ball use: game sport
+bee makes: honey
+cow makes: milk
+goat makes: milk
+chicken makes: egg
+bird makes: egg
+duck makes: egg
+owl makes: egg
+eagle makes: egg
+tree makes: fruit apple lemon banana
+seed makes: tree flower plant grass
+flower makes: seed
+fire makes: smoke ash heat light flame
+sun makes: light heat
+star makes: light
+lamp makes: light
+light makes: shadow
+storm makes: rain wind
+cloud makes: rain snow storm
+winter makes: snow
+wind makes: wave
+piano makes: music sound
+drum makes: music sound
+guitar makes: music sound
+violin makes: music sound
+
+# ---- found -------------------------------------------------------------
+sand in: beach
+wave with: beach
+fish in: sea ocean river lake water
+shark in: sea ocean water
+whale in: sea ocean water
+dolphin in: sea ocean water
+star in: sky space
+star with: night
+moon in: sky space
+moon with: night
+sun in: sky space
+sun with: day
+planet in: space
+rocket in: space
+cloud in: sky
+bird in: sky tree
+seed with: bird
+eagle in: sky mountain
+owl in: tree forest
+owl with: night
+bee in: garden
+ant in: garden
+seed in: garden
+bee with: flower
+butterfly in: garden
+butterfly with: flower
+frog in: lake river
+duck in: lake river
+cow in: farm
+pig in: farm
+sheep in: farm
+horse in: farm
+goat in: farm
+chicken in: farm
+tiger in: jungle
+monkey in: jungle
+snake in: jungle
+bear in: forest
+wolf in: forest
+fox in: forest
+deer in: forest
+tree in: forest
+snow in: mountain
+flower in: garden
+flower with: spring
+grass in: garden
+island in: sea ocean
+beach with: sea ocean
+bridge with: river road
+king in: castle
+queen in: castle
+prince in: castle
+crown with: king queen prince
+plate in: kitchen
+plate with: table
+bowl in: kitchen
+bowl with: table
+cup in: kitchen
+glass in: kitchen
+glass with: table
+cup with: table
+fork in: kitchen
+fork with: table
+spoon with: table
+knife with: table
+knife in: kitchen
+spoon in: kitchen
+pillow with: bed
+blanket with: bed
+lamp with: desk table
+chair with: table desk
+book in: school desk
+egg with: breakfast
+bread with: breakfast
+juice with: breakfast
+milk with: breakfast
+tea with: breakfast
+coffee with: breakfast
+wine with: dinner
+salt with: pepper
+
+# ---- avoid -------------------------------------------------------------
+# Real phrases that fit none of the six types. Never on one board together.
+avoid: banana salad
+avoid: berry salad
