@@ -107,6 +107,10 @@ class Links:
     def types(self, a: str, b: str) -> dict[str, str]:
         return self.edges.get(frozenset((a, b)), {})
 
+    def shared_features(self, a: str, b: str) -> set[str]:
+        """The adjectives behind a "share a feature" link (white for snow / milk)."""
+        return {adj for adj, ws in self.features.items() if a in ws and b in ws}
+
     def count_by_type(self) -> dict[str, int]:
         counts = dict.fromkeys(TYPES, 0)
         for ts in self.edges.values():
@@ -203,6 +207,12 @@ def load(path: Path = LINKS_PATH) -> Links:
             why = f"{w} is a kind of {anc}" + (f" (a {via[0]})" if via else "")
             steps = list(zip([w, *via], [*via, anc]))
             links.add(w, anc, "kind", why, arguable=any(s in shaky_parent for s in steps))
+    # A kind-of pair is parent and child, not siblings: "mother and parent
+    # are the same family" reads badly, and the spare type spoils planning.
+    for pair, types in links.edges.items():
+        if "kind" in types and "family" in types:
+            del types["family"]
+            links.arguable.discard((pair, "family"))
     links.parents = dict(parents)
     return links
 
@@ -333,6 +343,10 @@ def assess(links: Links, board: Board, rng: random.Random, walks: int = 3000) ->
 NEAR_RANK = 15   # same cut-off as the live game's near_misses (app/board.py)
 MAX_SOLUTIONS = 2
 MAX_RANDOM_WIN = 0.15
+# Traps tempt a player into spending a type twice. A few are the puzzle; dozens
+# (dense boards where "found with" fits everywhere) are a strike tax.
+MAX_TRAPS = 25
+PROTO_EDGE_WINDOW = 5
 
 
 def look_alikes(links: Links, rank: int = NEAR_RANK) -> frozenset[frozenset[str]]:
@@ -382,8 +396,16 @@ class History:
     # (the hubs get blocked and the thin data has few routes without them);
     # the 819-word vocabulary should allow 3.
     max_uses: int = 4
+    # A route link can't come back within `window` boards, nor a shared
+    # feature (white, sweet) within `feature_window`: the links are fine, the
+    # repetition (head -> pillow on 5 of 40 routes) is what makes a run dull.
+    feature_window: int = 3
+    # 10 suits the 735-word vocabulary; the ~240-word prototype stalls at
+    # about 10 boards with it, so it uses PROTO_EDGE_WINDOW.
+    edge_window: int = 10
     boards: list["Board"] = field(default_factory=list)
     routes: set[tuple[str, ...]] = field(default_factory=set)   # never repeated
+    features: list[set[str]] = field(default_factory=list)      # per board: route features used
 
     @property
     def ends(self) -> set[str]:
@@ -397,9 +419,24 @@ class History:
     def overused(self) -> set[str]:
         return {w for w, n in self.uses.items() if n >= self.max_uses}
 
-    def record(self, board: "Board") -> None:
+    @property
+    def edges(self) -> set[frozenset[str]]:
+        """Route links used by recent boards."""
+        return {frozenset(p) for b in self.boards[-self.edge_window:] for p in zip(b.route, b.route[1:])}
+
+    @property
+    def recent_features(self) -> set[str]:
+        return set().union(*self.features[-self.feature_window:]) if self.features else set()
+
+    def record(self, board: "Board", links: "Links | None" = None) -> None:
         self.boards.append(board)
         self.routes.add(tuple(board.route))
+        used = set()
+        if links is not None:
+            for (a, b), t in zip(zip(board.route, board.route[1:]), board.route_types):
+                if t == "feature":
+                    used |= links.shared_features(a, b)
+        self.features.append(used)
 
 
 def random_route(links: Links, rng: random.Random, start: str, min_distance: int,
@@ -419,6 +456,7 @@ def random_route(links: Links, rng: random.Random, start: str, min_distance: int
     path, used = [start], []
     steps = 0
     uses, ends, overused = history.uses, history.ends, history.overused
+    recent_edges, recent_features = history.edges, history.recent_features
 
     def go() -> bool:
         nonlocal steps
@@ -445,6 +483,10 @@ def random_route(links: Links, rng: random.Random, start: str, min_distance: int
             if last and (n in links.categories or n in ends):
                 continue
             if n in overused or any(frozenset((n, w)) in links.avoid for w in path):
+                continue
+            if frozenset((path[-1], n)) in recent_edges:
+                continue
+            if t == "feature" and links.shared_features(path[-1], n) & recent_features:
                 continue
             if n in links.categories and any(w in links.categories for w in path[1:]):
                 continue
@@ -543,6 +585,9 @@ def build_board(links: Links, rng: random.Random, min_distance: int = 3, tries: 
         if not a.traps or a.random_win_rate > MAX_RANDOM_WIN:
             rejected["too easy"] += 1
             continue
+        if len(a.traps) > MAX_TRAPS:
+            rejected["too many traps"] += 1
+            continue
         # Prefer: few solutions (a real puzzle), many traps, rarely won at random.
         quality = len(a.traps) * 2 - len(a.solutions) * 3 - a.random_win_rate * 20
         if best is None or quality > best[0]:
@@ -552,7 +597,7 @@ def build_board(links: Links, rng: random.Random, min_distance: int = 3, tries: 
     if best is None:
         return None
     board = best[1]
-    history.record(board)
+    history.record(board, links)
     return board, assess(links, board, rng)
 
 

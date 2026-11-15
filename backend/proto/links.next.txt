@@ -56,11 +56,6 @@ kinds animal: bird insect fish bear bull camel cat cow crab crocodile deer dog d
 category bird: eagle owl crow duck hawk ostrich parrot peacock penguin pigeon swan chicken
 category chicken: hen rooster
 category insect: ant bee beetle butterfly mosquito wasp
-category fish: shark
-category dog: puppy
-category cat: kitten
-category sheep: lamb
-category bear: panda
 category ~baby_animal: puppy kitten lamb
 category ~big_cat: lion tiger
 category ~dog_family: dog wolf fox
@@ -73,7 +68,6 @@ category ~australian_animal: kangaroo koala
 category ~pet: dog cat rabbit ?parrot
 kinds food: fruit vegetable meat nut dessert snack pasta bread cheese egg rice pizza burger sandwich soup salad cereal butter yogurt honey candy chocolate ?cream ?fish
 category fruit: apple banana berry cherry coconut grape lemon melon peach pear pineapple plum strawberry ?tomato
-category berry: strawberry
 category vegetable: cabbage carrot cucumber lettuce onion pea potato bean ?pumpkin ?tomato ?corn ?garlic ?mushroom
 category nut: almond ?coconut
 category meat: bacon ham sausage steak
@@ -82,7 +76,6 @@ category ~sweets: candy chocolate ?cookie
 category ~dairy: milk cheese butter yogurt cream
 category ~fast_food: pizza burger ?sandwich
 category ~grain: rice wheat ?corn
-category pasta: ?noodle
 category meal: breakfast lunch dinner ?picnic ?feast
 category ~drink: coffee tea juice milk beer wine soda lemonade ?water
 category spice: cinnamon pepper ?vanilla
@@ -101,34 +94,24 @@ category ~furniture: bed chair couch sofa desk table ?shelf
 category ~bedding: pillow blanket
 category ~floor_covering: carpet rug
 category clothes: shirt pants dress skirt coat jacket sweater sock scarf glove ?uniform ?shoe
-category coat: jacket
-category shoe: boot
-category hat: helmet
 category ~jewelry: bracelet necklace
-category jewel: diamond
 category metal: gold silver
 category ~material: wood metal cloth paper
-category stone: pebble
 category instrument: drum flute guitar harp piano trumpet violin
 category ~vehicle: car bus truck bike train taxi ?subway
-category car: taxi
 category ~aircraft: plane jet helicopter ?rocket
-category plane: jet
 category ~watercraft: boat ship canoe ?raft
 category boat: canoe ?raft
-kinds feeling: emotion
 category emotion: anger fear joy love hate sadness jealousy guilt shame pride loneliness boredom excitement surprise worry ?panic
 category season: spring summer autumn winter
 category ~unit_of_time: hour day week month year
 category ~time_of_day: morning evening night dawn
 category weather: rain snow fog storm wind ?frost
-category wind: breeze
 category ~body_part: arm leg hand foot head neck shoulder knee elbow finger toe thumb
 category ~facial_feature: eye ear nose mouth lip chin cheek
 category ~organ: brain heart lung stomach
 kinds person: man woman child worker parent brother sister aunt uncle cousin grandmother husband wife twin friend neighbor stranger guest hero ?villain thief pirate king queen prince knight hunter student player champion ?winner cook ?witch ?wizard
 kinds worker: actor artist astronaut baker chef doctor nurse driver engineer farmer judge lawyer pilot sailor scientist ?singer soldier teacher writer boss referee ?cook
-category cook: chef
 category ~medical_worker: doctor nurse
 category ~legal_worker: judge lawyer
 category ~performer: actor singer
@@ -150,31 +133,21 @@ category room: kitchen attic basement closet ?office
 category ~building_part: wall floor roof door window ?stairs
 category ~entrance: door gate
 category ~landform: mountain hill valley canyon cliff island volcano ?cave
-category mountain: volcano
-category ~wild_landscape: forest jungle desert swamp
-category forest: jungle
+category ~landscape: forest jungle desert swamp
 category ~body_of_water: ocean sea lake river pond stream
-category shore: beach
 category ~celestial_body: sun moon planet star earth
-category star: sun
-category planet: earth
 kinds game: chess ?sport ?puzzle
 category sport: baseball basketball football soccer golf tennis
-category race: marathon
 category prize: medal trophy
 category toy: ball doll kite ?balloon
 category art: drawing sculpture ?statue
 category picture: drawing photo
 category ~performance: concert opera ballet
-category dance: ballet
-category music: song
 category ~publication: book magazine newspaper comic
 category ~electronic_device: computer phone television radio camera
 kinds machine: robot engine ?computer
 category ~celebration: party wedding festival ?birthday
 category journey: trip ?hike
-category shape: circle
-category money: coin
 category ~light_source: lamp candle
 category ~fastener: nail screw
 category ~adhesive: glue tape
@@ -186,13 +159,13 @@ dirty feature: mud ?dust ?toilet ?swamp
 loud feature: thunder drum trumpet noise whistle ?bell ?rooster ?concert ?traffic ?crowd
 quiet feature: library ?night
 soft feature: pillow blanket moss ?kitten ?sweater ?sock ?petal ?rug ?carpet ?sofa ?couch
-hard feature: rock diamond bone brick nail tooth pebble helmet ?coconut
+hard feature: rock stone diamond brick pebble ?bone ?tooth ?nail ?helmet ?coconut
 sweet feature: honey sugar candy cake chocolate cookie soda ?melon ?peach ?vanilla ?lemonade
 bitter feature: coffee ?beer
 dry feature: desert sand dust ?ash ?flour
 wet feature: rain water mud swamp flood ?waterfall ?sweat ?shower ?bath
 heavy feature: anchor elephant whale ?hippo ?piano ?brick
-bright feature: sun lightning light ?lamp ?diamond
+bright feature: sun lightning star ?lamp ?diamond
 sharp feature: knife needle sword axe scissors ?saw ?tooth ?cactus
 smooth feature: pebble mirror ?glass ?ice
 rough feature: ?brick ?rock
@@ -204,15 +177,14 @@ yellow feature: banana lemon butter corn ?sun ?gold
 black feature: crow night ?ink ?shadow ?pepper
 white feature: snow milk salt sugar swan rice tooth flour ?cloud ?paper ?bone ?ghost
 purple feature: plum ?grape
-brown feature: chocolate coffee cinnamon mud ?wood
+brown feature: chocolate coffee cinnamon mud ?wood ?bear
 gray feature: elephant pigeon ash rhino ?smoke
 dark feature: night cave shadow ?basement
 cold feature: ice snow frost glacier winter fridge
 fast feature: jet rocket ?lightning
 slow feature: snail turtle ?glacier
 hot feature: fire flame sun ?oven ?volcano ?summer ?desert
-warm feature: blanket sweater ?bath
-busy feature: city airport ?market ?station ?street ?mall
+warm feature: blanket sweater ?coat ?bath
 sour feature: lemon vinegar ?yogurt
 salty feature: salt sea ocean bacon sweat ?ham
 frozen feature: ice glacier frost ?snow
@@ -363,6 +335,8 @@ avoid: war world
 leg part: bed desk
 eagle makes: egg
 owl makes: egg
+ham made: pig
+avoid: drum ear
 
 # ---- pair labels -----------------------------------------------------
 actor in: ?screen stage ?television theater
@@ -382,57 +356,54 @@ anchor made: metal
 anchor part: ?boat ship
 anchor with: boat chain ?harbor ?ocean ?sail sailor ?sea
 anger kind: emotion feeling
-anger with: ?fight ?hate
+anger with: ?fight
 animal in: farm forest ?jungle zoo
 answer with: ?math ?puzzle
 ant in: ?forest ?garden ?yard
 ant kind: animal insect
 ant with: ?picnic ?sugar
-apple in: ?market ?tree
+apple in: ?market
 apple kind: food fruit ?snack
 apple part: ?cake ?dessert pie ?salad
 apple with: ?branch ?lunch ?teacher
-arm part: body human man octopus person ?robot
-arm with: ?leg
+arm part: body human man ?octopus person ?robot
 army part: ?country ?nation
 army with: ?camp ?fight ?king war
 art in: museum ?school
 art made: ?paint
 art with: ?music
-artist kind: human person ?worker
+artist kind: ?human person ?worker
 artist makes: art ?cartoon ?comic drawing picture ?sculpture ?statue
 artist use: ?ink
 artist with: ?museum
 ash with: ?smoke
 astronaut in: space
-astronaut kind: human ?job person ?worker
+astronaut kind: ?human ?job person ?worker
 astronaut with: ?earth ?gravity ?helmet moon ?pilot ?planet rocket ?science ?star
 attic kind: room
 attic part: building home house
 attic with: roof
 audience in: cinema ?stadium theater
-audience kind: ?crowd ?people
+audience kind: ?crowd
 audience makes: ?laugh
 audience with: actor ?art ?ballet concert ?film ?movie ?music ?opera ?screen singer stage ?television
-aunt kind: human ?people person woman
+aunt kind: ?human person woman
 aunt part: family
-aunt with: ?sister uncle
 autumn kind: season
 autumn part: year
-autumn with: ?winter
 axe kind: tool
 axe made: metal
 axe use: ?branch ?oak tree wood
 axe with: ?cabin ?forest
 baby in: ?hospital
-baby kind: ?child human ?kid people person
+baby kind: ?child ?human ?kid person
 baby part: ?family
 baby with: milk mother ?sleep
 bacon in: ?fridge
 bacon kind: food meat
 bacon made: pig
 bacon part: ?burger ?meal ?sandwich
-bacon with: breakfast ?cheese ?ham ?salt
+bacon with: breakfast ?cheese ?salt
 bag made: ?canvas ?cloth ?paper
 bag use: ?flour ?gift ?lunch ?money
 bag with: ?market ?shop ?shoulder ?store
@@ -461,7 +432,6 @@ baseball kind: game sport
 baseball with: field
 basement kind: floor ?room
 basement part: building home house
-basement with: ?attic
 basket made: ?bamboo
 basket part: ?basketball
 basket use: ?apple ?flower ?food ?picnic
@@ -524,8 +494,8 @@ birthday kind: ?day ?holiday
 birthday with: ?age ?birth ?dinner party ?year
 blanket made: cloth
 blanket use: ?sleep
-blanket with: ?baby bed ?couch picnic pillow ?sofa ?tent ?winter
-blood in: ?arm body ?human
+blanket with: ?baby bed ?couch picnic ?sofa ?tent ?winter
+blood in: ?arm
 blood part: body human ?meat
 blood with: ?crime ?death ?fight heart ?hospital
 boat in: harbor ocean ?pond river sea water
@@ -533,10 +503,10 @@ boat made: ?wood
 boat use: ?fuel ?journey ?travel
 boat with: ?island lake river ?shore ?trip ?wind
 body makes: sweat
-body part: ?human person
+body part: ?human ?person
 bone part: animal arm body ?cheek ?dog ?elbow finger fish foot hand ?head ?knee leg ?neck ?shoulder toe
 bone with: meat
-book in: ?bag library ?shelf
+book in: ?bag library
 book made: ?ink paper
 book use: ?study
 book with: ?desk ?lesson school ?student
@@ -556,17 +526,16 @@ bottle with: ?baby ?glass
 bowl in: kitchen
 bowl made: ?wood
 bowl use: cereal food ?fruit ?meal ?noodle ?pasta rice salad soup ?sugar ?yogurt
-bowl with: ?breakfast ?dinner ?dog plate ?table
+bowl with: ?breakfast ?dinner ?dog ?table
 box in: ?attic
 box made: ?paper ?wood
 box use: ?gift ?jewel ?shoe
 boy in: ?school
-boy kind: child human ?kid people person
+boy kind: child ?human ?kid person
 boy part: ?family
-boy with: ?father girl ?puppy
+boy with: ?father ?puppy
 bracelet made: ?chain ?gold ?metal ?silver
 bracelet with: ?arm ?gift ?hand
-brain in: head
 brain makes: ?dream idea thought
 brain part: animal body head human
 brain with: ?power ?wisdom
@@ -582,8 +551,7 @@ bread part: burger ?meal sandwich
 bread with: ?breakfast ?dinner ?oil soup ?table
 breakfast in: ?cafe ?kitchen
 breakfast kind: meal
-breakfast with: ?hotel ?lunch morning ?sunrise ?table
-breath in: ?lung
+breakfast with: ?hotel morning ?sunrise ?table
 breath with: ?life ?mouth ?run
 breeze in: ?beach ?coast
 breeze kind: ?weather wind
@@ -599,12 +567,11 @@ broom use: dust floor ?rug
 broom with: ?bucket witch ?wizard
 brother kind: ?man person
 brother part: family
-brother with: sister
 brush kind: tool
 brush use: ?art canvas ?dust hair paint ?picture ?tooth
-brush with: artist paint
+brush with: artist
 bucket made: ?metal
-bucket use: ?milk ?paint ?sand water
+bucket use: ?milk ?paint sand water
 bucket with: ?beach ?rope
 building in: city ?street ?town
 building made: ?brick
@@ -612,7 +579,7 @@ building part: ?airport ?city ?town
 bull in: farm ?field
 bull kind: animal
 bull makes: ?meat
-bull with: ?cow ?farmer
+bull with: ?farmer
 burger in: ?restaurant
 burger kind: food ?meal ?snack
 burger made: ?cow ?lamb meat
@@ -632,7 +599,7 @@ butter kind: food
 butter made: cream milk ?nut
 butter part: ?cake ?sandwich
 butter use: ?baker
-butter with: bread ?breakfast ?cheese ?pan ?potato ?sandwich ?sugar
+butter with: bread ?breakfast ?pan ?potato ?sandwich ?sugar
 butterfly in: ?field ?forest garden ?jungle ?park
 butterfly kind: animal insect
 butterfly with: flower
@@ -684,8 +651,7 @@ canvas with: artist
 canyon in: ?desert
 canyon kind: valley
 canyon made: rock
-canyon with: ?mountain
-car in: garage road street
+car in: road street
 car kind: machine
 car made: metal
 car part: traffic
@@ -697,9 +663,9 @@ card with: birthday gift ?holiday ?player ?wedding
 carpet in: house ?room
 carpet made: ?cloth
 carpet use: floor
-carpet with: ?floor ?stairs
+carpet with: ?stairs
 carrot in: ?farm ?field garden
-carrot kind: food root vegetable
+carrot kind: food ?root vegetable
 carrot part: ?cake salad ?soup
 carrot with: rabbit
 cartoon in: ?newspaper ?television
@@ -726,7 +692,6 @@ chain part: bike ?necklace ?ship
 chain with: lock ?prison
 chair in: cafe ?house ?kitchen office ?room ?school ?theater
 chair made: wood
-chair with: ?couch desk ?sofa table
 champion kind: ?person ?player winner
 champion with: ?chess ?crown ?football ?game ?gold prize ?race ?sport ?team
 cheek made: ?skin
@@ -735,7 +700,7 @@ cheese in: fridge ?market
 cheese kind: food ?snack
 cheese made: milk
 cheese part: burger pizza ?salad sandwich
-cheese with: bread ?burger ham ?pasta ?pizza ?tomato
+cheese with: bread ham ?pasta ?tomato
 chef in: kitchen restaurant
 chef kind: cook ?job person worker
 chef makes: dinner food meal ?pizza sauce soup ?steak
@@ -752,7 +717,7 @@ chicken makes: egg ?meat
 chicken part: ?salad ?sandwich ?soup
 chicken with: ?dinner ?noodle ?rice
 child in: ?park school
-child kind: human ?people person
+child kind: ?human person
 child part: ?class family
 child with: father mother parent
 chin part: body face head
@@ -763,7 +728,7 @@ choir in: church ?school ?stage ?temple
 choir made: ?people
 choir makes: music ?sound
 choir part: ?opera
-choir with: ?audience church ?concert
+choir with: church ?concert
 church in: ?town ?village
 church kind: building
 church part: ?town
@@ -776,9 +741,9 @@ cinnamon with: ?apple ?butter ?coffee ?cookie ?pie ?sugar
 circle kind: shape
 city in: country
 city part: ?country nation
-class in: ?room school
+class in: ?room
 class part: school
-cliff in: ?canyon coast ?island
+cliff in: coast
 cliff made: rock ?stone
 cliff part: ?canyon ?mountain
 cliff with: ?beach ?climb ?danger ?hike ?ocean ?sea ?shore
@@ -793,13 +758,13 @@ cloth made: ?thread
 cloth use: ?dust
 clothes in: closet drawer ?mall ?shop ?store
 clothes made: cloth ?thread
-clothes use: body ?person
+clothes use: ?body ?person
 clothes with: ?doll
 cloud in: sky ?sun
 cloud made: water
 cloud makes: ?lightning rain ?shadow snow
 cloud part: ?storm
-cloud with: rain storm weather
+cloud with: storm weather
 coast part: ?country ?island ?nation
 coast with: ocean sea
 coat in: closet ?suitcase
@@ -817,13 +782,13 @@ coffee in: cafe ?restaurant
 coffee made: bean ?water
 coffee makes: ?energy
 coffee with: breakfast ?cereal morning
-coin in: ?jar ?pocket ?treasure
+coin in: ?jar ?pocket
 coin kind: money
 coin made: ?gold metal ?silver
 coin part: treasure
 coin with: ?shop
 color part: ?picture rainbow
-color with: ?art ?artist ?rainbow
+color with: ?art ?artist
 comb kind: tool
 comb use: hair ?head
 comb with: brush ?mirror
@@ -835,7 +800,7 @@ computer in: office
 computer kind: machine
 computer part: ?internet ?robot
 computer use: ?data ?math
-computer with: ?desk game internet ?phone
+computer with: ?desk game internet
 concert in: ?stadium ?theater
 concert with: ?evening ?festival music
 cook in: kitchen restaurant
@@ -858,7 +823,6 @@ courage kind: ?feeling
 courage with: ?adventure ?danger ?fear ?soldier
 cousin kind: person
 cousin part: ?family
-cousin with: ?aunt ?uncle
 cow in: farm field
 cow kind: animal
 cow makes: ?butter ?cheese ?cream ?meat milk ?steak ?yogurt
@@ -869,7 +833,7 @@ crab part: ?salad ?soup
 cream in: fridge
 cream kind: food
 cream part: milk
-cream with: cake ?cheese ?chocolate coffee ?cookie ?dessert ?milk peach ?pie sugar ?tea
+cream with: cake ?chocolate coffee ?cookie ?dessert peach ?pie sugar ?tea
 crime in: ?city ?street
 crime kind: ?problem
 crime with: ?danger ?judge law ?news police
@@ -891,7 +855,7 @@ cucumber kind: food vegetable
 cucumber part: salad ?sandwich
 cup in: cafe kitchen
 cup use: coffee ?juice ?milk ?soda tea ?water
-cup with: ?breakfast ?medal ?plate ?table ?winner
+cup with: ?breakfast ?medal ?table ?winner
 curiosity kind: ?emotion ?feeling
 curiosity makes: ?question
 curiosity with: ?cat ?knowledge ?scientist
@@ -914,7 +878,7 @@ data with: ?science ?scientist ?website
 dawn in: ?sky
 dawn kind: ?time
 dawn part: day morning
-dawn with: ?light ?night sun sunrise
+dawn with: ?light sun sunrise
 day kind: ?time
 day part: ?autumn month ?summer week ?weekend year
 day with: night
@@ -942,25 +906,25 @@ dice with: ?card luck
 dinner in: ?restaurant
 dinner kind: meal
 dinner made: ?food
-dinner with: ?breakfast evening ?family ?kitchen ?night table ?wedding
+dinner with: evening ?family ?kitchen ?night table ?wedding
 doctor in: hospital ?office
 doctor kind: person worker
-doctor with: ?body ?health nurse ?pain
+doctor with: ?body ?health ?pain
 dog in: ?farm ?home ?house ?park ?yard
 dog kind: animal
-dog with: bone cat ?hunter ?meat ?police ?sheep ?squirrel
+dog with: bone ?hunter ?meat ?police ?sheep ?squirrel
 doll kind: toy
 doll made: ?cloth
 doll with: ?baby child ?dress ?girl ?kid
 dolphin in: ocean sea water ?wave
 dolphin kind: animal
-dolphin with: ?swim ?whale
+dolphin with: ?swim
 donkey in: farm
 donkey kind: animal
 donkey with: ?farmer
 door made: wood
 door part: ?basement building cabin car closet fridge garage home hotel house ?hut ?kitchen ?room temple ?wall
-door with: ?fence ?wall
+door with: ?fence
 drawer in: ?kitchen
 drawer kind: ?box
 drawer made: wood
@@ -989,7 +953,7 @@ drum with: ?dance ?song
 duck in: ?farm lake ?park pond ?river water
 duck kind: animal bird ?food
 duck makes: egg ?meat
-duck with: ?bath ?swan ?swim
+duck with: ?bath ?swim
 dust in: attic ?basement ?carpet ?desert ?floor ?house ?moon ?room ?rug ?shelf
 eagle in: ?cliff ?flag ?forest ?mountain sky
 eagle kind: animal bird
@@ -999,11 +963,10 @@ ear use: ?noise sound
 earth in: ?space
 earth kind: planet
 earth made: ?rock
-earth with: sun
 egg in: ?farm fridge ?kitchen
 egg kind: food
 egg part: cake ?cookie ?salad ?sandwich
-egg with: bacon ?basket ?bread breakfast chicken ?flour ?pan
+egg with: bacon ?basket ?bread breakfast ?flour
 elbow part: arm body
 elephant in: ?jungle zoo
 elephant kind: animal
@@ -1025,11 +988,10 @@ envelope made: paper
 envelope use: ?card
 envelope with: ?box card
 evening part: day
-evening with: ?night ?sky
+evening with: ?sky
 excitement kind: emotion feeling
 excitement with: ?adventure ?concert ?crowd ?festival ?party
 eye part: body face ?hawk head
-eye with: ?nose
 face part: ?animal body ?doll head human man person
 face with: ?photo
 factory in: ?city ?town
@@ -1049,7 +1011,7 @@ farmer makes: corn ?pea ?potato ?tomato vegetable wheat
 farmer with: chicken farm field ?market ?sheep
 father kind: man parent person
 father part: family
-father with: ?baby mother
+father with: ?baby
 fear kind: emotion feeling
 fear with: ?night
 feast kind: meal
@@ -1071,7 +1033,7 @@ film with: festival screen ?television
 finger in: ?glove
 finger made: ?skin
 finger part: ?arm body hand
-finger with: ?keyboard ?piano ?toe
+finger with: ?keyboard ?piano
 fire in: ?kitchen ?stove
 fire makes: ash ?energy ?flame heat light smoke
 fire use: ?cook
@@ -1099,15 +1061,15 @@ flour made: ?corn ?rice ?seed wheat
 flour with: baker ?oven ?sugar
 flower in: ?field garden ?park ?yard
 flower makes: ?fruit ?peach seed
-flower with: ?gift spring vase ?water wedding
+flower with: ?gift spring ?water wedding
 flute kind: instrument
 flute made: ?metal ?wood
 flute makes: music sound
 fog in: ?forest ?mountain ?valley
-fog kind: cloud weather
+fog kind: ?cloud weather
 fog made: ?water
 fog with: ?coast ?dawn ?morning ?sea
-food in: ?cafe fridge kitchen market ?shop ?stomach store
+food in: ?cafe kitchen market ?shop ?stomach store
 food makes: ?energy
 food part: ?breakfast picnic
 food with: ?festival ?party table
@@ -1134,7 +1096,7 @@ fridge kind: machine
 fridge makes: ?ice
 fridge use: food ?fruit ?meat ?wine
 friend in: ?school
-friend kind: human ?people person
+friend kind: ?human person
 friend with: ?birthday ?family ?joy ?love ?party
 frog in: ?garden ?jungle ?lake pond ?river ?stream swamp water
 frog kind: animal
@@ -1149,7 +1111,7 @@ fruit part: ?pie ?salad ?tree
 fruit with: ?basket ?breakfast ?cereal ?dessert ?picnic ?pie vegetable ?yogurt
 fuel makes: ?energy ?heat ?power ?smoke
 fuel use: car fire ?flame ?machine ?ship ?stove ?truck
-fuel with: ?car ?jet ?plane ?rocket
+fuel with: ?jet ?plane ?rocket
 future kind: ?time
 game in: stadium
 game with: ?party
@@ -1174,7 +1136,7 @@ gift with: ?basket birthday ?box ?friend holiday party ?surprise wedding
 giraffe in: zoo
 giraffe kind: animal
 giraffe with: ?ostrich ?tree
-girl kind: child human kid people person
+girl kind: child ?human kid person
 girl part: ?family
 girl with: ?mother
 glacier in: mountain
@@ -1184,17 +1146,17 @@ glacier with: ?rock
 glass in: ?kitchen
 glass made: ?sand
 glass use: beer juice lemonade milk ?soda water wine
-glass with: ?plate table
+glass with: table
 glove kind: clothes
 glove made: ?cloth
 glove use: baseball hand
-glove with: ?ball ?coat ?jacket ?scarf winter
+glove with: ?ball winter
 glue part: ?envelope
 glue use: ?wood
 glue with: ?paper
 goal in: ?field ?stadium
 goal part: ?game soccer ?sport ?stadium
-goal with: football soccer
+goal with: football
 goat in: farm ?field ?mountain ?zoo
 goat kind: animal
 goat makes: ?cheese ?meat milk
@@ -1202,12 +1164,12 @@ goat with: ?farmer
 gold in: ?rock
 gold kind: metal
 gold part: treasure
-gold with: ?diamond ?money ?prize treasure ?winner
+gold with: ?diamond ?money ?prize ?winner
 golf kind: game sport
 gorilla in: forest jungle ?zoo
 gorilla kind: animal
 gorilla with: ?banana
-grandmother kind: human ?mother ?parent person woman
+grandmother kind: ?human ?mother ?parent person woman
 grandmother part: family
 grandmother with: ?age ?child
 grape in: ?farm
@@ -1226,7 +1188,7 @@ guest part: party
 guest with: dinner ?feast ?gift ?meal wedding
 guilt in: ?mind
 guilt kind: emotion feeling
-guilt with: ?crime ?lie ?shame
+guilt with: ?crime ?lie
 guitar in: ?concert
 guitar kind: instrument
 guitar made: wood
@@ -1247,11 +1209,10 @@ ham with: bread ?breakfast ?dinner egg ?lunch ?potato ?salt
 hammer kind: tool
 hammer made: metal
 hammer use: nail ?wood
-hammer with: ?hand nail ?worker
+hammer with: ?hand ?worker
 hand in: ?pocket
 hand made: ?muscle
 hand part: ?arm body human ?man person
-hand with: arm
 harbor in: ?city coast ?town
 harbor with: ?island ?ocean ?sea ?shore
 harp in: ?concert
@@ -1266,16 +1227,15 @@ hat part: ?uniform
 hat use: head
 hat with: chef ?coat ?jacket scarf ?sun ?sweater ?winter witch
 hate kind: emotion feeling
-hate with: ?love ?war
+hate with: ?war
 hawk in: ?forest ?mountain sky
 hawk kind: animal bird
 head part: animal body ?coin human person
-head with: ?shoulder
 heart kind: ?muscle
 heart made: ?muscle
 heart part: animal body human
 heart use: ?blood
-heart with: ?emotion ?love ?lung
+heart with: ?emotion ?love
 heat kind: ?energy ?weather
 heat use: ?cook
 heat with: desert ?kitchen ?light summer
@@ -1293,7 +1253,7 @@ helmet with: ?army ?baseball bike ?engineer ?football knight ?mask ?shield soldi
 hen in: farm
 hen kind: animal bird chicken
 hen makes: egg
-hen with: ?farmer rooster
+hen with: ?farmer
 hero in: ?film ?movie ?story
 hero kind: person
 hero with: ?adventure courage ?danger ?fight ?war
@@ -1329,7 +1289,7 @@ hotel kind: building business
 hotel with: ?beach travel ?trip vacation
 hour kind: ?time
 hour part: day
-house in: ?city ?street town ?village
+house in: ?city ?street
 house kind: building ?home
 house made: ?brick ?wood
 house part: ?city ?farm town village
@@ -1350,7 +1310,7 @@ hut with: ?beach
 ice in: ?cup ?fridge ?pond
 ice made: water
 ice with: ?glass ?lake ?lemonade soda winter
-idea in: ?head ?mind
+idea in: ?head
 ink part: ?pen
 ink use: ?word
 ink with: ?page paper ?writer
@@ -1371,11 +1331,10 @@ jacket in: ?closet
 jacket kind: clothes coat
 jacket made: cloth
 jacket part: ?uniform
-jacket with: ?autumn ?pants winter
+jacket with: ?autumn winter
 jar in: ?fridge ?kitchen ?shelf
 jar use: ?candy cookie food ?honey ?juice ?sugar
 jealousy kind: emotion feeling
-jealousy with: ?love
 jellyfish in: ?coast ocean sea water ?wave
 jellyfish kind: animal
 jellyfish makes: ?pain
@@ -1395,18 +1354,18 @@ journey with: ?holiday ?road
 joy kind: emotion feeling
 joy with: ?festival ?winner
 judge kind: ?job person
-judge with: justice law lawyer ?police ?prison
+judge with: justice law ?police ?prison
 juice in: ?fridge
 juice made: ?apple ?berry ?carrot ?coconut fruit ?grape lemon ?melon ?peach ?pear pineapple ?plum ?tomato
 juice with: breakfast ?picnic
 jump in: ?gym
 jump part: ?ballet
 jump with: ?basketball ?cliff
-jungle kind: forest
+jungle kind: ?forest
 justice with: ?crime
 kangaroo in: ?desert ?zoo
 kangaroo kind: animal
-kangaroo with: jump ?koala
+kangaroo with: jump
 kettle in: kitchen
 kettle kind: ?pot
 kettle made: metal
@@ -1416,18 +1375,18 @@ key in: ?pocket
 key kind: tool
 key made: metal
 key use: car door ?home house lock
-key with: ?chain door ?hotel lock ?prison
+key with: ?chain ?hotel ?prison
 keyboard in: ?desk ?office
 keyboard part: computer ?phone
 keyboard with: desk screen
 kid in: ?class school
-kid kind: human ?people person
+kid kind: ?human person
 kid part: ?class family
 kid with: ?father ?game mother parent ?student
 king in: castle palace
-king kind: human man person
+king kind: ?human man person
 king makes: ?law ?rule
-king with: ?chess country ?nation ?power queen
+king with: ?chess country ?nation ?power
 kitchen kind: room
 kitchen makes: ?cake ?dinner
 kitchen part: building home house restaurant
@@ -1443,7 +1402,7 @@ knife in: ?drawer kitchen ?pocket
 knife kind: tool
 knife made: metal
 knife use: ?apple bread butter ?cake cheese ?cook food ?ham meat ?onion ?pie steak vegetable
-knife with: ?chef ?dinner fork ?hand ?hunter ?meal plate spoon table
+knife with: ?chef ?dinner ?hand ?hunter ?meal plate table
 knight in: castle ?story
 knight kind: man person ?soldier
 knight part: ?army
@@ -1492,7 +1451,6 @@ lesson with: class ?study teacher
 lettuce in: ?farm ?fridge ?garden
 lettuce kind: food vegetable
 lettuce part: ?burger salad sandwich
-lettuce with: ?cucumber
 library in: ?city ?town
 library kind: building
 library part: ?school
@@ -1510,7 +1468,7 @@ line in: ?page ?road
 line part: ?drawing ?map ?street
 lion in: ?jungle zoo
 lion kind: animal
-lion with: ?courage ?king ?meat ?zebra
+lion with: ?courage ?king ?meat
 lip part: body face head mouth
 lip with: ?tongue ?tooth
 lizard in: desert ?jungle ?rock ?zoo
@@ -1545,7 +1503,7 @@ magazine made: paper
 magazine with: ?month
 mall in: ?city ?town
 mall kind: building
-man kind: human ?people person
+man kind: ?human person
 map kind: drawing ?picture
 map made: paper
 map use: ?hike ?journey ?town travel ?trip
@@ -1566,7 +1524,7 @@ meal makes: ?energy
 meal with: ?evening ?family ?kitchen ?table
 meat in: ?fridge ?kitchen ?market
 meat kind: food
-meat made: animal ?muscle
+meat made: animal ?muscle ?pig
 meat part: ?meal ?pie ?pizza sandwich
 meat with: ?bread ?dinner ?feast ?fire ?lunch ?restaurant
 medal kind: prize
@@ -1580,7 +1538,7 @@ memory with: ?past
 milk in: fridge
 milk kind: ?food
 milk part: ?cake
-milk with: ?breakfast coffee cookie ?egg tea
+milk with: ?breakfast cookie ?egg
 mind in: ?brain ?head
 mind makes: idea ?thought
 mind part: person
@@ -1599,18 +1557,18 @@ month part: year
 moon in: sky space
 moon made: ?rock
 moon makes: ?light
-moon with: earth ?evening ?gravity ?month night ?planet star ?world
+moon with: ?evening ?gravity ?month night ?world
 morning kind: ?time
 morning part: day
 mosquito in: ?forest ?jungle ?pond swamp
 mosquito kind: animal insect
 mosquito makes: ?sickness
 mosquito with: blood ?night ?skin ?summer
-moss in: ?cave ?cliff forest ?garden ?pond rock stone ?swamp ?tree ?wood
+moss in: ?cave ?cliff forest ?garden ?pond rock stone ?swamp ?wood
 moss with: stone
-mother kind: human parent person woman
+mother kind: ?human parent person woman
 mother part: family
-mother with: ?boy ?home ?wife
+mother with: ?boy ?home
 mountain in: ?country
 mountain made: rock
 mountain part: ?earth
@@ -1640,20 +1598,18 @@ nail in: ?wall
 nail made: metal
 nail part: ?fence ?roof
 nail use: wood
-nail with: screw
 nation in: ?earth
 nation part: world
 neck part: body ?bottle giraffe
-neck with: head ?shoulder
-necklace made: ?gold ?silver
+necklace made: gold ?silver
 necklace part: ?treasure
 necklace use: neck
-necklace with: ?bracelet ?dress ?gift neck
+necklace with: ?dress ?gift
 needle kind: tool
 needle made: metal
 needle use: cloth clothes ?dress ?shirt ?thread
 neighbor in: ?town ?village
-neighbor kind: ?people person
+neighbor kind: person
 neighbor with: ?home ?house ?street
 news in: ?internet ?magazine newspaper ?website
 news with: ?morning radio ?story television
@@ -1672,7 +1628,6 @@ noodle part: ?meal ?soup
 noodle with: bowl ?dinner ?fork sauce ?soup
 nose part: body dog face head rhino
 nose use: ?breath
-nose with: ?mouth
 nurse in: hospital
 nurse kind: ?job person worker
 nurse with: ?baby ?health ?pain ?sickness
@@ -1699,11 +1654,11 @@ oil kind: fuel
 oil made: coconut corn ?vegetable
 oil makes: ?energy
 oil use: ?car engine ?flame ?lamp ?machine ?truck
-oil with: ?cook ?engine ?machine pan ?potato ?salad vinegar ?water
+oil with: ?cook ?machine pan ?potato ?salad vinegar ?water
 onion in: ?farm ?garden ?kitchen
 onion kind: food ?root vegetable
 onion part: ?burger ?pizza ?salad ?sandwich ?sauce ?soup
-onion with: ?bacon ?potato ?sausage ?steak
+onion with: ?bacon ?sausage ?steak
 opera in: ?theater
 opera kind: ?art ?music
 opera made: ?music
@@ -1716,7 +1671,7 @@ oven in: kitchen ?restaurant
 oven kind: ?machine
 oven makes: heat
 oven use: ?baker bread cake ?cook ?cookie ?dinner food ?meal ?meat pie pizza ?potato
-oven with: ?chef stove
+oven with: ?chef
 owl in: ?branch forest tree ?zoo
 owl kind: animal bird
 owl with: ?moon night wisdom ?witch ?wizard
@@ -1746,7 +1701,7 @@ paper in: office
 paper made: ?tree wood
 paper with: ?desk ?study toilet ?writer
 parent in: ?home
-parent kind: human ?people person
+parent kind: ?human person
 parent part: family
 parent with: baby
 park in: city ?town
@@ -1774,7 +1729,7 @@ path with: hike ?map ?village
 pea in: ?farm ?garden
 pea kind: food seed vegetable
 pea part: ?dinner ?salad soup
-pea with: carrot ?corn
+pea with: ?corn
 peace with: ?justice
 peach in: ?farm ?market
 peach kind: food fruit
@@ -1793,7 +1748,7 @@ pen in: ?drawer ?office ?pocket
 pen kind: tool
 pen makes: ?line
 pen use: ?artist ?drawing ?envelope ink ?page paper ?poem ?word
-pen with: ?desk ?finger ?hand pencil ?school ?student ?teacher writer
+pen with: ?desk ?finger ?hand ?school ?student ?teacher writer
 pencil in: ?desk ?drawer ?office ?school
 pencil kind: ?tool
 pencil made: wood
@@ -1843,8 +1798,7 @@ pie made: ?egg ?flour
 pie with: ?dinner ?holiday ?picnic
 pig in: farm ?mud
 pig kind: animal
-pig makes: ham ?meat
-pig with: ?chicken farmer mud
+pig with: farmer mud
 pigeon in: city park ?street
 pigeon kind: animal bird
 pigeon with: ?statue
@@ -1875,7 +1829,6 @@ plane kind: ?machine
 plane use: ?journey ?pilot ?travel
 plane with: ?trip ?vacation
 planet in: ?sky space
-planet with: ?star ?sun
 plate in: kitchen ?restaurant
 plate use: ?breakfast cake ?dessert ?dinner food ?lunch meal ?meat ?pasta ?pie ?pizza ?salad ?sandwich ?steak
 plate with: ?dinner table
@@ -1898,18 +1851,18 @@ pond in: ?farm ?garden ?park ?yard
 pot in: kitchen
 pot made: metal
 pot use: ?chef food ?noodle pasta ?potato ?rice ?sauce soup ?tea ?water
-pot with: ?cook ?heat pan stove
+pot with: ?cook ?heat stove
 potato in: ?field ?garden
 potato kind: food vegetable
 potato part: ?dinner ?meal ?pie ?salad ?soup
-potato with: ?burger ?carrot
+potato with: ?burger
 price in: ?shop
 price with: ?business ?market ?money ?store ?ticket
 pride kind: emotion feeling
-pride with: ?champion ?shame
+pride with: ?champion
 prince in: castle palace
 prince kind: ?child man person
-prince with: ?horse king ?nation
+prince with: ?horse ?nation
 prison kind: building
 prison made: ?brick
 prison with: crime ?island ?justice ?law
@@ -1934,7 +1887,7 @@ puzzle use: ?brain
 queen in: castle ?country palace
 queen kind: person woman
 queen part: chess
-queen with: ?knight ?nation ?power ?prince
+queen with: ?knight ?nation ?power
 question with: answer ?class ?lesson ?puzzle ?solution ?student
 rabbit in: ?farm ?field ?forest ?garden ?yard
 rabbit kind: animal
@@ -1957,7 +1910,7 @@ rain kind: weather
 rain made: water
 rain makes: flood ?mud
 rain part: ?storm
-rain with: ?autumn ?fog ?garden ?jungle ?river ?spring ?sun ?wind
+rain with: ?autumn ?garden ?jungle ?river ?spring ?sun
 rainbow in: sky
 rainbow kind: ?weather
 rainbow made: ?light
@@ -1980,7 +1933,7 @@ rice with: ?dinner ?pea ?vegetable ?water
 river in: ?country ?earth ?forest valley
 river made: ?water
 river makes: ?flood
-river with: ?canyon ?city ?lake ?ocean ?sea ?shore
+river with: ?canyon ?city ?shore
 road in: ?city ?town
 road made: ?stone
 road use: travel
@@ -1998,17 +1951,16 @@ rocket makes: ?fire ?flame ?smoke
 rocket with: ?moon ?planet ?scientist ?sky space ?speed
 roof part: building bus cabin ?car castle ?cave church garage home hotel house hut palace ?school temple ?tower
 roof use: ?rain
-roof with: ?wall ?window
 room part: building ?cabin home ?hospital hotel house
 rooster in: farm
 rooster kind: animal bird chicken
-rooster with: dawn ?farmer morning ?pig sunrise
+rooster with: dawn ?farmer morning sunrise
 root in: ?garden ?mud
 root kind: ?vegetable
 root part: bush ?flower grass oak pine ?rose tree ?tulip ?vine
 rope use: ?climb
 rope with: ?anchor ?boat ?flag ?ladder ?sail ?sailor ship
-rose in: garden ?vase
+rose in: garden
 rose kind: flower
 rose with: love ?wedding
 rug in: floor ?home ?house room
@@ -2052,24 +2004,24 @@ sauce part: pizza
 sauce with: ?burger ?dinner ?food ?meal ?meat pasta ?rice ?salad ?sausage ?steak
 sausage in: ?fridge
 sausage kind: food ?meat
-sausage made: ?chicken meat ?pig
+sausage made: ?chicken meat pig
 sausage part: ?meal ?pizza ?sandwich
-sausage with: bacon ?bread breakfast egg ?ham ?potato
+sausage with: ?bread breakfast egg ?potato
 saw kind: tool
 saw made: metal
-saw use: ?branch ?oak ?pine tree wood
+saw use: ?branch ?oak ?pine ?tree wood
 scarf in: ?closet
 scarf kind: clothes
 scarf made: cloth ?thread
 scarf part: ?uniform
 scarf use: neck
-scarf with: coat ?jacket ?sweater winter
+scarf with: winter
 school in: ?city ?town
 school kind: building
 science in: ?school
 science kind: ?knowledge ?study
 science with: ?teacher
-scientist kind: human ?job person ?worker
+scientist kind: ?human ?job person ?worker
 scientist makes: ?knowledge
 scientist with: science ?study
 scissors in: ?drawer
@@ -2130,19 +2082,17 @@ shirt kind: clothes
 shirt made: cloth
 shirt part: ?uniform
 shirt use: ?body
-shirt with: ?jacket pants
 shoe in: ?closet ?shop ?store
 shoe kind: ?clothes
 shoe use: ?basketball foot ?run ?soccer
 shoe with: ?ballet ?floor
-shop in: city mall street town ?village
+shop in: city street town ?village
 shop kind: ?building business
 shop part: mall
 shore part: ?island lake ?ocean ?pond
-shore with: lake ocean sea water
+shore with: ocean sea water
 shoulder made: ?muscle
 shoulder part: body
-shoulder with: arm
 shovel in: ?farm
 shovel kind: tool
 shovel made: metal ?wood
@@ -2152,12 +2102,11 @@ shower in: ?gym ?home ?house ?room
 shower made: water
 shower part: ?hotel
 shower use: body ?hair ?skin
-shower with: ?bath ?morning
+shower with: ?morning
 sickness in: ?body
 sickness with: ?death doctor hospital ?pain
 silver kind: metal
 silver part: ?treasure
-silver with: ?gold
 singer in: concert ?stage ?theater
 singer kind: person
 singer makes: music song
@@ -2170,7 +2119,7 @@ skate kind: ?boot ?shoe
 skate use: foot ice
 skate with: ?sport ?winter
 ski use: ?foot ?hill mountain snow ?sport
-ski with: boot ?holiday mountain ?vacation winter
+ski with: boot ?holiday ?vacation winter
 skin makes: ?sweat
 skin part: ?arm body crocodile ?face ?hand peach ?pear snake
 skin with: ?bone
@@ -2178,7 +2127,7 @@ skirt in: closet
 skirt kind: clothes
 skirt made: cloth
 skirt part: dress ?uniform
-skirt with: ?girl ?knee ?shirt woman
+skirt with: ?girl ?knee woman
 sky with: ?earth
 sleep kind: ?rest
 sleep with: ?health night
@@ -2201,7 +2150,7 @@ snake with: ?danger
 snow in: ?mountain ?roof ?sky
 snow kind: weather
 snow made: ?ice water
-snow with: ice mountain ?wind winter
+snow with: ice mountain winter
 soap made: ?oil
 soap use: ?body hand ?skin
 soap with: bath shower water
@@ -2212,14 +2161,14 @@ sock in: ?closet ?drawer
 sock kind: clothes
 sock made: ?cloth ?thread
 sock use: foot ?toe
-sock with: ?boot ?pants shoe
+sock with: ?boot shoe
 soda in: ?cafe ?fridge
 soda made: ?sugar ?water
 soda with: ?cinema ?party ?pizza ?snack
 sofa in: home house ?room
 sofa made: ?cloth
 sofa use: ?rest
-sofa with: ?table ?television
+sofa with: ?television
 soldier in: ?camp
 soldier kind: person
 soldier part: army ?nation
@@ -2234,7 +2183,7 @@ sound with: ?concert
 soup in: ?kitchen
 soup kind: food ?meal
 soup made: ?cabbage ?water
-soup with: bowl ?dinner ?lunch ?stove
+soup with: ?dinner ?lunch ?stove
 speed with: ?car ?internet ?traffic
 spice in: kitchen ?market
 spice part: ?sauce ?soup
@@ -2244,7 +2193,7 @@ spider kind: animal
 spoon in: ?drawer kitchen
 spoon made: metal ?silver
 spoon use: cereal ?coffee dessert food ?meal ?sauce soup ?sugar ?tea yogurt
-spoon with: bowl ?breakfast ?cup ?dinner fork plate ?table ?tea
+spoon with: bowl ?breakfast ?cup ?dinner plate ?table ?tea
 sport in: ?gym
 sport kind: ?game
 sport with: ?field ?television
@@ -2256,7 +2205,6 @@ squirrel with: nut
 stadium in: city
 stadium kind: building
 stadium use: sport
-stage in: theater
 stage part: ?stadium theater
 stage use: concert
 stage with: ?music
@@ -2284,7 +2232,7 @@ stomach with: food
 stone in: ?beach ?hill ?mountain ?river ?shore ?stream
 stone made: rock
 stone with: ?sand
-store in: ?city mall ?market ?street ?town
+store in: ?city ?street ?town
 store kind: ?building ?business
 store part: ?mall
 storm in: ?sky ?winter
@@ -2298,8 +2246,7 @@ stove in: ?cabin ?house kitchen
 stove made: metal
 stove makes: ?flame heat
 stove use: food ?meat
-stove with: fridge
-stranger kind: human ?people person
+stranger kind: ?human person
 stranger with: ?danger
 strawberry in: ?farm ?field ?garden
 strawberry kind: berry food fruit
@@ -2308,13 +2255,12 @@ strawberry part: ?lemonade ?pie
 strawberry with: ?cake chocolate cream ?dessert ?yogurt
 stream in: ?canyon ?forest ?hill ?mountain ?valley
 stream made: water
-stream with: ?lake
 street kind: road
 street part: city town ?village
 string part: ?guitar ?instrument kite ?shoe ?violin
 string with: ?kitten ?needle
 student in: school
-student kind: people person
+student kind: person
 student part: class ?school
 student with: lesson ?library ?science study
 study in: ?school
@@ -2336,9 +2282,9 @@ summer part: year
 sun in: sky ?space
 sun kind: star
 sun makes: ?dawn ?day ?energy heat light ?rainbow shadow
-sun with: ?beach day moon ?morning summer sunrise ?weather
+sun with: ?beach day ?morning summer sunrise ?weather
 sunrise in: sky
-sunrise makes: light
+sunrise makes: ?light
 sunrise part: ?day ?morning
 sunrise with: morning
 sunset in: evening sky
@@ -2361,7 +2307,7 @@ sweater kind: clothes
 sweater made: ?sheep
 sweater part: ?uniform
 sweater use: ?person
-sweater with: ?shirt winter
+sweater with: winter
 swim in: ?pond water
 swim kind: ?sport
 swim with: beach ?lake ocean ?river ?sea ?summer
@@ -2373,14 +2319,14 @@ table in: cafe ?home ?house kitchen restaurant ?room
 table made: wood
 tape in: ?office
 tape use: ?gift
-tape with: ?box ?glue ?paper ?scissors ?tool
+tape with: ?box ?paper ?scissors ?tool
 taxi in: city ?road ?street ?traffic
 taxi kind: car ?machine
 taxi use: travel ?trip
 taxi with: ?airport ?money ?price ?station
 tea in: cafe
 tea made: leaf water
-tea with: ?breakfast cake coffee ?meal ?snack
+tea with: ?breakfast cake ?meal ?snack
 teacher in: school
 teacher kind: ?job person ?worker
 teacher makes: ?lesson
@@ -2410,7 +2356,7 @@ theater with: ?evening
 thief in: ?prison
 thief kind: person ?villain
 thief with: ?bag crime ?diamond ?gold ?jewel ?judge ?law ?money ?night ?pocket police ?prison ?treasure
-thought in: ?brain head mind
+thought in: head mind
 thought with: ?feeling
 thread part: ?clothes ?shirt ?sleeve
 thread use: cloth ?dress
@@ -2430,7 +2376,7 @@ tiger in: ?forest jungle ?zoo
 tiger kind: animal
 tire in: ?garage
 tire part: bike bus car ?plane taxi truck wheel
-tire with: ?road wheel
+tire with: ?road
 toe part: body ?boot foot
 toe with: ?shoe
 toilet in: ?home ?hotel house
@@ -2446,7 +2392,6 @@ tongue part: body ?face head ?mouth ?snake
 tool in: ?garage
 tool made: metal
 tool with: ?hand ?worker
-tooth in: mouth
 tooth part: body crocodile ?face ?head mouth shark ?smile
 tooth use: ?candy
 tooth with: ?tongue
@@ -2475,7 +2420,7 @@ train with: ?journey station ?trip
 travel with: ?holiday ?world
 treasure in: ?box ?castle ?cave ?museum
 treasure with: ?adventure ?island map ?ship
-tree in: forest ?garden jungle park ?yard
+tree in: ?garden park ?yard
 tree made: wood
 tree makes: almond apple banana cherry ?cinnamon coconut fruit lemon nut peach pear plum ?seed ?shadow
 tree part: forest jungle
@@ -2493,7 +2438,7 @@ truck with: ?bridge ?factory
 trumpet kind: instrument
 trumpet made: metal
 trumpet makes: music ?noise sound
-trumpet with: ?concert ?drum
+trumpet with: ?concert
 trust kind: ?emotion ?feeling
 trust with: ?friend ?love
 truth with: ?justice ?trust
@@ -2517,7 +2462,6 @@ uniform made: cloth ?thread
 uniform with: army ?baseball ?basketball ?chef ?football ?job ?nurse ?player police ?referee ?school ?soccer soldier ?student team ?worker
 vacation kind: ?trip
 vacation with: ?adventure ?holiday ?journey ?rest summer travel ?weekend
-valley with: hill mountain
 vanilla kind: ?food ?spice
 vanilla part: ?cake ?cookie ?dessert
 vanilla with: ?chocolate ?coffee ?cream ?dessert ?milk ?sugar ?yogurt
@@ -2525,7 +2469,7 @@ vase in: ?house ?shelf
 vase made: ?glass
 vase use: ?daisy flower rose
 vase with: table
-vegetable in: ?farm ?fridge garden ?market
+vegetable in: ?fridge garden ?market
 vegetable kind: food
 vegetable part: ?meal soup
 vegetable with: dinner ?health ?meat
@@ -2558,10 +2502,9 @@ volcano in: ?earth ?planet
 volcano kind: mountain
 volcano made: ?rock
 volcano makes: ash ?heat smoke
-volcano with: ?danger ?fire ?island
+volcano with: ?danger ?fire
 wall made: ?brick
 wall part: ?attic building castle ?cave church garage house palace prison room temple ?tower
-wall with: ?floor
 war kind: ?fight
 war makes: death
 war part: ?history
@@ -2570,7 +2513,7 @@ wasp in: ?garden
 wasp kind: animal insect
 wasp makes: ?pain
 wasp with: ?summer
-water in: ?bucket ?cloud harbor ?lake pond river sea ?swamp ?toilet ?vase
+water in: harbor pond river sea ?swamp ?toilet ?vase
 water part: ?body ?coconut ?earth lake
 water use: ?fire
 water with: ?beach ?coast ?food ?garden
@@ -2587,7 +2530,7 @@ website made: ?code
 website part: internet
 website with: ?business ?computer ?screen
 wedding in: church
-wedding with: ?family ?joy love ?music ?party ?temple
+wedding with: ?family ?joy love ?music ?temple
 week part: month ?spring year
 weekend kind: ?time
 weekend part: ?month week ?year
@@ -2607,15 +2550,15 @@ whistle use: ?breath ?mouth
 whistle with: ?football ?game ?lip ?police referee ?soccer ?sport ?train
 wife kind: person woman
 wife part: family
-wife with: ?father husband ?love ?wedding
+wife with: ?love ?wedding
 wind makes: ?energy ?noise wave
-wind part: ?storm weather
-wind with: ?autumn ?cloud ?dust sail
+wind part: ?storm
+wind with: ?autumn ?cloud ?dust
 window part: building bus cabin car ?church ?garage home house ?kitchen ?office ?plane room ?shop ?train wall
-window with: door ?light
+window with: ?light
 wine in: ?restaurant
 wine made: fruit grape
-wine with: bottle cheese dinner ?feast ?festival ?food meal ?party ?wedding
+wine with: cheese dinner ?feast ?festival ?food meal ?party ?wedding
 winner kind: person
 winner with: ?fight game ?marathon ?pride race ?score ?sport ?war
 winter kind: season
@@ -2633,7 +2576,7 @@ wizard with: ?adventure hat ?knight ?lightning
 wolf in: forest ?mountain ?zoo
 wolf kind: animal
 wolf with: lamb moon ?night sheep
-woman kind: human ?people person
+woman kind: ?human person
 woman part: ?family
 woman with: ?husband man
 wood kind: ?fuel
@@ -2643,9 +2586,9 @@ word in: book page ?paper
 word part: ?book language ?magazine ?poem ?question ?song ?website
 word with: ?puzzle ?thought
 worker in: factory ?farm ?office ?shop ?store
-worker kind: human ?people person
+worker kind: ?human person
 worker part: ?business
-worker with: boss job ?money
+worker with: job ?money
 world in: ?space
 world kind: ?planet
 worm in: ?apple ?field garden ?mud ?yard
@@ -2666,8 +2609,7 @@ year kind: ?time
 yogurt in: fridge
 yogurt kind: ?dessert food ?snack
 yogurt made: milk
-yogurt with: breakfast ?cereal ?cup ?spoon
+yogurt with: breakfast ?cereal ?cup
 zebra in: ?zoo
 zebra kind: animal ?horse
-zebra with: ?rhino
 zoo in: ?city

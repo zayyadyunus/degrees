@@ -17,12 +17,12 @@ import statistics
 import time
 from collections import defaultdict
 
-from .typed import History, Links, build_board, load
+from .typed import NEXT_PATH, PROTO_EDGE_WINDOW, History, Links, build_board, load
 
 
 def restrict(links: Links, keep: set[str]) -> Links:
     """The links among `keep` only, as if the vocabulary were that small."""
-    sub = Links()
+    sub = Links(source=links.source)
     sub.words = set(links.words) & keep
     for pair, types in links.edges.items():
         if pair <= keep:
@@ -34,6 +34,7 @@ def restrict(links: Links, keep: set[str]) -> Links:
     sub.adjectives = set(links.adjectives)
     sub.avoid = {p for p in links.avoid if p <= keep}
     sub.parents = {w: ps for w, ps in links.parents.items() if w in keep}
+    sub.arguable = {(p, t) for p, t in links.arguable if p <= keep}
     return sub
 
 
@@ -41,7 +42,8 @@ def sustains(links: Links, window: int, seed: int, extra: int = 20, max_failures
     """Can the generator keep a `window`-day no-repeat-end rule going for
     window + extra boards? Returns (ok, boards built, distinct ends)."""
     rng = random.Random(seed)
-    history = History(window=window, max_uses=max(4, math.ceil(0.4 * window)))
+    history = History(window=window, max_uses=max(4, math.ceil(0.4 * window)),
+                      edge_window=10 if links.source == NEXT_PATH.name else PROTO_EDGE_WINDOW)
     built = failures = 0
     while built < window + extra:
         if build_board(links, rng, history=history, tries=150) is None:
@@ -57,12 +59,14 @@ def sustains(links: Links, window: int, seed: int, extra: int = 20, max_failures
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true", help="one size, one seed, for timing")
+    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
+    ap.add_argument("--fracs", default="0.4,0.55,0.7,0.85,1.0", help="vocabulary shares to test")
     args = ap.parse_args()
-    full = load()
+    full = load(NEXT_PATH) if args.next else load()
     nouns = sorted(full.words)
-    fracs = [1.0] if args.quick else [0.4, 0.55, 0.7, 0.85, 1.0]
+    fracs = [1.0] if args.quick else [float(f) for f in args.fracs.split(",")]
     seeds = [0] if args.quick else [0, 1, 2]
-    windows = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 100]
+    windows = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 100, 125, 150, 200, 250, 300]
 
     results: dict[float, list[int]] = defaultdict(list)
     for frac in fracs:

@@ -13,14 +13,14 @@ import random
 from itertools import combinations
 from pathlib import Path
 
-from .typed import CHAIN, TYPE_NAMES, TYPES, History, NEXT_PATH, build_board, load
+from .typed import CHAIN, TYPE_NAMES, TYPES, History, NEXT_PATH, PROTO_EDGE_WINDOW, build_board, load
 
 TEMPLATE = Path(__file__).with_name("web") / "playtest.html"
 
 
 def export(n: int, seed: int, next_: bool = False) -> list[dict]:
     links = load(NEXT_PATH) if next_ else load()
-    rng, history = random.Random(seed), History()
+    rng, history = random.Random(seed), History() if next_ else History(edge_window=PROTO_EDGE_WINDOW)
     out = []
     while len(out) < n:
         made = build_board(links, rng, history=history)

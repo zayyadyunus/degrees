@@ -11,7 +11,7 @@ import random
 import statistics
 from collections import Counter
 
-from .typed import NEXT_PATH, TYPE_NAMES, TYPES, History, build_board, load, look_alikes, phrase
+from .typed import NEXT_PATH, PROTO_EDGE_WINDOW, TYPE_NAMES, TYPES, History, build_board, load, look_alikes, phrase
 
 
 def stats(links) -> None:
@@ -46,7 +46,7 @@ def main() -> None:
     if args.stats:
         return
     rng = random.Random(args.seed)
-    rows, failed, history = [], 0, History()
+    rows, failed, history = [], 0, History() if args.next else History(edge_window=PROTO_EDGE_WINDOW)
     for i in range(args.n):
         made = build_board(links, rng, history=history)
         if made is None:

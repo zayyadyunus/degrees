@@ -5,7 +5,7 @@ import sys
 
 import pytest
 
-from proto.typed import BOARD, CHAIN, MAX_SOLUTIONS, TYPES, History, Links, assess, assign_types, build_board, load, look_alikes
+from proto.typed import PROTO_EDGE_WINDOW, BOARD, CHAIN, MAX_SOLUTIONS, MAX_TRAPS, TYPES, History, Links, assess, assign_types, build_board, load, look_alikes
 
 
 @pytest.fixture(scope="module")
@@ -15,7 +15,7 @@ def links():
 
 @pytest.fixture(scope="module")
 def boards(links):
-    rng, history = random.Random(0), History()
+    rng, history = random.Random(0), History(edge_window=PROTO_EDGE_WINDOW)
     return [build_board(links, rng, history=history) for _ in range(15)]
 
 
@@ -91,7 +91,7 @@ def test_boards_follow_the_rules(links, boards):
         assert a.first_moves >= 2 and a.last_moves >= 2
         assert board.start not in links.categories and board.target not in links.categories
         assert sum(w in links.categories for w in board.tiles) <= 1
-        assert len(a.solutions) <= MAX_SOLUTIONS and a.traps
+        assert len(a.solutions) <= MAX_SOLUTIONS and 0 < len(a.traps) <= MAX_TRAPS
 
 
 def test_decoys_never_look_linked(links, boards):
@@ -114,6 +114,21 @@ def test_no_word_carries_recent_boards(boards):
         on_board = {board.start, board.target, *board.tiles}
         assert not on_board & history.overused, board.start
         history.record(board)
+
+
+def test_recent_boards_never_repeat_a_route_link_or_feature(links, boards):
+    h = History(edge_window=PROTO_EDGE_WINDOW)
+    for i, (board, _) in enumerate(boards):
+        edges = {frozenset(p) for p in zip(board.route, board.route[1:])}
+        assert not edges & h.edges, i
+        feats = set().union(*(links.shared_features(a, b) for (a, b), t in
+                              zip(zip(board.route, board.route[1:]), board.route_types) if t == "feature"))
+        assert not feats & h.recent_features, (i, feats)
+        h.record(board, links)
+
+
+def test_kind_pairs_are_not_family(links):
+    assert not any("kind" in t and "family" in t for t in links.edges.values())
 
 
 def test_recent_boards_never_repeat_an_end(boards):
