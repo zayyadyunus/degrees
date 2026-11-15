@@ -16,7 +16,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from .typed import Links, load
+import sys
+
+from .typed import NEXT_PATH, Links, load
 
 SIBLING_SHARE = 0.5   # flag when at least this share of siblings has the link
 
@@ -70,7 +72,7 @@ def sibling_gaps(links: Links) -> list[tuple[str, str, str, list[str]]]:
 
 
 def main() -> None:
-    links = load()
+    links = load(NEXT_PATH) if "--next" in sys.argv else load()
     errs = errors(links)
     for e in errs:
         print("ERROR  ", e)

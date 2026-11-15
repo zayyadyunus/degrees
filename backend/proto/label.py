@@ -326,6 +326,250 @@ def save_glosses(name: str) -> None:
     print(f"  saved to {glosses_path(name)}")
 
 
+# ---- partner suggestions -----------------------------------------------------
+
+SUGGEST_PROMPT = """\
+You are helping build the link list for Degrees, a word puzzle. Players connect a start word to a \
+target word through a chain of everyday nouns. Each step is a link of one of these kinds:
+
+- kind:  A is a kind of B (eagle -> bird, gold -> metal, lemon -> fruit, apple -> food)
+- part:  A is part of B, or made of what B is (wheel -> car, roof -> house, bread -> flour, window -> glass)
+- use:   A is a tool or object whose job is B, or A makes B (hammer -> nail, pencil -> paper, bee -> honey, cow -> milk)
+- found: A is found in B, or goes with B (fish -> sea, sand -> beach, salt -> pepper, egg -> breakfast, fork -> table)
+
+Below is the full list of words in the puzzle, each with the one meaning it has. You will be given a \
+few of these words. For each, list every other word FROM THE LIST that it links to by one of the \
+kinds above, in either direction. Be inclusive: list a partner if many players would accept the \
+link, even if some would hesitate; a stricter check comes later. Think about hub words too (food, \
+water, tree, kitchen, table, house, garden, forest, sea, breakfast, metal, wood, body, farm) and \
+compound nouns (gold coin, carrot juice, school bus counts only if a link above holds).
+
+Leave out: links that need a different meaning than the one given; two things that are merely the \
+same sort of thing (lion and tiger); things that only share a look or quality (both red); and loose \
+topic associations (both about winter). Use words exactly as they appear in the list.
+
+The word list:
+{words}"""
+
+SUGGEST_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "words": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {"word": {"type": "string"},
+                               "partners": {"type": "array", "items": {"type": "string"}}},
+                "required": ["word", "partners"],
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["words"],
+    "additionalProperties": False,
+}
+
+
+def vocab_glosses() -> dict[str, dict]:
+    return json.loads((Path(__file__).with_name("glosses.json")).read_text())
+
+
+def suggest_system(glosses: dict[str, dict]) -> str:
+    return SUGGEST_PROMPT.format(words="\n".join(f"{w}: {g['gloss']}" for w, g in sorted(glosses.items())))
+
+
+def suggestions_path(name: str) -> Path:
+    return OUT / f"{name}.suggestions.json"
+
+
+def save_suggestions(name: str) -> None:
+    """Write NAME.suggestions.json: sorted [a, b] pairs Claude proposed."""
+    meta = json.loads(paths(name)["meta.json"].read_text())
+    items, failed, tokens = parse(name, "words")
+    vocab = set(vocab_glosses())
+    pairs, unknown = set(), Counter()
+    for x in items:
+        for w in x["partners"]:
+            w = w.strip().lower()
+            if w in vocab and w != x["word"] and x["word"] in vocab:
+                pairs.add(tuple(sorted((x["word"], w))))
+            else:
+                unknown[w] += 1
+    save_json(suggestions_path(name), sorted(pairs))
+    per = Counter(w for p in pairs for w in p)
+    print(f"\n{name}: {len(items)} words answered{f', {len(failed)} failed requests' if failed else ''}; "
+          f"{len(pairs)} distinct pairs; cost ${cost(tokens, meta['model']):.2f}")
+    print(f"  partners per word: median {sorted(per.values())[len(per) // 2] if per else 0}; "
+          f"{sum(unknown.values())} names not in the list ignored")
+    print(f"  saved to {suggestions_path(name)}")
+
+
+# ---- categories and features -----------------------------------------------
+
+CATEGORY_PROMPT = """\
+You are building the categories for Degrees, a word puzzle. Players connect a start word to a target \
+word through a chain of everyday nouns. Two of the link types come from categories:
+
+- "kind of": eagle is a kind of bird; bird is a kind of animal, so eagle is a kind of animal too.
+- "same family": two words in the same category that are the same sort of thing: eagle and owl \
+(both birds), lion and tiger, car and bus.
+
+Build categories over the word list below. Each group has:
+- name: the category. If the category word is itself in the list (bird, fruit, tool, animal), use \
+it exactly and set name_is_tile true. Otherwise give a short label (vehicle, big cat) and set \
+name_is_tile false: it then only forms a family, with no "kind of" links to a word.
+- family: true if every pair of members are clearly the same sort of thing (eagle and owl). False \
+for broad groups whose members aren't (dog and eagle are both animals, but calling them "the same \
+family" reads badly): those give only "kind of" links. Use family groups for tight sets and broad \
+non-family groups above them (bird [family] inside animal [not family]).
+- members: words from the list, each marked arguable if some players would hesitate (tomato as a \
+vegetable, fish as food).
+
+Rules:
+1. Every member and every tile name must be a word exactly as in the list, with the meaning given.
+2. Categories nest: a category word can be a member of a broader category (bird is a member of animal).
+3. A word may be in more than one category only if it is the same meaning both times (fish: an \
+animal and a food is fine; don't use a second, unrelated meaning).
+4. Only real, everyday categories a player would accept at once. Don't group words just because they \
+are related (fire and smoke are not a category). Don't stretch a category to fit more words.
+5. Family groups should be tight, usually 2 to 12 members. Many words will be in no family; that is fine.
+6. Abstract words (freedom, curiosity) usually belong in no category, except obvious ones like emotion.
+
+The word list:
+{words}"""
+
+CATEGORY_SCHEMA = {
+    "type": "object",
+    "properties": {"groups": {"type": "array", "items": {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"}, "name_is_tile": {"type": "boolean"}, "family": {"type": "boolean"},
+            "members": {"type": "array", "items": {
+                "type": "object",
+                "properties": {"word": {"type": "string"}, "arguable": {"type": "boolean"}},
+                "required": ["word", "arguable"], "additionalProperties": False}},
+        },
+        "required": ["name", "name_is_tile", "family", "members"], "additionalProperties": False}}},
+    "required": ["groups"], "additionalProperties": False,
+}
+
+FEATURE_PROMPT = """\
+You are building "share a feature" links for Degrees, a word puzzle. Players connect a start word \
+to a target word through a chain of everyday nouns. One link type is a shared feature: tomato and \
+blood are linked because both are red. Adjectives are never words on the board; they only name what \
+two nouns share.
+
+For each adjective you are given, list the words from the list below that it DEFINES. Every pair of \
+words in a list becomes a link, so be strict:
+1. List a word only if most people, asked "what colour / taste / texture / temperature ... is it?", \
+would give this adjective as THE answer (snow: white; lemon: sour; honey: sweet; fire: hot). Not if \
+it is only sometimes true (wine is not white; butter is not soft from the fridge).
+2. No category words (fruit is not sweet: a lemon is a fruit). No words with the meaning switched.
+3. Relative or judging adjectives (big, small, tall, old, new, good, bad, beautiful, cheap) and \
+adjectives for moods or states of people (happy, angry, brave, tired, hungry, sick) give no links: \
+return an empty list for them. A link like "lion and soldier are both brave" doesn't work.
+4. Keep each list to the clearest examples, at most about 12 words. Mark a word arguable if some \
+players would hesitate.
+
+The word list:
+{words}"""
+
+FEATURE_SCHEMA = {
+    "type": "object",
+    "properties": {"features": {"type": "array", "items": {
+        "type": "object",
+        "properties": {
+            "adjective": {"type": "string"},
+            "words": {"type": "array", "items": {
+                "type": "object",
+                "properties": {"word": {"type": "string"}, "arguable": {"type": "boolean"}},
+                "required": ["word", "arguable"], "additionalProperties": False}},
+        },
+        "required": ["adjective", "words"], "additionalProperties": False}}},
+    "required": ["features"], "additionalProperties": False,
+}
+
+
+def word_list(glosses: dict[str, dict]) -> str:
+    return "\n".join(f"{w}: {g['gloss']}" for w, g in sorted(glosses.items()))
+
+
+def feature_adjectives() -> list[str]:
+    for line in Path(__file__).with_name("vocab.txt").read_text().splitlines():
+        if line.startswith("features:"):
+            return line.split(":", 1)[1].split()
+    return []
+
+
+def structure_lines(name: str) -> None:
+    """Turn a categories or features run into links.txt lines (NAME.links.txt) and report."""
+    meta = json.loads(paths(name)["meta.json"].read_text())
+    vocab = set(vocab_glosses())
+    out, unknown = [], Counter()
+
+    def words(members: list[dict]) -> list[str]:
+        ok = []
+        for m in members:
+            w = m["word"].strip().lower()
+            if w not in vocab:
+                unknown[w] += 1
+                continue
+            ok.append(("?" if m["arguable"] else "") + w)
+        return ok
+
+    if meta["kind"] == "categories":
+        items, failed, tokens = parse(name, "groups")
+        for g in items:
+            nm = g["name"].strip().lower()
+            if g["name_is_tile"] and nm not in vocab:
+                unknown[nm] += 1
+                nm = "~" + nm
+            label = nm if g["name_is_tile"] and not nm.startswith("~") else "~" + nm.lstrip("~").replace(" ", "_")
+            ws = words(g["members"])
+            if ws:
+                out.append(f"{'category' if g['family'] else 'kinds'} {label}: {' '.join(ws)}")
+        print(f"\n{name}: {len(out)} groups; cost ${cost(tokens, meta['model']):.2f}")
+        fam = [l for l in out if l.startswith("category")]
+        print(f"  {len(fam)} family groups, {len(out) - len(fam)} kind-only groups")
+    else:
+        items, failed, tokens = parse(name, "features")
+        empty = []
+        for f in items:
+            ws = words(f["words"])
+            if len(ws) >= 2:
+                out.append(f"{f['adjective'].strip().lower()} feature: {' '.join(ws)}")
+            else:
+                empty.append(f["adjective"])
+        print(f"\n{name}: {len(out)} features with links; cost ${cost(tokens, meta['model']):.2f}")
+        print(f"  no links: {' '.join(sorted(empty))}")
+    if failed:
+        print(f"  {len(failed)} failed requests (rerun them)")
+    if unknown:
+        print(f"  ignored, not in the list: {', '.join(sorted(unknown))}")
+    path = OUT / f"{name}.links.txt"
+    path.write_text("\n".join(out) + "\n")
+    print(f"  saved {path}")
+
+
+# ---- the full run -----------------------------------------------------------
+
+def summarize(name: str) -> None:
+    """Totals for a labelling run with no answer key: links by type and strength, phrases."""
+    p = paths(name)
+    pairs = json.loads(p["pairs.json"].read_text())
+    meta = json.loads(p["meta.json"].read_text())
+    items, failed, tokens = parse(name, "pairs")
+    got = {x["id"] for x in items}
+    by = Counter((REL_TYPE[l["rel"]], l["strength"]) for x in items for l in x["links"])
+    linked = sum(1 for x in items if x["links"])
+    phrases = sum(1 for x in items if x["phrase"])
+    print(f"\n{name}: {len(got)}/{len(pairs)} pairs answered"
+          f"{f', {len(failed)} failed requests (rerun them)' if failed else ''}; cost ${cost(tokens, meta['model']):.2f}")
+    print(f"  {linked} pairs linked ({linked / max(len(got), 1):.0%}), {phrases} phrase pairs for the avoid list")
+    for t in PAIR_TYPES:
+        print(f"    {t:<6} {by[(t, 'obvious')]:>5} obvious  {by[(t, 'arguable')]:>5} arguable")
+
+
 # ---- scoring ---------------------------------------------------------------
 
 def link_text(pr: dict, l: dict) -> str:
@@ -415,6 +659,19 @@ def main() -> None:
     cal.add_argument("--seed", type=int, default=0)
     cal.add_argument("--glosses", default="glosses-proto", help="run name of the definitions to use ('' for none)")
     model_args(cal)
+    ct = sub.add_parser("categories", help="draft categories (kind of, same family) for the Phase 2 vocabulary")
+    model_args(ct)
+    ft = sub.add_parser("features", help="draft feature lists (share a feature) for the Phase 2 adjectives")
+    ft.add_argument("--chunk", type=int, default=20, help="adjectives per request")
+    model_args(ft)
+    lb = sub.add_parser("label", help="label the candidate pairs for the Phase 2 vocabulary")
+    lb.add_argument("--candidates", default="candidates-next-k30", help="file stem in proto/labels/")
+    lb.add_argument("--chunk", type=int, default=25, help="pairs per request")
+    lb.add_argument("--limit", type=int, default=0, help="label only the first N pairs (a trial)")
+    model_args(lb)
+    sg = sub.add_parser("suggest", help="have Claude name each tile's partners from the whole list")
+    sg.add_argument("--chunk", type=int, default=12, help="words per request")
+    model_args(sg)
     for cmd in ("resume", "score"):
         sub.add_parser(cmd).add_argument("name")
     args = ap.parse_args()
@@ -434,6 +691,61 @@ def main() -> None:
         submit(name, items, reqs, {"kind": "glosses", "model": args.model, "effort": args.effort})
         wait_and_fetch(name)
         save_glosses(name)
+    elif args.cmd in ("categories", "features"):
+        glosses = vocab_glosses()
+        name = args.name or f"{args.cmd}-next"
+        if args.cmd == "categories":
+            reqs = [params(CATEGORY_PROMPT.format(words=word_list(glosses)), "Build the categories.",
+                           CATEGORY_SCHEMA, args.model, args.effort)]
+            items = sorted(glosses)
+        else:
+            items = feature_adjectives()
+            system = FEATURE_PROMPT.format(words=word_list(glosses))
+            reqs = [params(system, "Adjectives: " + ", ".join(c), FEATURE_SCHEMA, args.model, args.effort)
+                    for c in chunks(items, args.chunk)]
+        for r in reqs:
+            r["max_tokens"] = 64000      # one request covers the whole vocabulary
+        if args.dry_run:
+            print(reqs[0]["system"][0]["text"][:3000], "...\n\n" + reqs[0]["messages"][0]["content"])
+            print(f"\n{len(reqs)} requests; would save as {name}")
+            return
+        submit(name, items, reqs, {"kind": args.cmd, "model": args.model, "effort": args.effort})
+        wait_and_fetch(name)
+        structure_lines(name)
+    elif args.cmd == "label":
+        glosses = vocab_glosses()
+        rows = json.loads((OUT / f"{args.candidates}.json").read_text())
+        rng = random.Random(0)
+        rng.shuffle(rows)          # mix hubs and rare words across requests
+        rows = rows[:args.limit] if args.limit else rows
+        pairs = []
+        for i, r in enumerate(rows):
+            a, b = (r["a"], r["b"]) if rng.random() < 0.5 else (r["b"], r["a"])
+            pairs.append({"id": i, "a": a, "b": b})
+        name = args.name or f"label-{args.candidates}"
+        reqs = [params(RUBRIC, user_text(c, glosses), SCHEMA, args.model, args.effort) for c in chunks(pairs, args.chunk)]
+        if args.dry_run:
+            print("--- first request ---\n" + reqs[0]["messages"][0]["content"])
+            print(f"\n{len(pairs)} pairs in {len(reqs)} requests; model {args.model}, effort {args.effort}; "
+                  f"would save as {name}")
+            return
+        submit(name, pairs, reqs, {"kind": "label", "model": args.model, "effort": args.effort})
+        wait_and_fetch(name)
+        summarize(name)
+    elif args.cmd == "suggest":
+        glosses = vocab_glosses()
+        system = suggest_system(glosses)
+        words = sorted(glosses)
+        name = args.name or "suggest-next"
+        reqs = [params(system, f"List the partners of each of these {len(c)} words:\n" + "\n".join(c),
+                       SUGGEST_SCHEMA, args.model, args.effort) for c in chunks(words, args.chunk)]
+        if args.dry_run:
+            print(system[:2500], "...\n\n--- first request ---\n" + reqs[0]["messages"][0]["content"])
+            print(f"\n{len(words)} words in {len(reqs)} requests; system prompt {len(system):,} chars; would save as {name}")
+            return
+        submit(name, words, reqs, {"kind": "suggest", "model": args.model, "effort": args.effort})
+        wait_and_fetch(name)
+        save_suggestions(name)
     elif args.cmd == "calibrate":
         glosses = {}
         if args.glosses:
@@ -458,7 +770,8 @@ def main() -> None:
         meta = json.loads(paths(args.name)["meta.json"].read_text())
         if args.cmd == "resume":
             wait_and_fetch(args.name)
-        (save_glosses if meta.get("kind") == "glosses" else score)(args.name)
+        {"glosses": save_glosses, "suggest": save_suggestions, "label": summarize,
+         "categories": structure_lines, "features": structure_lines}.get(meta.get("kind"), score)(args.name)
 
 
 if __name__ == "__main__":

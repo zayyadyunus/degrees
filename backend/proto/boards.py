@@ -11,7 +11,7 @@ import random
 import statistics
 from collections import Counter
 
-from .typed import TYPE_NAMES, TYPES, History, build_board, load, look_alikes, phrase
+from .typed import NEXT_PATH, TYPE_NAMES, TYPES, History, build_board, load, look_alikes, phrase
 
 
 def stats(links) -> None:
@@ -33,9 +33,10 @@ def main() -> None:
     ap.add_argument("--brief", action="store_true")
     ap.add_argument("--stats", action="store_true")
     ap.add_argument("--gaps", action="store_true", help="list unlinked pairs that look linked")
+    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
 
-    links = load()
+    links = load(NEXT_PATH) if args.next else load()
     stats(links)
     if args.gaps:
         pairs = sorted(" / ".join(sorted(p)) for p in look_alikes(links))

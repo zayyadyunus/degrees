@@ -13,13 +13,13 @@ import random
 from itertools import combinations
 from pathlib import Path
 
-from .typed import CHAIN, TYPE_NAMES, TYPES, History, build_board, load
+from .typed import CHAIN, TYPE_NAMES, TYPES, History, NEXT_PATH, build_board, load
 
 TEMPLATE = Path(__file__).with_name("web") / "playtest.html"
 
 
-def export(n: int, seed: int) -> list[dict]:
-    links = load()
+def export(n: int, seed: int, next_: bool = False) -> list[dict]:
+    links = load(NEXT_PATH) if next_ else load()
     rng, history = random.Random(seed), History()
     out = []
     while len(out) < n:
@@ -50,9 +50,12 @@ def main() -> None:
     ap.add_argument("out")
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
-    boards = export(args.n, args.seed)
-    data = {"chain": CHAIN, "types": list(TYPES), "typeNames": TYPE_NAMES, "seed": args.seed, "boards": boards}
+    boards = export(args.n, args.seed, args.next)
+    data = {"set": "next" if args.next else "proto",
+            "setName": "Phase 2 vocabulary · 735 words" if args.next else "Six-type prototype · 244 words",
+            "chain": CHAIN, "types": list(TYPES), "typeNames": TYPE_NAMES, "seed": args.seed, "boards": boards}
     html = TEMPLATE.read_text().replace("__DATA__", json.dumps(data, separators=(",", ":")))
     Path(args.out).write_text(html)
     print(f"wrote {len(boards)} boards to {args.out}")

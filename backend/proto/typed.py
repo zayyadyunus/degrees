@@ -22,6 +22,14 @@ from itertools import combinations
 from pathlib import Path
 
 LINKS_PATH = Path(__file__).with_name("links.txt")
+NEXT_PATH = Path(__file__).with_name("links.next.txt")
+_DATA = Path(__file__).resolve().parent.parent / "data"
+_LABELS = Path(__file__).resolve().parent / "labels"
+# Word vectors for the look-alike check, per links file: (words.json, vectors.npy).
+VECTORS = {
+    LINKS_PATH.name: (_DATA / "words.json", _DATA / "vectors.npy"),
+    NEXT_PATH.name: (_LABELS / "words-next.json", _LABELS / "vectors-next.npy"),
+}
 
 TYPES = ("kind", "family", "part", "feature", "use", "found")
 TYPE_NAMES = {
@@ -73,6 +81,7 @@ class Links:
     # puzzle's intended route. A link written both ways counts as obvious.
     arguable: set[tuple[frozenset[str], str]] = field(default_factory=set)
     _look_alikes: frozenset[frozenset[str]] | None = None
+    source: str = LINKS_PATH.name          # which links file, for picking word vectors
 
     def add(self, a: str, b: str, type_: str, why: str, arguable: bool = False) -> None:
         if a == b:
@@ -120,7 +129,7 @@ def load(path: Path = LINKS_PATH) -> Links:
         doubtful[raw] = {w[1:] for w in targets if w.startswith("?")}
         lines[i] = (raw, head_words, [w.lstrip("?") for w in targets])
 
-    links = Links()
+    links = Links(source=path.name)
     # Adjectives (red, soft, loud) aren't words on the board: they only name
     # what two nouns share. "red feature: tomato blood" links tomato and
     # blood ("both red"). As tiles they could only sit at a route's end.
@@ -338,10 +347,10 @@ def look_alikes(links: Links, rank: int = NEAR_RANK) -> frozenset[frozenset[str]
         return links._look_alikes
     import json
     import numpy as np
-    data = Path(__file__).resolve().parent.parent / "data"
+    words_path, vectors_path = VECTORS.get(links.source, VECTORS[LINKS_PATH.name])
     try:
-        all_words = json.loads((data / "words.json").read_text())
-        vectors = np.load(data / "vectors.npy")
+        all_words = json.loads(words_path.read_text())
+        vectors = np.load(vectors_path)
     except FileNotFoundError:
         links._look_alikes = frozenset()
         return links._look_alikes

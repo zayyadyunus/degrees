@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import random
 
-from .typed import CHAIN, TYPE_NAMES, TYPES, assign_types, build_board, chains, load, phrase
+from .typed import CHAIN, TYPE_NAMES, TYPES, assign_types, build_board, chains, load, phrase, NEXT_PATH
 
 STRIKES = 3
 
@@ -17,9 +17,10 @@ STRIKES = 3
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=None)
+    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
     seed = args.seed if args.seed is not None else random.randrange(10_000)
-    links = load()
+    links = load(NEXT_PATH) if args.next else load()
     made = build_board(links, random.Random(seed))
     if made is None:
         print("couldn't build a board; try another --seed")
