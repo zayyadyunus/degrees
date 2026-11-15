@@ -68,15 +68,32 @@ class Links:
     # directly in, and feature -> the nouns that have it.
     parents: dict[str, set[str]] = field(default_factory=dict)
     features: dict[str, list[str]] = field(default_factory=dict)
+    # Links that are true but some players would hesitate over ("?word" in
+    # links.txt): (pair, type). Accepted when played, never used to build a
+    # puzzle's intended route. A link written both ways counts as obvious.
+    arguable: set[tuple[frozenset[str], str]] = field(default_factory=set)
     _look_alikes: frozenset[frozenset[str]] | None = None
 
-    def add(self, a: str, b: str, type_: str, why: str) -> None:
+    def add(self, a: str, b: str, type_: str, why: str, arguable: bool = False) -> None:
         if a == b:
             return
         self.words |= {a, b}
-        self.edges.setdefault(frozenset((a, b)), {}).setdefault(type_, why)
+        pair = frozenset((a, b))
+        types = self.edges.setdefault(pair, {})
+        if type_ not in types:
+            types[type_] = why
+            if arguable:
+                self.arguable.add((pair, type_))
+        elif not arguable and (pair, type_) in self.arguable:
+            types[type_] = why
+            self.arguable.discard((pair, type_))
         self.adj[a].add(b)
         self.adj[b].add(a)
+
+    def obvious(self, a: str, b: str) -> dict[str, str]:
+        """The types linking a and b that nearly every player would accept."""
+        pair = frozenset((a, b))
+        return {t: why for t, why in self.types(a, b).items() if (pair, t) not in self.arguable}
 
     def types(self, a: str, b: str) -> dict[str, str]:
         return self.edges.get(frozenset((a, b)), {})
@@ -97,16 +114,25 @@ def load(path: Path = LINKS_PATH) -> Links:
             head, _, rest = line.partition(":")
             lines.append((raw, head.split(), rest.split()))
 
+    # "?word": the link(s) this line gives that word are arguable.
+    doubtful: dict[str, set[str]] = defaultdict(set)   # line raw -> its ?words
+    for i, (raw, head_words, targets) in enumerate(lines):
+        doubtful[raw] = {w[1:] for w in targets if w.startswith("?")}
+        lines[i] = (raw, head_words, [w.lstrip("?") for w in targets])
+
     links = Links()
     # Adjectives (red, soft, loud) aren't words on the board: they only name
     # what two nouns share. "red feature: tomato blood" links tomato and
     # blood ("both red"). As tiles they could only sit at a route's end.
     links.adjectives = {h[0] for _, h, _ in lines if len(h) == 2 and h[1] == "feature"}
     parents: dict[str, set[str]] = defaultdict(set)   # word -> categories it's directly in
+    shaky_parent: set[tuple[str, str]] = set()          # (word, category) written "?word"
     shared: dict[frozenset[str], list[str]] = defaultdict(list)
+    shaky_shared: dict[frozenset[str], bool] = {}        # pair -> arguable in every feature list
 
     for raw, head_words, targets in lines:
         targets = [w for w in targets if w not in links.adjectives]
+        shaky = doubtful[raw]
         if head_words[0] in ("category", "kinds"):
             name = head_words[1]
             if name in links.adjectives:
@@ -115,15 +141,18 @@ def load(path: Path = LINKS_PATH) -> Links:
                 links.categories.add(name)
             for w in targets:
                 parents[w].add(name)
+                if w in shaky:
+                    shaky_parent.add((w, name))
             links.words |= set(targets)
             if head_words[0] == "kinds":
                 continue
             label = name.lstrip("~").replace("_", " ")
             for a, b in combinations(targets, 2):
-                links.add(a, b, "family", f"{a} and {b} are the same family ({label})")
+                links.add(a, b, "family", f"{a} and {b} are the same family ({label})",
+                          arguable=bool({a, b} & shaky))
         elif head_words[0] == "family":
             for a, b in combinations(targets, 2):
-                links.add(a, b, "family", f"{a} and {b} are the same family")
+                links.add(a, b, "family", f"{a} and {b} are the same family", arguable=bool({a, b} & shaky))
         elif head_words[0] == "avoid":
             links.avoid.add(frozenset(targets))
         else:
@@ -133,14 +162,16 @@ def load(path: Path = LINKS_PATH) -> Links:
             if rel == "feature":
                 links.features.setdefault(a, []).extend(targets)
                 for x, y in combinations(targets, 2):
-                    shared[frozenset((x, y))].append(a)
+                    pair = frozenset((x, y))
+                    shared[pair].append(a)
+                    shaky_shared[pair] = shaky_shared.get(pair, True) and bool({x, y} & shaky)
                 continue
             for b in targets:
-                links.add(a, b, REL_TYPE[rel], REL_PHRASE[rel].format(a=a, b=b))
+                links.add(a, b, REL_TYPE[rel], REL_PHRASE[rel].format(a=a, b=b), arguable=b in shaky)
 
     for pair, adjs in shared.items():
         x, y = sorted(pair)
-        links.add(x, y, "feature", f"{x} and {y} are both {' and '.join(adjs)}")
+        links.add(x, y, "feature", f"{x} and {y} are both {' and '.join(adjs)}", arguable=shaky_shared[pair])
 
     # "kind" passes up the categories (eagle -> bird -> animal), but not
     # through a word in two categories: fish is an animal and a food, so
@@ -161,7 +192,8 @@ def load(path: Path = LINKS_PATH) -> Links:
     for w in list(parents):
         for anc, via in ancestors(w):
             why = f"{w} is a kind of {anc}" + (f" (a {via[0]})" if via else "")
-            links.add(w, anc, "kind", why)
+            steps = list(zip([w, *via], [*via, anc]))
+            links.add(w, anc, "kind", why, arguable=any(s in shaky_parent for s in steps))
     links.parents = dict(parents)
     return links
 
@@ -391,8 +423,10 @@ def random_route(links: Links, rng: random.Random, start: str, min_distance: int
                     and tuple(path) not in history.routes
                     and distance(links, start, end) >= min_distance
                     and _keeps_rules(links, start, end, path[1:-1]))
+        # Only obvious links build the intended route; arguable ones are
+        # still accepted in play and still count when checking the board.
         options = [(n, t) for n in sorted(links.adj[path[-1]]) if n not in path
-                   for t in links.types(path[-1], n) if t not in used]
+                   for t in links.obvious(path[-1], n) if t not in used]
         rng.shuffle(options)
         options.sort(key=lambda o: uses[o[0]])
         last = len(path) == CHAIN

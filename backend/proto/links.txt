@@ -31,6 +31,10 @@
 #   avoid: a b                  never put a and b on one board: a real phrase
 #                               that isn't one of the six types (fruit salad
 #                               + banana), so players would try it and strike
+#   ?word                       in any list: the link(s) the line gives that word
+#                               are arguable (true, but some players would
+#                               hesitate). Accepted when played; never used to
+#                               build a puzzle's intended route.
 #   A REL: b c d                one line per word and relation, REL in
 #                               part made feature use makes in with kind
 #                               (made -> part, makes -> use, in/with -> found)
@@ -58,9 +62,9 @@ category bird: eagle owl duck chicken
 category insect: bee ant butterfly
 category fish: shark
 category fruit: apple banana grape lemon berry
-category vegetable: carrot potato tomato onion
-kinds food: fruit vegetable bread cheese meat rice soup salad egg butter honey sugar fish
-kinds meat: chicken
+category vegetable: carrot potato ?tomato onion
+kinds food: fruit vegetable bread cheese meat rice soup salad egg butter honey sugar ?fish
+kinds meat: ?chicken
 category drink: coffee tea juice wine milk water
 category color: red blue green yellow black white brown purple
 category metal: gold silver
@@ -103,9 +107,9 @@ category ~flavour: salt pepper
 
 # ---- part / made -------------------------------------------------------
 wheel part: car truck bus bike train
-engine part: car truck plane ship train bus
+engine part: car truck plane ship train bus boat
 trunk part: tree elephant
-leaf part: tree flower plant
+leaf part: tree flower plant branch
 branch part: tree
 wood part: tree
 root part: tree plant flower
@@ -126,51 +130,55 @@ tooth part: mouth
 hair part: head
 brain part: head body
 heart part: body
-bone part: body
-skin part: body
+bone part: body foot
+skin part: body face
 blood part: body
 door part: house room building car
 window part: house room building car
-wall part: house room building castle
-floor part: house room building
-roof part: house building
+window made: glass
+wall part: house room building castle tower
+floor part: house room building kitchen
+roof part: house building castle
 room part: house building
 tower part: castle
 wave part: ocean sea
 keyboard part: computer
 screen part: computer phone
+screen made: glass
 ink part: pen
-glass made: sand
-paper made: wood tree
+glass made: ?sand
+paper made: wood ?tree
 book made: paper
 wine made: grape
-juice made: fruit apple lemon grape
+juice made: fruit apple lemon grape carrot berry
 cheese made: milk
 butter made: milk
 ice made: water
-snow made: water ice
+snow made: water
 cloud made: water
 coin made: gold silver metal
 crown made: gold
-house made: wood stone
-castle made: stone rock
+castle made: stone
 tower made: stone
 table made: wood
 chair made: wood
-bed made: wood
 desk made: wood
 pencil made: wood
 salad made: vegetable tomato carrot onion potato fruit
-soup made: vegetable water tomato
+soup made: vegetable water tomato onion
 tea made: leaf water
 sword made: metal
 saw made: metal
 knife made: metal
-shield made: metal wood
-sand made: rock stone
+shield made: metal
 shirt made: cloth
 coat made: cloth
-bridge made: stone wood
+coat with: winter
+blanket made: cloth
+ocean made: water
+river made: water
+cheese with: bread
+bridge made: stone
 
 # ---- feature -----------------------------------------------------------
 red feature: tomato apple blood heart berry
@@ -199,9 +207,9 @@ sharp feature: knife sword saw tooth
 # ---- use / makes -------------------------------------------------------
 hammer use: nail
 saw use: wood tree
-knife use: bread meat cheese
+knife use: bread meat cheese butter
 fork use: food meat salad
-spoon use: soup sugar
+spoon use: soup ?sugar
 cup use: tea coffee
 glass use: wine water juice milk
 bowl use: food soup rice
@@ -217,25 +225,26 @@ bike in: road
 plane in: sky
 pillow use: head
 clock use: time
-money use: shop
+money with: ?shop
 sword use: war fight
-shield use: war fight
+shield use: ?war fight
 camera use: photo picture
 paint use: picture art
 fuel use: car engine plane fire
 wood use: fire
 salt use: food meat
 pepper use: food
-sugar use: coffee tea
-butter use: bread
-honey use: tea
-lemon use: tea
+sugar with: coffee tea
+butter with: bread
+honey with: tea
+lemon with: tea
 ball use: game sport
 bee makes: honey
 cow makes: milk
 goat makes: milk
 chicken makes: egg
-bird makes: egg
+bird makes: egg song
+instrument makes: sound
 duck makes: egg
 owl makes: egg
 eagle makes: egg
@@ -249,8 +258,8 @@ lamp makes: light
 light makes: shadow
 storm makes: rain wind
 cloud makes: rain snow storm
-winter makes: snow
-wind makes: wave
+snow with: winter ice
+wind makes: ?wave
 piano makes: music sound
 drum makes: music sound
 guitar makes: music sound
@@ -271,9 +280,9 @@ sun in: sky space
 sun with: day
 planet in: space
 rocket in: space
+rocket makes: ?flame
 cloud in: sky
 bird in: sky tree
-seed with: bird
 eagle in: sky mountain
 owl in: tree forest
 owl with: night
@@ -283,7 +292,7 @@ seed in: garden
 bee with: flower
 butterfly in: garden
 butterfly with: flower
-frog in: lake river
+frog in: lake
 duck in: lake river
 cow in: farm
 pig in: farm
@@ -291,7 +300,7 @@ sheep in: farm
 horse in: farm
 goat in: farm
 chicken in: farm
-tiger in: jungle
+tiger in: jungle forest
 monkey in: jungle
 snake in: jungle
 bear in: forest
@@ -303,11 +312,12 @@ snow in: mountain
 flower in: garden
 flower with: spring
 grass in: garden
+tomato in: garden
 island in: sea ocean
 beach with: sea ocean
 bridge with: river road
 king in: castle
-queen in: castle
+queen in: ?castle
 prince in: castle
 crown with: king queen prince
 plate in: kitchen
@@ -316,19 +326,19 @@ bowl in: kitchen
 bowl with: table
 cup in: kitchen
 glass in: kitchen
-glass with: table
-cup with: table
+glass with: ?table
+cup with: ?table
 fork in: kitchen
-fork with: table
+fork with: table plate
 spoon with: table
 knife with: table
 knife in: kitchen
 spoon in: kitchen
 pillow with: bed
 blanket with: bed
-lamp with: desk table
+lamp with: ?desk ?table
 chair with: table desk
-book in: school desk
+book in: school
 egg with: breakfast
 bread with: breakfast
 juice with: breakfast
@@ -337,6 +347,8 @@ tea with: breakfast
 coffee with: breakfast
 wine with: dinner
 salt with: pepper
+salt in: sea
+smoke with: ash
 
 # ---- avoid -------------------------------------------------------------
 # Real phrases that fit none of the six types. Never on one board together.

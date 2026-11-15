@@ -1,0 +1,2942 @@
+{
+ "actor": {
+  "gloss": "person who performs in plays or films",
+  "other": ""
+ },
+ "adventure": {
+  "gloss": "exciting, unusual or daring experience",
+  "other": ""
+ },
+ "age": {
+  "gloss": "how old someone or something is",
+  "other": "historical era"
+ },
+ "airport": {
+  "gloss": "place where planes take off and land",
+  "other": ""
+ },
+ "almond": {
+  "gloss": "oval edible nut",
+  "other": ""
+ },
+ "anchor": {
+  "gloss": "heavy weight holding a ship in place",
+  "other": "TV news presenter"
+ },
+ "anger": {
+  "gloss": "a strong feeling of displeasure",
+  "other": ""
+ },
+ "animal": {
+  "gloss": "living creature that moves and feeds",
+  "other": ""
+ },
+ "answer": {
+  "gloss": "reply to a question",
+  "other": ""
+ },
+ "ant": {
+  "gloss": "tiny insect living in colonies",
+  "other": ""
+ },
+ "apple": {
+  "gloss": "round crisp red or green fruit",
+  "other": ""
+ },
+ "arm": {
+  "gloss": "limb from shoulder to hand",
+  "other": "weapon"
+ },
+ "army": {
+  "gloss": "large organized force of soldiers",
+  "other": ""
+ },
+ "art": {
+  "gloss": "paintings and other creative works",
+  "other": ""
+ },
+ "artist": {
+  "gloss": "person who paints or draws pictures",
+  "other": ""
+ },
+ "ash": {
+  "gloss": "powdery residue left after burning",
+  "other": "type of tree"
+ },
+ "astronaut": {
+  "gloss": "person who travels into space",
+  "other": ""
+ },
+ "attic": {
+  "gloss": "room just under the roof",
+  "other": ""
+ },
+ "audience": {
+  "gloss": "people watching a performance",
+  "other": ""
+ },
+ "aunt": {
+  "gloss": "sister of your parent",
+  "other": ""
+ },
+ "autumn": {
+  "gloss": "season between summer and winter",
+  "other": ""
+ },
+ "axe": {
+  "gloss": "tool for chopping wood",
+  "other": ""
+ },
+ "baby": {
+  "gloss": "a very young child",
+  "other": ""
+ },
+ "bacon": {
+  "gloss": "salty cured pork strips",
+  "other": ""
+ },
+ "bag": {
+  "gloss": "soft container with an opening",
+  "other": ""
+ },
+ "baker": {
+  "gloss": "person who bakes bread and cakes",
+  "other": ""
+ },
+ "ball": {
+  "gloss": "round object thrown, kicked, or hit",
+  "other": "formal dance party"
+ },
+ "ballet": {
+  "gloss": "classical theatrical dance performance",
+  "other": ""
+ },
+ "balloon": {
+  "gloss": "inflatable rubber bag filled with air",
+  "other": ""
+ },
+ "bamboo": {
+  "gloss": "tall woody grass with hollow stems",
+  "other": ""
+ },
+ "banana": {
+  "gloss": "long curved yellow fruit",
+  "other": ""
+ },
+ "baseball": {
+  "gloss": "bat-and-ball sport with four bases",
+  "other": ""
+ },
+ "basement": {
+  "gloss": "floor below ground level",
+  "other": ""
+ },
+ "basket": {
+  "gloss": "woven container with a handle",
+  "other": "hoop in basketball"
+ },
+ "basketball": {
+  "gloss": "sport of shooting a ball through hoops",
+  "other": ""
+ },
+ "bath": {
+  "gloss": "tub of water for washing your body",
+  "other": ""
+ },
+ "beach": {
+  "gloss": "sandy shore beside the sea",
+  "other": ""
+ },
+ "bean": {
+  "gloss": "edible seed grown in a pod",
+  "other": ""
+ },
+ "bear": {
+  "gloss": "large heavy furry wild animal",
+  "other": "to carry or endure"
+ },
+ "bed": {
+  "gloss": "furniture for sleeping on",
+  "other": ""
+ },
+ "bee": {
+  "gloss": "buzzing insect that makes honey",
+  "other": "competition, as in spelling bee"
+ },
+ "beer": {
+  "gloss": "alcoholic drink brewed from grain",
+  "other": ""
+ },
+ "beetle": {
+  "gloss": "insect with hard shiny wing covers",
+  "other": ""
+ },
+ "bell": {
+  "gloss": "hollow metal device that rings",
+  "other": ""
+ },
+ "belt": {
+  "gloss": "strap worn around the waist",
+  "other": ""
+ },
+ "berry": {
+  "gloss": "small juicy fruit",
+  "other": ""
+ },
+ "bike": {
+  "gloss": "two-wheeled vehicle you pedal",
+  "other": ""
+ },
+ "bird": {
+  "gloss": "feathered animal with wings",
+  "other": ""
+ },
+ "birth": {
+  "gloss": "moment of being born",
+  "other": ""
+ },
+ "birthday": {
+  "gloss": "yearly anniversary of one's birth",
+  "other": ""
+ },
+ "blanket": {
+  "gloss": "warm cloth cover for a bed",
+  "other": ""
+ },
+ "blood": {
+  "gloss": "red liquid flowing through veins",
+  "other": ""
+ },
+ "boat": {
+  "gloss": "small vessel for traveling on water",
+  "other": ""
+ },
+ "body": {
+  "gloss": "the whole physical form of a person",
+  "other": ""
+ },
+ "bone": {
+  "gloss": "hard part of the skeleton",
+  "other": ""
+ },
+ "book": {
+  "gloss": "bound set of printed pages",
+  "other": "to reserve a ticket or room"
+ },
+ "boot": {
+  "gloss": "sturdy shoe covering foot and ankle",
+  "other": "car trunk (British)"
+ },
+ "boredom": {
+  "gloss": "feeling of having nothing interesting",
+  "other": ""
+ },
+ "boss": {
+  "gloss": "person in charge at work",
+  "other": ""
+ },
+ "bottle": {
+  "gloss": "narrow-necked container for liquids",
+  "other": ""
+ },
+ "bowl": {
+  "gloss": "round deep dish for food",
+  "other": "roll a ball in bowling"
+ },
+ "box": {
+  "gloss": "container with flat sides",
+  "other": "to fight with fists"
+ },
+ "boy": {
+  "gloss": "male child",
+  "other": ""
+ },
+ "bracelet": {
+  "gloss": "jewelry worn around the wrist",
+  "other": ""
+ },
+ "brain": {
+  "gloss": "organ in the head for thinking",
+  "other": ""
+ },
+ "branch": {
+  "gloss": "woody limb growing from a tree",
+  "other": "local office of a business"
+ },
+ "bread": {
+  "gloss": "baked food made from flour dough",
+  "other": "money (slang)"
+ },
+ "breakfast": {
+  "gloss": "first meal of the morning",
+  "other": ""
+ },
+ "breath": {
+  "gloss": "air taken into and out of lungs",
+  "other": ""
+ },
+ "breeze": {
+  "gloss": "gentle light wind",
+  "other": "something very easy"
+ },
+ "brick": {
+  "gloss": "baked clay block for building",
+  "other": ""
+ },
+ "bridge": {
+  "gloss": "structure crossing over river or road",
+  "other": "card game"
+ },
+ "broom": {
+  "gloss": "long-handled brush for sweeping",
+  "other": ""
+ },
+ "brother": {
+  "gloss": "a male sibling",
+  "other": ""
+ },
+ "brush": {
+  "gloss": "tool with bristles for painting or grooming",
+  "other": "dense undergrowth of shrubs"
+ },
+ "bucket": {
+  "gloss": "open container with a handle",
+  "other": ""
+ },
+ "building": {
+  "gloss": "structure with walls and roof",
+  "other": ""
+ },
+ "bull": {
+  "gloss": "adult male of cattle",
+  "other": "nonsense"
+ },
+ "burger": {
+  "gloss": "meat patty served in a bun",
+  "other": ""
+ },
+ "bus": {
+  "gloss": "large vehicle carrying many passengers",
+  "other": ""
+ },
+ "bush": {
+  "gloss": "low woody plant with many branches",
+  "other": "wild remote countryside"
+ },
+ "business": {
+  "gloss": "company that sells goods or services",
+  "other": "one's concern, as in none of your business"
+ },
+ "butter": {
+  "gloss": "yellow spread made from churned cream",
+  "other": ""
+ },
+ "butterfly": {
+  "gloss": "insect with large colorful wings",
+  "other": "swimming stroke"
+ },
+ "cabbage": {
+  "gloss": "round leafy green vegetable",
+  "other": ""
+ },
+ "cabin": {
+  "gloss": "small wooden house in the woods",
+  "other": "passenger room on a ship"
+ },
+ "cactus": {
+  "gloss": "spiny desert plant that stores water",
+  "other": ""
+ },
+ "cafe": {
+  "gloss": "small place serving coffee and snacks",
+  "other": ""
+ },
+ "cake": {
+  "gloss": "sweet baked dessert, often with frosting",
+  "other": ""
+ },
+ "calm": {
+  "gloss": "peaceful, untroubled state",
+  "other": ""
+ },
+ "camel": {
+  "gloss": "humped desert animal",
+  "other": ""
+ },
+ "camera": {
+  "gloss": "device for taking photographs",
+  "other": ""
+ },
+ "camp": {
+  "gloss": "outdoor place with tents for staying",
+  "other": ""
+ },
+ "candle": {
+  "gloss": "wax stick with a wick for light",
+  "other": ""
+ },
+ "candy": {
+  "gloss": "sweet sugary treat",
+  "other": ""
+ },
+ "canoe": {
+  "gloss": "narrow boat moved with paddles",
+  "other": ""
+ },
+ "canvas": {
+  "gloss": "cloth surface for oil painting",
+  "other": ""
+ },
+ "canyon": {
+  "gloss": "deep valley with steep sides",
+  "other": ""
+ },
+ "car": {
+  "gloss": "four-wheeled motor vehicle for passengers",
+  "other": ""
+ },
+ "card": {
+  "gloss": "stiff paper for greetings or games",
+  "other": ""
+ },
+ "carpet": {
+  "gloss": "thick fabric floor covering",
+  "other": ""
+ },
+ "carrot": {
+  "gloss": "long orange root vegetable",
+  "other": ""
+ },
+ "cartoon": {
+  "gloss": "animated film or show",
+  "other": ""
+ },
+ "castle": {
+  "gloss": "large fortified home of royalty",
+  "other": ""
+ },
+ "cat": {
+  "gloss": "small furry pet that meows",
+  "other": ""
+ },
+ "cave": {
+  "gloss": "natural hollow in rock",
+  "other": "to give in"
+ },
+ "cereal": {
+  "gloss": "breakfast grain flakes eaten with milk",
+  "other": ""
+ },
+ "chain": {
+  "gloss": "series of connected metal links",
+  "other": "group of stores under one owner"
+ },
+ "chair": {
+  "gloss": "seat with back for one person",
+  "other": "person leading a meeting"
+ },
+ "champion": {
+  "gloss": "winner of a competition or title",
+  "other": ""
+ },
+ "cheek": {
+  "gloss": "side of the face below the eye",
+  "other": "rude boldness"
+ },
+ "cheese": {
+  "gloss": "solid food made from curdled milk",
+  "other": ""
+ },
+ "chef": {
+  "gloss": "professional cook in a restaurant",
+  "other": ""
+ },
+ "cherry": {
+  "gloss": "small round red stone fruit",
+  "other": ""
+ },
+ "chess": {
+  "gloss": "strategy board game with kings and queens",
+  "other": ""
+ },
+ "chicken": {
+  "gloss": "farm bird kept for eggs, meat",
+  "other": "coward (slang)"
+ },
+ "child": {
+  "gloss": "a young human being",
+  "other": ""
+ },
+ "chin": {
+  "gloss": "part of the face below the mouth",
+  "other": ""
+ },
+ "chocolate": {
+  "gloss": "sweet brown treat made from cocoa",
+  "other": ""
+ },
+ "choir": {
+  "gloss": "organized group of singers",
+  "other": ""
+ },
+ "church": {
+  "gloss": "building for Christian worship",
+  "other": ""
+ },
+ "cinema": {
+  "gloss": "building where movies are shown",
+  "other": ""
+ },
+ "cinnamon": {
+  "gloss": "sweet brown spice from bark",
+  "other": ""
+ },
+ "circle": {
+  "gloss": "round shape with no corners",
+  "other": ""
+ },
+ "city": {
+  "gloss": "large, busy town where many people live",
+  "other": ""
+ },
+ "class": {
+  "gloss": "group of students taught together",
+  "other": "social rank or category"
+ },
+ "cliff": {
+  "gloss": "steep rock face",
+  "other": ""
+ },
+ "climb": {
+  "gloss": "act of going up something",
+  "other": ""
+ },
+ "clock": {
+  "gloss": "device that shows the time",
+  "other": ""
+ },
+ "closet": {
+  "gloss": "small room for storing clothes",
+  "other": ""
+ },
+ "cloth": {
+  "gloss": "woven fabric material",
+  "other": ""
+ },
+ "clothes": {
+  "gloss": "garments worn on the body",
+  "other": ""
+ },
+ "cloud": {
+  "gloss": "visible mass of water vapor",
+  "other": "online data storage"
+ },
+ "coast": {
+  "gloss": "land beside the sea",
+  "other": "to glide without power"
+ },
+ "coat": {
+  "gloss": "warm outer garment with sleeves",
+  "other": "layer of paint"
+ },
+ "coconut": {
+  "gloss": "large hard-shelled tropical palm fruit",
+  "other": ""
+ },
+ "code": {
+  "gloss": "secret or computer instructions in symbols",
+  "other": ""
+ },
+ "coffee": {
+  "gloss": "hot drink brewed from roasted beans",
+  "other": ""
+ },
+ "coin": {
+  "gloss": "flat metal piece used as money",
+  "other": ""
+ },
+ "color": {
+  "gloss": "hue such as red or blue",
+  "other": ""
+ },
+ "comb": {
+  "gloss": "toothed tool for tidying hair",
+  "other": "red crest on a rooster's head"
+ },
+ "comic": {
+  "gloss": "magazine of stories told in pictures",
+  "other": "comedian"
+ },
+ "computer": {
+  "gloss": "electronic machine that processes data",
+  "other": ""
+ },
+ "concert": {
+  "gloss": "live musical performance",
+  "other": ""
+ },
+ "cook": {
+  "gloss": "person who prepares food",
+  "other": ""
+ },
+ "cookie": {
+  "gloss": "small sweet baked treat",
+  "other": "website data stored by a browser"
+ },
+ "corn": {
+  "gloss": "tall plant with yellow kernels on cobs",
+  "other": "hard painful patch of skin on the foot"
+ },
+ "couch": {
+  "gloss": "long padded seat for several people",
+  "other": ""
+ },
+ "country": {
+  "gloss": "a nation, or the countryside",
+  "other": ""
+ },
+ "courage": {
+  "gloss": "bravery in facing fear or danger",
+  "other": ""
+ },
+ "cousin": {
+  "gloss": "child of your aunt or uncle",
+  "other": ""
+ },
+ "cow": {
+  "gloss": "farm animal that gives milk",
+  "other": ""
+ },
+ "crab": {
+  "gloss": "sea creature with claws walking sideways",
+  "other": ""
+ },
+ "cream": {
+  "gloss": "thick fatty part of milk",
+  "other": ""
+ },
+ "crime": {
+  "gloss": "act that breaks the law",
+  "other": ""
+ },
+ "crocodile": {
+  "gloss": "large toothy reptile living in rivers",
+  "other": ""
+ },
+ "crow": {
+  "gloss": "large black bird",
+  "other": "rooster's loud morning call"
+ },
+ "crowd": {
+  "gloss": "a large group of people",
+  "other": ""
+ },
+ "crown": {
+  "gloss": "jeweled headpiece worn by a monarch",
+  "other": "dental cap on a tooth"
+ },
+ "cucumber": {
+  "gloss": "long green salad vegetable",
+  "other": ""
+ },
+ "cup": {
+  "gloss": "small drinking vessel with handle",
+  "other": ""
+ },
+ "curiosity": {
+  "gloss": "strong desire to know things",
+  "other": "rare or unusual object"
+ },
+ "curtain": {
+  "gloss": "fabric hung over a window",
+  "other": ""
+ },
+ "daisy": {
+  "gloss": "white-petaled flower with yellow center",
+  "other": ""
+ },
+ "dance": {
+  "gloss": "moving the body to music",
+  "other": ""
+ },
+ "danger": {
+  "gloss": "possibility of harm or injury",
+  "other": ""
+ },
+ "data": {
+  "gloss": "facts and figures, often stored digitally",
+  "other": ""
+ },
+ "dawn": {
+  "gloss": "first light of morning",
+  "other": ""
+ },
+ "day": {
+  "gloss": "period of twenty-four hours",
+  "other": ""
+ },
+ "death": {
+  "gloss": "end of a living thing's life",
+  "other": ""
+ },
+ "deer": {
+  "gloss": "wild animal with antlers",
+  "other": ""
+ },
+ "desert": {
+  "gloss": "dry sandy region with little rain",
+  "other": "to abandon"
+ },
+ "desk": {
+  "gloss": "table for working or writing",
+  "other": ""
+ },
+ "dessert": {
+  "gloss": "sweet course after a meal",
+  "other": ""
+ },
+ "diamond": {
+  "gloss": "hard sparkling precious gemstone",
+  "other": "rhombus shape or card suit"
+ },
+ "dice": {
+  "gloss": "small dotted cubes rolled in games",
+  "other": "to cut food into cubes"
+ },
+ "dinner": {
+  "gloss": "main evening meal",
+  "other": ""
+ },
+ "doctor": {
+  "gloss": "person who treats sick people",
+  "other": ""
+ },
+ "dog": {
+  "gloss": "furry pet that barks",
+  "other": ""
+ },
+ "doll": {
+  "gloss": "toy figure of a person",
+  "other": ""
+ },
+ "dolphin": {
+  "gloss": "smart, friendly sea mammal",
+  "other": ""
+ },
+ "donkey": {
+  "gloss": "long-eared animal related to horses",
+  "other": ""
+ },
+ "door": {
+  "gloss": "hinged panel closing an entrance",
+  "other": ""
+ },
+ "drawer": {
+  "gloss": "sliding storage box in furniture",
+  "other": "person who draws"
+ },
+ "drawing": {
+  "gloss": "picture made with pencil or pen",
+  "other": ""
+ },
+ "dream": {
+  "gloss": "images and stories during sleep",
+  "other": ""
+ },
+ "dress": {
+  "gloss": "one-piece garment with a skirt",
+  "other": ""
+ },
+ "drill": {
+  "gloss": "tool for boring holes",
+  "other": "practice exercise, like a fire drill"
+ },
+ "driver": {
+  "gloss": "person who drives a vehicle",
+  "other": "golf club for long shots"
+ },
+ "drum": {
+  "gloss": "percussion instrument struck with sticks",
+  "other": ""
+ },
+ "duck": {
+  "gloss": "water bird that quacks",
+  "other": "to lower your head quickly"
+ },
+ "dust": {
+  "gloss": "fine dry particles of dirt",
+  "other": ""
+ },
+ "eagle": {
+  "gloss": "large powerful bird of prey",
+  "other": "golf score two under par"
+ },
+ "ear": {
+  "gloss": "the organ used for hearing",
+  "other": "ear of corn"
+ },
+ "earth": {
+  "gloss": "the planet we live on",
+  "other": "soil or dirt"
+ },
+ "egg": {
+  "gloss": "oval shelled food laid by hens",
+  "other": ""
+ },
+ "elbow": {
+  "gloss": "joint in the middle of the arm",
+  "other": ""
+ },
+ "elephant": {
+  "gloss": "huge gray animal with a trunk",
+  "other": ""
+ },
+ "emotion": {
+  "gloss": "a strong feeling like joy or anger",
+  "other": ""
+ },
+ "energy": {
+  "gloss": "strength needed for activity",
+  "other": ""
+ },
+ "engine": {
+  "gloss": "machine that powers a vehicle",
+  "other": ""
+ },
+ "engineer": {
+  "gloss": "person who designs machines or structures",
+  "other": ""
+ },
+ "envelope": {
+  "gloss": "paper cover for mailing a letter",
+  "other": ""
+ },
+ "evening": {
+  "gloss": "late part of the day before night",
+  "other": ""
+ },
+ "excitement": {
+  "gloss": "feeling of eager enthusiasm",
+  "other": ""
+ },
+ "eye": {
+  "gloss": "the organ used for seeing",
+  "other": ""
+ },
+ "face": {
+  "gloss": "the front part of the head",
+  "other": ""
+ },
+ "factory": {
+  "gloss": "building where goods are made",
+  "other": ""
+ },
+ "family": {
+  "gloss": "parents and their children together",
+  "other": ""
+ },
+ "farm": {
+  "gloss": "land for growing crops and animals",
+  "other": ""
+ },
+ "farmer": {
+  "gloss": "person who grows crops or raises animals",
+  "other": ""
+ },
+ "father": {
+  "gloss": "a male parent",
+  "other": "priest"
+ },
+ "fear": {
+  "gloss": "the feeling of being afraid",
+  "other": ""
+ },
+ "feast": {
+  "gloss": "large celebratory meal",
+  "other": ""
+ },
+ "feeling": {
+  "gloss": "an emotion such as happiness",
+  "other": ""
+ },
+ "fence": {
+  "gloss": "barrier around an area",
+  "other": "to sword fight"
+ },
+ "festival": {
+  "gloss": "public celebration with events",
+  "other": ""
+ },
+ "field": {
+  "gloss": "open area of grass or crops",
+  "other": "area of study or work"
+ },
+ "fight": {
+  "gloss": "violent struggle between people",
+  "other": ""
+ },
+ "film": {
+  "gloss": "a movie shown in cinemas",
+  "other": "thin coating or layer"
+ },
+ "finger": {
+  "gloss": "one of the digits on a hand",
+  "other": ""
+ },
+ "fire": {
+  "gloss": "burning that gives heat and flames",
+  "other": "dismissal from a job"
+ },
+ "fish": {
+  "gloss": "water animal with fins and gills",
+  "other": ""
+ },
+ "flag": {
+  "gloss": "cloth bearing a country's or group's emblem",
+  "other": ""
+ },
+ "flame": {
+  "gloss": "glowing tongue of burning gas",
+  "other": ""
+ },
+ "flood": {
+  "gloss": "overflow of water onto land",
+  "other": ""
+ },
+ "floor": {
+  "gloss": "surface you walk on indoors",
+  "other": ""
+ },
+ "flour": {
+  "gloss": "powdered grain used for baking",
+  "other": ""
+ },
+ "flower": {
+  "gloss": "colorful blooming part of a plant",
+  "other": ""
+ },
+ "flute": {
+  "gloss": "woodwind instrument played sideways",
+  "other": "tall narrow champagne glass"
+ },
+ "fog": {
+  "gloss": "thick cloud near the ground",
+  "other": ""
+ },
+ "food": {
+  "gloss": "what people and animals eat",
+  "other": ""
+ },
+ "foot": {
+  "gloss": "body part at the end of the leg",
+  "other": "unit of length (12 inches)"
+ },
+ "football": {
+  "gloss": "team sport played by kicking a ball",
+  "other": ""
+ },
+ "forest": {
+  "gloss": "large area covered with trees",
+  "other": ""
+ },
+ "fork": {
+  "gloss": "pronged utensil for eating",
+  "other": ""
+ },
+ "fox": {
+  "gloss": "small wild dog with bushy tail",
+  "other": ""
+ },
+ "freedom": {
+  "gloss": "power to act without restriction",
+  "other": ""
+ },
+ "fridge": {
+  "gloss": "cold appliance for storing food",
+  "other": ""
+ },
+ "friend": {
+  "gloss": "a person you like and trust",
+  "other": ""
+ },
+ "frog": {
+  "gloss": "small jumping amphibian that croaks",
+  "other": ""
+ },
+ "frost": {
+  "gloss": "thin ice coating on surfaces",
+  "other": ""
+ },
+ "fruit": {
+  "gloss": "sweet edible part of a plant",
+  "other": ""
+ },
+ "fuel": {
+  "gloss": "substance burned to make power",
+  "other": ""
+ },
+ "future": {
+  "gloss": "time that is yet to come",
+  "other": ""
+ },
+ "game": {
+  "gloss": "activity played for fun with rules",
+  "other": "wild animals hunted for food"
+ },
+ "garage": {
+  "gloss": "building for parking a car",
+  "other": ""
+ },
+ "garden": {
+  "gloss": "plot where plants are grown",
+  "other": ""
+ },
+ "garlic": {
+  "gloss": "strong-smelling bulb used in cooking",
+  "other": ""
+ },
+ "gate": {
+  "gloss": "hinged barrier in a fence or wall",
+  "other": ""
+ },
+ "ghost": {
+  "gloss": "spirit of a dead person",
+  "other": ""
+ },
+ "giant": {
+  "gloss": "huge person in stories",
+  "other": ""
+ },
+ "gift": {
+  "gloss": "present given to someone",
+  "other": "natural talent"
+ },
+ "giraffe": {
+  "gloss": "tall African animal with long neck",
+  "other": ""
+ },
+ "girl": {
+  "gloss": "female child",
+  "other": ""
+ },
+ "glacier": {
+  "gloss": "slow-moving mass of ice",
+  "other": ""
+ },
+ "glass": {
+  "gloss": "drinking container made of glass",
+  "other": ""
+ },
+ "glove": {
+  "gloss": "hand covering with separate fingers",
+  "other": ""
+ },
+ "glue": {
+  "gloss": "sticky substance for joining things",
+  "other": ""
+ },
+ "goal": {
+  "gloss": "net where points are scored in sports",
+  "other": ""
+ },
+ "goat": {
+  "gloss": "horned farm animal with a beard",
+  "other": ""
+ },
+ "gold": {
+  "gloss": "precious shiny yellow metal",
+  "other": ""
+ },
+ "golf": {
+  "gloss": "sport hitting a ball into holes",
+  "other": ""
+ },
+ "gorilla": {
+  "gloss": "large powerful African ape",
+  "other": ""
+ },
+ "grandmother": {
+  "gloss": "mother of your parent",
+  "other": ""
+ },
+ "grape": {
+  "gloss": "small round fruit growing in bunches",
+  "other": ""
+ },
+ "grass": {
+  "gloss": "green plant covering lawns",
+  "other": ""
+ },
+ "gravity": {
+  "gloss": "force pulling objects toward each other",
+  "other": "seriousness"
+ },
+ "guest": {
+  "gloss": "invited visitor to a home or event",
+  "other": ""
+ },
+ "guilt": {
+  "gloss": "feeling of having done wrong",
+  "other": ""
+ },
+ "guitar": {
+  "gloss": "stringed instrument that is strummed",
+  "other": ""
+ },
+ "gym": {
+  "gloss": "place for exercise and sports",
+  "other": ""
+ },
+ "hair": {
+  "gloss": "thin strands growing on the head",
+  "other": ""
+ },
+ "ham": {
+  "gloss": "cured meat from a pig's leg",
+  "other": "performer who overacts"
+ },
+ "hammer": {
+  "gloss": "tool for pounding in nails",
+  "other": ""
+ },
+ "hand": {
+  "gloss": "body part at the end of the arm",
+  "other": "pointer on a clock"
+ },
+ "harbor": {
+  "gloss": "sheltered water where ships dock",
+  "other": ""
+ },
+ "harp": {
+  "gloss": "large stringed instrument plucked by hand",
+  "other": ""
+ },
+ "hat": {
+  "gloss": "covering worn on the head",
+  "other": ""
+ },
+ "hate": {
+  "gloss": "intense dislike",
+  "other": ""
+ },
+ "hawk": {
+  "gloss": "bird of prey with sharp talons",
+  "other": ""
+ },
+ "head": {
+  "gloss": "top body part containing the brain",
+  "other": ""
+ },
+ "health": {
+  "gloss": "condition of the body and mind",
+  "other": ""
+ },
+ "heart": {
+  "gloss": "organ that pumps blood",
+  "other": ""
+ },
+ "heat": {
+  "gloss": "quality of being hot",
+  "other": "qualifying race round"
+ },
+ "hedgehog": {
+  "gloss": "small spiny animal that curls up",
+  "other": ""
+ },
+ "helicopter": {
+  "gloss": "aircraft with spinning overhead rotor",
+  "other": ""
+ },
+ "helmet": {
+  "gloss": "hard protective hat for the head",
+  "other": ""
+ },
+ "hen": {
+  "gloss": "female chicken that lays eggs",
+  "other": ""
+ },
+ "hero": {
+  "gloss": "brave, admired person who saves others",
+  "other": "long sub sandwich"
+ },
+ "hike": {
+  "gloss": "long walk in nature",
+  "other": "sudden increase in prices"
+ },
+ "hill": {
+  "gloss": "naturally raised area of land",
+  "other": ""
+ },
+ "hippo": {
+  "gloss": "large African river animal",
+  "other": ""
+ },
+ "history": {
+  "gloss": "study of past events",
+  "other": ""
+ },
+ "holiday": {
+  "gloss": "day of celebration or no work",
+  "other": ""
+ },
+ "home": {
+  "gloss": "place where one lives",
+  "other": ""
+ },
+ "honey": {
+  "gloss": "sweet sticky food made by bees",
+  "other": "term of endearment"
+ },
+ "hope": {
+  "gloss": "a wish for something good",
+  "other": ""
+ },
+ "horse": {
+  "gloss": "large animal people ride",
+  "other": ""
+ },
+ "hospital": {
+  "gloss": "place where sick people are treated",
+  "other": ""
+ },
+ "hotel": {
+  "gloss": "building where travelers pay to stay",
+  "other": ""
+ },
+ "hour": {
+  "gloss": "period of sixty minutes",
+  "other": ""
+ },
+ "house": {
+  "gloss": "building where a family lives",
+  "other": ""
+ },
+ "human": {
+  "gloss": "a person",
+  "other": ""
+ },
+ "hunter": {
+  "gloss": "person who hunts wild animals",
+  "other": ""
+ },
+ "husband": {
+  "gloss": "married man in relation to spouse",
+  "other": ""
+ },
+ "hut": {
+  "gloss": "small simple shelter",
+  "other": ""
+ },
+ "ice": {
+  "gloss": "frozen water",
+  "other": ""
+ },
+ "idea": {
+  "gloss": "a thought or plan",
+  "other": ""
+ },
+ "ink": {
+  "gloss": "colored liquid used for writing",
+  "other": ""
+ },
+ "insect": {
+  "gloss": "small six-legged creature",
+  "other": ""
+ },
+ "instrument": {
+  "gloss": "a device for making music",
+  "other": ""
+ },
+ "internet": {
+  "gloss": "global network connecting computers",
+  "other": ""
+ },
+ "island": {
+  "gloss": "land surrounded by water",
+  "other": "kitchen counter unit"
+ },
+ "jacket": {
+  "gloss": "short coat worn over clothes",
+  "other": ""
+ },
+ "jar": {
+  "gloss": "glass container with a lid",
+  "other": "to jolt or shake"
+ },
+ "jealousy": {
+  "gloss": "resentful envy of others",
+  "other": ""
+ },
+ "jellyfish": {
+  "gloss": "soft stinging sea creature with tentacles",
+  "other": ""
+ },
+ "jet": {
+  "gloss": "fast airplane with jet engines",
+  "other": "forceful stream of liquid or gas"
+ },
+ "jewel": {
+  "gloss": "precious gemstone",
+  "other": ""
+ },
+ "job": {
+  "gloss": "paid work someone does",
+  "other": ""
+ },
+ "journey": {
+  "gloss": "act of traveling somewhere, often far",
+  "other": ""
+ },
+ "joy": {
+  "gloss": "a feeling of great happiness",
+  "other": ""
+ },
+ "judge": {
+  "gloss": "official who decides cases in court",
+  "other": ""
+ },
+ "juice": {
+  "gloss": "drink squeezed from fruit",
+  "other": ""
+ },
+ "jump": {
+  "gloss": "leap up into the air",
+  "other": ""
+ },
+ "jungle": {
+  "gloss": "dense tropical forest",
+  "other": ""
+ },
+ "justice": {
+  "gloss": "fair treatment under the law",
+  "other": ""
+ },
+ "kangaroo": {
+  "gloss": "hopping Australian animal with a pouch",
+  "other": ""
+ },
+ "kettle": {
+  "gloss": "pot for boiling water",
+  "other": ""
+ },
+ "key": {
+  "gloss": "metal tool that opens a lock",
+  "other": "button on a keyboard or piano"
+ },
+ "keyboard": {
+  "gloss": "set of keys for typing",
+  "other": "electronic musical instrument"
+ },
+ "kid": {
+  "gloss": "young child",
+  "other": "young goat"
+ },
+ "king": {
+  "gloss": "male ruler of a kingdom",
+  "other": ""
+ },
+ "kitchen": {
+  "gloss": "room where food is cooked",
+  "other": ""
+ },
+ "kite": {
+  "gloss": "flying toy on a string",
+  "other": "bird of prey"
+ },
+ "kitten": {
+  "gloss": "young cat",
+  "other": ""
+ },
+ "knee": {
+  "gloss": "joint in the middle of the leg",
+  "other": ""
+ },
+ "knife": {
+  "gloss": "bladed tool for cutting",
+  "other": ""
+ },
+ "knight": {
+  "gloss": "armored medieval warrior on horseback",
+  "other": "chess piece"
+ },
+ "knowledge": {
+  "gloss": "facts and understanding someone has",
+  "other": ""
+ },
+ "koala": {
+  "gloss": "Australian tree animal that eats eucalyptus",
+  "other": ""
+ },
+ "ladder": {
+  "gloss": "climbing frame with rungs",
+  "other": ""
+ },
+ "lake": {
+  "gloss": "large inland body of water",
+  "other": ""
+ },
+ "lamb": {
+  "gloss": "young sheep",
+  "other": ""
+ },
+ "lamp": {
+  "gloss": "device that gives light",
+  "other": ""
+ },
+ "language": {
+  "gloss": "system of words people speak",
+  "other": ""
+ },
+ "laugh": {
+  "gloss": "sound made when something is funny",
+  "other": ""
+ },
+ "law": {
+  "gloss": "system of rules enforced by government",
+  "other": ""
+ },
+ "lawyer": {
+  "gloss": "person who gives legal advice",
+  "other": ""
+ },
+ "leaf": {
+  "gloss": "flat green part of a plant",
+  "other": "page of a book"
+ },
+ "leg": {
+  "gloss": "limb used for standing and walking",
+  "other": ""
+ },
+ "lemon": {
+  "gloss": "sour yellow citrus fruit",
+  "other": "faulty car"
+ },
+ "lemonade": {
+  "gloss": "drink of lemon juice and sugar",
+  "other": ""
+ },
+ "lesson": {
+  "gloss": "period of teaching on a topic",
+  "other": ""
+ },
+ "lettuce": {
+  "gloss": "leafy green salad vegetable",
+  "other": ""
+ },
+ "library": {
+  "gloss": "place where books are borrowed",
+  "other": ""
+ },
+ "lie": {
+  "gloss": "false statement told on purpose",
+  "other": "to rest flat, as in bed"
+ },
+ "life": {
+  "gloss": "state of being alive",
+  "other": ""
+ },
+ "light": {
+  "gloss": "brightness that lets us see",
+  "other": "not heavy"
+ },
+ "lightning": {
+  "gloss": "electric flash in a storm",
+  "other": ""
+ },
+ "line": {
+  "gloss": "long thin mark",
+  "other": "queue of people waiting"
+ },
+ "lion": {
+  "gloss": "big wild cat with a mane",
+  "other": ""
+ },
+ "lip": {
+  "gloss": "fleshy edge of the mouth",
+  "other": ""
+ },
+ "lizard": {
+  "gloss": "small scaly reptile with a tail",
+  "other": ""
+ },
+ "lobster": {
+  "gloss": "large clawed sea creature",
+  "other": ""
+ },
+ "lock": {
+  "gloss": "device that keeps something fastened shut",
+  "other": "strand of hair"
+ },
+ "loneliness": {
+  "gloss": "sad feeling of being alone",
+  "other": ""
+ },
+ "love": {
+  "gloss": "deep affection for someone",
+  "other": "zero score in tennis"
+ },
+ "luck": {
+  "gloss": "chance bringing good or bad events",
+  "other": ""
+ },
+ "lunch": {
+  "gloss": "meal eaten around midday",
+  "other": ""
+ },
+ "lung": {
+  "gloss": "organ in the chest for breathing",
+  "other": ""
+ },
+ "machine": {
+  "gloss": "device with moving parts that does work",
+  "other": ""
+ },
+ "magazine": {
+  "gloss": "illustrated periodical publication",
+  "other": "ammunition holder for a gun"
+ },
+ "mall": {
+  "gloss": "large indoor shopping center",
+  "other": ""
+ },
+ "man": {
+  "gloss": "an adult male human",
+  "other": ""
+ },
+ "map": {
+  "gloss": "drawing showing an area's layout",
+  "other": ""
+ },
+ "marathon": {
+  "gloss": "long-distance running race of 26.2 miles",
+  "other": ""
+ },
+ "market": {
+  "gloss": "place where goods are bought and sold",
+  "other": ""
+ },
+ "mask": {
+  "gloss": "covering worn over the face",
+  "other": ""
+ },
+ "math": {
+  "gloss": "study of numbers and shapes",
+  "other": ""
+ },
+ "meal": {
+  "gloss": "food eaten at one sitting",
+  "other": ""
+ },
+ "meat": {
+  "gloss": "animal flesh eaten as food",
+  "other": ""
+ },
+ "medal": {
+  "gloss": "metal disc awarded for achievement",
+  "other": ""
+ },
+ "melon": {
+  "gloss": "large juicy sweet fruit",
+  "other": ""
+ },
+ "memory": {
+  "gloss": "something remembered from the past",
+  "other": ""
+ },
+ "metal": {
+  "gloss": "hard shiny material like iron",
+  "other": "heavy metal music"
+ },
+ "milk": {
+  "gloss": "white drink produced by cows",
+  "other": ""
+ },
+ "mind": {
+  "gloss": "the part of a person that thinks",
+  "other": "to object or care (verb)"
+ },
+ "mirror": {
+  "gloss": "reflective glass surface",
+  "other": ""
+ },
+ "money": {
+  "gloss": "coins and notes used to buy things",
+  "other": ""
+ },
+ "monkey": {
+  "gloss": "playful tree-climbing primate with tail",
+  "other": ""
+ },
+ "month": {
+  "gloss": "one of twelve parts of a year",
+  "other": ""
+ },
+ "moon": {
+  "gloss": "natural satellite orbiting the Earth",
+  "other": ""
+ },
+ "morning": {
+  "gloss": "early part of the day",
+  "other": ""
+ },
+ "mosquito": {
+  "gloss": "small biting insect that sucks blood",
+  "other": ""
+ },
+ "moss": {
+  "gloss": "small soft green plant on rocks",
+  "other": ""
+ },
+ "mother": {
+  "gloss": "a female parent",
+  "other": ""
+ },
+ "mountain": {
+  "gloss": "very high natural rise of land",
+  "other": ""
+ },
+ "mouth": {
+  "gloss": "opening in the face for eating",
+  "other": ""
+ },
+ "movie": {
+  "gloss": "story shown as moving pictures",
+  "other": ""
+ },
+ "mud": {
+  "gloss": "wet, soft earth",
+  "other": ""
+ },
+ "muscle": {
+  "gloss": "body tissue that contracts to move",
+  "other": ""
+ },
+ "museum": {
+  "gloss": "building displaying historic or art objects",
+  "other": ""
+ },
+ "mushroom": {
+  "gloss": "fungus with a cap and stem",
+  "other": ""
+ },
+ "music": {
+  "gloss": "sounds arranged into melody and rhythm",
+  "other": ""
+ },
+ "mystery": {
+  "gloss": "something puzzling or unexplained",
+  "other": ""
+ },
+ "nail": {
+  "gloss": "metal pin hammered into wood",
+  "other": "fingernail"
+ },
+ "nation": {
+  "gloss": "country and its people",
+  "other": ""
+ },
+ "neck": {
+  "gloss": "body part joining head to shoulders",
+  "other": ""
+ },
+ "necklace": {
+  "gloss": "jewelry worn around the neck",
+  "other": ""
+ },
+ "needle": {
+  "gloss": "thin pointed tool for sewing",
+  "other": "leaf of a pine tree"
+ },
+ "neighbor": {
+  "gloss": "a person living next door",
+  "other": ""
+ },
+ "news": {
+  "gloss": "reports of recent events",
+  "other": ""
+ },
+ "newspaper": {
+  "gloss": "daily printed publication of news",
+  "other": ""
+ },
+ "night": {
+  "gloss": "dark time between sunset and sunrise",
+  "other": ""
+ },
+ "noise": {
+  "gloss": "a loud or unwanted sound",
+  "other": ""
+ },
+ "noodle": {
+  "gloss": "long thin strip of pasta dough",
+  "other": ""
+ },
+ "nose": {
+  "gloss": "the organ used for smelling",
+  "other": ""
+ },
+ "nurse": {
+  "gloss": "person who cares for patients",
+  "other": ""
+ },
+ "nut": {
+  "gloss": "hard-shelled edible seed",
+  "other": "metal piece screwed onto a bolt"
+ },
+ "oak": {
+  "gloss": "large tree that bears acorns",
+  "other": ""
+ },
+ "ocean": {
+  "gloss": "vast body of salt water",
+  "other": ""
+ },
+ "octopus": {
+  "gloss": "sea creature with eight arms",
+  "other": ""
+ },
+ "office": {
+  "gloss": "room or building for desk work",
+  "other": "official position or role"
+ },
+ "oil": {
+  "gloss": "greasy liquid for cooking or engines",
+  "other": ""
+ },
+ "onion": {
+  "gloss": "strong-smelling layered bulb vegetable",
+  "other": ""
+ },
+ "opera": {
+  "gloss": "drama set to music and sung",
+  "other": ""
+ },
+ "ostrich": {
+  "gloss": "huge flightless fast-running bird",
+  "other": ""
+ },
+ "oven": {
+  "gloss": "enclosed appliance for baking food",
+  "other": ""
+ },
+ "owl": {
+  "gloss": "night bird that hoots",
+  "other": ""
+ },
+ "page": {
+  "gloss": "one side of a sheet in a book",
+  "other": "young servant or attendant"
+ },
+ "pain": {
+  "gloss": "physical hurt or discomfort",
+  "other": ""
+ },
+ "paint": {
+  "gloss": "colored liquid spread on surfaces",
+  "other": ""
+ },
+ "palace": {
+  "gloss": "large home of a king or queen",
+  "other": ""
+ },
+ "pan": {
+  "gloss": "shallow pan for frying food",
+  "other": ""
+ },
+ "panda": {
+  "gloss": "black-and-white bear that eats bamboo",
+  "other": ""
+ },
+ "panic": {
+  "gloss": "sudden overwhelming fear",
+  "other": ""
+ },
+ "pants": {
+  "gloss": "garment covering each leg separately",
+  "other": ""
+ },
+ "paper": {
+  "gloss": "thin material for writing on",
+  "other": ""
+ },
+ "parent": {
+  "gloss": "mother or father",
+  "other": ""
+ },
+ "park": {
+  "gloss": "public green area for recreation",
+  "other": "to leave a vehicle somewhere"
+ },
+ "parrot": {
+  "gloss": "colorful bird that can mimic speech",
+  "other": ""
+ },
+ "party": {
+  "gloss": "social gathering for fun",
+  "other": "political group"
+ },
+ "passport": {
+  "gloss": "official document for international travel",
+  "other": ""
+ },
+ "past": {
+  "gloss": "time that has already gone",
+  "other": ""
+ },
+ "pasta": {
+  "gloss": "Italian dough food like spaghetti",
+  "other": ""
+ },
+ "path": {
+  "gloss": "narrow track for walking",
+  "other": ""
+ },
+ "pea": {
+  "gloss": "small round green seed vegetable",
+  "other": ""
+ },
+ "peace": {
+  "gloss": "time without war or fighting",
+  "other": ""
+ },
+ "peach": {
+  "gloss": "soft fuzzy sweet stone fruit",
+  "other": ""
+ },
+ "peacock": {
+  "gloss": "male bird with colorful fanned tail",
+  "other": ""
+ },
+ "pear": {
+  "gloss": "sweet fruit narrow at the top",
+  "other": ""
+ },
+ "pebble": {
+  "gloss": "small smooth stone",
+  "other": ""
+ },
+ "pen": {
+  "gloss": "tool for writing with ink",
+  "other": "enclosure for animals"
+ },
+ "pencil": {
+  "gloss": "writing tool with a graphite core",
+  "other": ""
+ },
+ "penguin": {
+  "gloss": "flightless black-and-white swimming bird",
+  "other": ""
+ },
+ "people": {
+  "gloss": "human beings in general",
+  "other": ""
+ },
+ "pepper": {
+  "gloss": "ground black spice from peppercorns",
+  "other": "bell pepper vegetable"
+ },
+ "person": {
+  "gloss": "a human being",
+  "other": ""
+ },
+ "petal": {
+  "gloss": "colorful leaf-like part of a flower",
+  "other": ""
+ },
+ "phone": {
+  "gloss": "device for calling people",
+  "other": ""
+ },
+ "photo": {
+  "gloss": "picture taken with a camera",
+  "other": ""
+ },
+ "piano": {
+  "gloss": "large musical instrument with keys",
+  "other": ""
+ },
+ "picnic": {
+  "gloss": "meal eaten outdoors",
+  "other": ""
+ },
+ "picture": {
+  "gloss": "image that is drawn, painted, or photographed",
+  "other": ""
+ },
+ "pie": {
+  "gloss": "baked dish with pastry crust and filling",
+  "other": ""
+ },
+ "pig": {
+  "gloss": "pink farm animal that oinks",
+  "other": ""
+ },
+ "pigeon": {
+  "gloss": "common gray city bird",
+  "other": ""
+ },
+ "pillow": {
+  "gloss": "soft cushion for resting head",
+  "other": ""
+ },
+ "pilot": {
+  "gloss": "person who flies an aircraft",
+  "other": "test episode of a TV show"
+ },
+ "pine": {
+  "gloss": "evergreen tree with needles",
+  "other": "to long for"
+ },
+ "pineapple": {
+  "gloss": "spiky tropical fruit with sweet flesh",
+  "other": ""
+ },
+ "pirate": {
+  "gloss": "robber who attacks ships at sea",
+  "other": ""
+ },
+ "pizza": {
+  "gloss": "flat baked dough with cheese and toppings",
+  "other": ""
+ },
+ "plane": {
+  "gloss": "winged aircraft that flies",
+  "other": "flat surface; woodworking tool"
+ },
+ "planet": {
+  "gloss": "large body orbiting a star",
+  "other": ""
+ },
+ "plate": {
+  "gloss": "flat dish for serving food",
+  "other": "tectonic plate"
+ },
+ "player": {
+  "gloss": "person who plays a game or sport",
+  "other": ""
+ },
+ "plum": {
+  "gloss": "small juicy purple stone fruit",
+  "other": ""
+ },
+ "pocket": {
+  "gloss": "small pouch sewn into clothing",
+  "other": ""
+ },
+ "poem": {
+  "gloss": "piece of writing in verse",
+  "other": ""
+ },
+ "police": {
+  "gloss": "officers who enforce the law",
+  "other": ""
+ },
+ "pond": {
+  "gloss": "small body of still water",
+  "other": ""
+ },
+ "pot": {
+  "gloss": "deep round cooking container",
+  "other": "marijuana"
+ },
+ "potato": {
+  "gloss": "starchy underground tuber eaten cooked",
+  "other": ""
+ },
+ "power": {
+  "gloss": "strength or ability to control",
+  "other": "electricity supply"
+ },
+ "price": {
+  "gloss": "amount of money something costs",
+  "other": ""
+ },
+ "pride": {
+  "gloss": "satisfaction in one's achievements",
+  "other": "group of lions"
+ },
+ "prince": {
+  "gloss": "son of a king or queen",
+  "other": ""
+ },
+ "prison": {
+  "gloss": "building where criminals are locked up",
+  "other": ""
+ },
+ "prize": {
+  "gloss": "award given to a winner",
+  "other": ""
+ },
+ "problem": {
+  "gloss": "difficulty that needs solving",
+  "other": ""
+ },
+ "program": {
+  "gloss": "set of instructions for a computer",
+  "other": "television show"
+ },
+ "pumpkin": {
+  "gloss": "large round orange squash",
+  "other": ""
+ },
+ "puppy": {
+  "gloss": "young dog",
+  "other": ""
+ },
+ "puzzle": {
+  "gloss": "game that tests ingenuity, like a jigsaw",
+  "other": ""
+ },
+ "queen": {
+  "gloss": "female ruler of a kingdom",
+  "other": ""
+ },
+ "question": {
+  "gloss": "sentence asking for information",
+  "other": ""
+ },
+ "rabbit": {
+  "gloss": "long-eared hopping animal",
+  "other": ""
+ },
+ "race": {
+  "gloss": "contest to see who is fastest",
+  "other": "group of people sharing ancestry"
+ },
+ "radio": {
+  "gloss": "device for receiving audio broadcasts",
+  "other": ""
+ },
+ "raft": {
+  "gloss": "flat floating platform of logs",
+  "other": "large amount of something"
+ },
+ "rain": {
+  "gloss": "water falling in drops from clouds",
+  "other": ""
+ },
+ "rainbow": {
+  "gloss": "colored arc in the sky",
+  "other": ""
+ },
+ "referee": {
+  "gloss": "official who enforces a game's rules",
+  "other": ""
+ },
+ "rest": {
+  "gloss": "time spent relaxing or recovering",
+  "other": "the remaining part"
+ },
+ "restaurant": {
+  "gloss": "place where meals are bought and eaten",
+  "other": ""
+ },
+ "rhino": {
+  "gloss": "large animal with horn on nose",
+  "other": ""
+ },
+ "rice": {
+  "gloss": "small white grain cooked as food",
+  "other": ""
+ },
+ "river": {
+  "gloss": "large natural flowing stream of water",
+  "other": ""
+ },
+ "road": {
+  "gloss": "paved way for vehicles",
+  "other": ""
+ },
+ "robot": {
+  "gloss": "machine that performs tasks automatically",
+  "other": ""
+ },
+ "rock": {
+  "gloss": "hard mineral material of the earth",
+  "other": "rock music"
+ },
+ "rocket": {
+  "gloss": "vehicle launched into space",
+  "other": "leafy salad green (arugula)"
+ },
+ "roof": {
+  "gloss": "top covering of a building",
+  "other": ""
+ },
+ "room": {
+  "gloss": "walled space inside a building",
+  "other": ""
+ },
+ "rooster": {
+  "gloss": "male chicken that crows at dawn",
+  "other": ""
+ },
+ "root": {
+  "gloss": "underground part of a plant",
+  "other": ""
+ },
+ "rope": {
+  "gloss": "thick cord of twisted fibers",
+  "other": ""
+ },
+ "rose": {
+  "gloss": "thorny flower with fragrant petals",
+  "other": "past tense of rise"
+ },
+ "rug": {
+  "gloss": "small fabric floor covering",
+  "other": "toupee"
+ },
+ "rule": {
+  "gloss": "instruction about what is allowed",
+  "other": ""
+ },
+ "run": {
+  "gloss": "moving quickly on foot",
+  "other": ""
+ },
+ "sadness": {
+  "gloss": "the feeling of being unhappy",
+  "other": ""
+ },
+ "safety": {
+  "gloss": "condition of being protected from harm",
+  "other": ""
+ },
+ "sail": {
+  "gloss": "cloth on a boat catching wind",
+  "other": ""
+ },
+ "sailor": {
+  "gloss": "person who works on a ship",
+  "other": ""
+ },
+ "salad": {
+  "gloss": "dish of mixed raw vegetables",
+  "other": ""
+ },
+ "sale": {
+  "gloss": "event selling items at lower prices",
+  "other": ""
+ },
+ "salt": {
+  "gloss": "white seasoning crystals for food",
+  "other": ""
+ },
+ "sand": {
+  "gloss": "tiny grains of crushed rock",
+  "other": ""
+ },
+ "sandwich": {
+  "gloss": "filling between two slices of bread",
+  "other": ""
+ },
+ "sauce": {
+  "gloss": "thick liquid served with food",
+  "other": ""
+ },
+ "sausage": {
+  "gloss": "ground meat in a tube casing",
+  "other": ""
+ },
+ "saw": {
+  "gloss": "toothed blade tool for cutting wood",
+  "other": "past tense of see"
+ },
+ "scarf": {
+  "gloss": "long cloth worn around the neck",
+  "other": "to eat quickly and greedily"
+ },
+ "school": {
+  "gloss": "place where children are taught",
+  "other": "group of fish"
+ },
+ "science": {
+  "gloss": "study of the natural world",
+  "other": ""
+ },
+ "scientist": {
+  "gloss": "person who studies nature through experiments",
+  "other": ""
+ },
+ "scissors": {
+  "gloss": "two-bladed tool for cutting",
+  "other": ""
+ },
+ "score": {
+  "gloss": "number of points in a game",
+  "other": "written music for a piece"
+ },
+ "screen": {
+  "gloss": "display surface of a device",
+  "other": "mesh panel in a door or window"
+ },
+ "screw": {
+  "gloss": "threaded metal fastener turned by screwdriver",
+  "other": ""
+ },
+ "sculpture": {
+  "gloss": "three-dimensional artwork carved or modeled",
+  "other": ""
+ },
+ "sea": {
+  "gloss": "large body of salt water",
+  "other": ""
+ },
+ "season": {
+  "gloss": "one of four parts of the year",
+  "other": ""
+ },
+ "secret": {
+  "gloss": "something kept hidden from others",
+  "other": ""
+ },
+ "seed": {
+  "gloss": "small part a plant grows from",
+  "other": "tournament ranking"
+ },
+ "shadow": {
+  "gloss": "dark shape cast by blocked light",
+  "other": ""
+ },
+ "shame": {
+  "gloss": "painful feeling of disgrace",
+  "other": ""
+ },
+ "shape": {
+  "gloss": "outline or form of something",
+  "other": ""
+ },
+ "shark": {
+  "gloss": "large predatory fish with sharp teeth",
+  "other": "swindler, as in loan shark"
+ },
+ "sheep": {
+  "gloss": "woolly farm animal",
+  "other": ""
+ },
+ "shelf": {
+  "gloss": "flat board for holding things",
+  "other": ""
+ },
+ "shield": {
+  "gloss": "armor carried to block blows",
+  "other": ""
+ },
+ "ship": {
+  "gloss": "large vessel for traveling on sea",
+  "other": "to send goods"
+ },
+ "shirt": {
+  "gloss": "garment for the upper body",
+  "other": ""
+ },
+ "shoe": {
+  "gloss": "covering worn on the foot",
+  "other": ""
+ },
+ "shop": {
+  "gloss": "place where goods are sold",
+  "other": ""
+ },
+ "shore": {
+  "gloss": "land along the edge of water",
+  "other": ""
+ },
+ "shoulder": {
+  "gloss": "joint where the arm meets the body",
+  "other": "edge of a road"
+ },
+ "shovel": {
+  "gloss": "tool for digging and moving earth",
+  "other": ""
+ },
+ "shower": {
+  "gloss": "spray of water for washing yourself",
+  "other": "party with gifts, like a baby shower"
+ },
+ "sickness": {
+  "gloss": "state of being ill",
+  "other": ""
+ },
+ "silver": {
+  "gloss": "precious shiny gray-white metal",
+  "other": ""
+ },
+ "singer": {
+  "gloss": "person who sings songs",
+  "other": ""
+ },
+ "sister": {
+  "gloss": "a female sibling",
+  "other": "nun"
+ },
+ "skate": {
+  "gloss": "boot with blade or wheels for gliding",
+  "other": "flat fish related to rays"
+ },
+ "ski": {
+  "gloss": "long narrow runner for gliding on snow",
+  "other": ""
+ },
+ "skin": {
+  "gloss": "outer covering of the body",
+  "other": ""
+ },
+ "skirt": {
+  "gloss": "garment hanging down from the waist",
+  "other": ""
+ },
+ "sky": {
+  "gloss": "space above the earth",
+  "other": ""
+ },
+ "sleep": {
+  "gloss": "nightly state of natural unconsciousness",
+  "other": ""
+ },
+ "sleeve": {
+  "gloss": "part of a garment covering the arm",
+  "other": ""
+ },
+ "smile": {
+  "gloss": "happy expression with upturned mouth",
+  "other": ""
+ },
+ "smoke": {
+  "gloss": "cloud of gases from burning",
+  "other": ""
+ },
+ "snack": {
+  "gloss": "small food eaten between meals",
+  "other": ""
+ },
+ "snail": {
+  "gloss": "slow creature carrying a spiral shell",
+  "other": ""
+ },
+ "snake": {
+  "gloss": "long legless reptile",
+  "other": ""
+ },
+ "snow": {
+  "gloss": "frozen flakes falling from clouds",
+  "other": ""
+ },
+ "soap": {
+  "gloss": "substance for washing and cleaning",
+  "other": "soap opera"
+ },
+ "soccer": {
+  "gloss": "team sport kicking ball into goal",
+  "other": ""
+ },
+ "sock": {
+  "gloss": "soft covering worn on the foot",
+  "other": "a hard punch"
+ },
+ "soda": {
+  "gloss": "sweet fizzy drink",
+  "other": "baking soda"
+ },
+ "sofa": {
+  "gloss": "long padded seat for several people",
+  "other": ""
+ },
+ "soldier": {
+  "gloss": "person who fights in an army",
+  "other": ""
+ },
+ "solution": {
+  "gloss": "answer to a problem",
+  "other": "liquid with something dissolved in it"
+ },
+ "song": {
+  "gloss": "a piece of music with words",
+  "other": ""
+ },
+ "sound": {
+  "gloss": "something that you hear",
+  "other": "narrow sea inlet"
+ },
+ "soup": {
+  "gloss": "hot liquid food eaten with spoon",
+  "other": ""
+ },
+ "space": {
+  "gloss": "region beyond Earth's atmosphere",
+  "other": "empty area or gap"
+ },
+ "speed": {
+  "gloss": "how fast something moves",
+  "other": ""
+ },
+ "spice": {
+  "gloss": "dried plant flavoring for cooking",
+  "other": ""
+ },
+ "spider": {
+  "gloss": "eight-legged creature that spins webs",
+  "other": ""
+ },
+ "spoon": {
+  "gloss": "bowl-shaped utensil for eating",
+  "other": ""
+ },
+ "sport": {
+  "gloss": "competitive physical game like soccer",
+  "other": ""
+ },
+ "spring": {
+  "gloss": "season between winter and summer",
+  "other": "coiled metal wire"
+ },
+ "squirrel": {
+  "gloss": "bushy-tailed tree rodent that gathers nuts",
+  "other": ""
+ },
+ "stadium": {
+  "gloss": "large arena for sports events",
+  "other": ""
+ },
+ "stage": {
+  "gloss": "raised platform for performances",
+  "other": "phase or step in a process"
+ },
+ "stairs": {
+  "gloss": "steps between floors",
+  "other": ""
+ },
+ "star": {
+  "gloss": "glowing ball of gas in space",
+  "other": "famous celebrity"
+ },
+ "station": {
+  "gloss": "stopping place for trains or buses",
+  "other": "TV or radio channel"
+ },
+ "statue": {
+  "gloss": "carved or cast figure of a person",
+  "other": ""
+ },
+ "steak": {
+  "gloss": "thick slice of beef",
+  "other": ""
+ },
+ "stomach": {
+  "gloss": "organ where food is digested",
+  "other": ""
+ },
+ "stone": {
+  "gloss": "small hard piece of rock",
+  "other": "pit of a fruit"
+ },
+ "store": {
+  "gloss": "shop selling goods",
+  "other": "supply kept for later use"
+ },
+ "storm": {
+  "gloss": "violent weather with wind and rain",
+  "other": ""
+ },
+ "story": {
+  "gloss": "tale of events, real or imagined",
+  "other": "floor of a building"
+ },
+ "stove": {
+  "gloss": "kitchen appliance with cooking burners",
+  "other": ""
+ },
+ "stranger": {
+  "gloss": "a person you do not know",
+  "other": ""
+ },
+ "strawberry": {
+  "gloss": "red fruit with seeds outside",
+  "other": ""
+ },
+ "stream": {
+  "gloss": "small flowing body of water",
+  "other": "live online video broadcast"
+ },
+ "street": {
+  "gloss": "public road lined with buildings",
+  "other": ""
+ },
+ "string": {
+  "gloss": "thin cord for tying things",
+  "other": ""
+ },
+ "student": {
+  "gloss": "person who studies at school",
+  "other": ""
+ },
+ "study": {
+  "gloss": "act of learning about something",
+  "other": "room for reading and work"
+ },
+ "subway": {
+  "gloss": "underground city railway",
+  "other": "sandwich restaurant chain"
+ },
+ "sugar": {
+  "gloss": "sweet white crystals used in food",
+  "other": ""
+ },
+ "suitcase": {
+  "gloss": "case for carrying clothes when traveling",
+  "other": ""
+ },
+ "summer": {
+  "gloss": "warmest season of the year",
+  "other": ""
+ },
+ "sun": {
+  "gloss": "star that gives Earth light",
+  "other": ""
+ },
+ "sunrise": {
+  "gloss": "sun coming up in the morning",
+  "other": ""
+ },
+ "sunset": {
+  "gloss": "sun going down in the evening",
+  "other": ""
+ },
+ "surf": {
+  "gloss": "ride ocean waves on a board",
+  "other": "browse the internet"
+ },
+ "surprise": {
+  "gloss": "feeling caused by something unexpected",
+  "other": ""
+ },
+ "swamp": {
+  "gloss": "wet, muddy, overgrown land",
+  "other": ""
+ },
+ "swan": {
+  "gloss": "large white long-necked water bird",
+  "other": ""
+ },
+ "sweat": {
+  "gloss": "salty liquid released through the skin",
+  "other": ""
+ },
+ "sweater": {
+  "gloss": "warm knitted top with sleeves",
+  "other": ""
+ },
+ "swim": {
+  "gloss": "moving through water using limbs",
+  "other": ""
+ },
+ "sword": {
+  "gloss": "weapon with a long metal blade",
+  "other": ""
+ },
+ "table": {
+  "gloss": "furniture with flat top, legs",
+  "other": "chart of rows and columns"
+ },
+ "tape": {
+  "gloss": "sticky strip for fastening things",
+  "other": "cassette for recording sound or video"
+ },
+ "taxi": {
+  "gloss": "car you pay to ride in",
+  "other": ""
+ },
+ "tea": {
+  "gloss": "hot drink brewed from leaves",
+  "other": ""
+ },
+ "teacher": {
+  "gloss": "person who teaches students",
+  "other": ""
+ },
+ "team": {
+  "gloss": "group of players on one side",
+  "other": ""
+ },
+ "television": {
+  "gloss": "device for watching broadcast programs",
+  "other": ""
+ },
+ "temple": {
+  "gloss": "building for religious worship",
+  "other": "flat side of the forehead"
+ },
+ "tennis": {
+  "gloss": "racket sport played over a net",
+  "other": ""
+ },
+ "tent": {
+  "gloss": "fabric shelter used for camping",
+  "other": ""
+ },
+ "theater": {
+  "gloss": "building where plays are performed",
+  "other": ""
+ },
+ "thief": {
+  "gloss": "person who steals things",
+  "other": ""
+ },
+ "thought": {
+  "gloss": "an idea formed in the mind",
+  "other": ""
+ },
+ "thread": {
+  "gloss": "thin strand used for sewing",
+  "other": "chain of online discussion posts"
+ },
+ "thumb": {
+  "gloss": "short thick first digit of the hand",
+  "other": ""
+ },
+ "thunder": {
+  "gloss": "loud rumble during a storm",
+  "other": ""
+ },
+ "ticket": {
+  "gloss": "paper pass for entry or travel",
+  "other": "fine for a traffic offense"
+ },
+ "tiger": {
+  "gloss": "big striped wild cat",
+  "other": ""
+ },
+ "time": {
+  "gloss": "what clocks measure in hours, minutes",
+  "other": ""
+ },
+ "tire": {
+  "gloss": "rubber ring around a wheel",
+  "other": "to become weary"
+ },
+ "toe": {
+  "gloss": "one of the digits of the foot",
+  "other": ""
+ },
+ "toilet": {
+  "gloss": "bowl used for urinating and defecating",
+  "other": ""
+ },
+ "tomato": {
+  "gloss": "red juicy fruit eaten as vegetable",
+  "other": ""
+ },
+ "tongue": {
+  "gloss": "muscle in the mouth for tasting",
+  "other": ""
+ },
+ "tool": {
+  "gloss": "handheld device used to do work",
+  "other": ""
+ },
+ "tooth": {
+  "gloss": "hard white part used for biting",
+  "other": ""
+ },
+ "tornado": {
+  "gloss": "violent spinning column of wind",
+  "other": ""
+ },
+ "towel": {
+  "gloss": "cloth for drying things",
+  "other": ""
+ },
+ "tower": {
+  "gloss": "tall narrow building or structure",
+  "other": ""
+ },
+ "town": {
+  "gloss": "place with houses, smaller than city",
+  "other": ""
+ },
+ "toy": {
+  "gloss": "object children play with",
+  "other": ""
+ },
+ "traffic": {
+  "gloss": "vehicles moving along roads",
+  "other": ""
+ },
+ "train": {
+  "gloss": "connected railway cars pulled along tracks",
+  "other": "to teach or practice a skill"
+ },
+ "travel": {
+  "gloss": "going from place to place",
+  "other": ""
+ },
+ "treasure": {
+  "gloss": "hoard of gold and valuables",
+  "other": ""
+ },
+ "tree": {
+  "gloss": "tall plant with woody trunk",
+  "other": ""
+ },
+ "trip": {
+  "gloss": "journey to a place and back",
+  "other": "a stumble or fall"
+ },
+ "trophy": {
+  "gloss": "cup awarded for winning",
+  "other": ""
+ },
+ "truck": {
+  "gloss": "large motor vehicle for carrying goods",
+  "other": ""
+ },
+ "trumpet": {
+  "gloss": "brass instrument with valves",
+  "other": ""
+ },
+ "trust": {
+  "gloss": "belief that someone is reliable",
+  "other": "legal arrangement for managing assets"
+ },
+ "truth": {
+  "gloss": "what is real or accurate",
+  "other": ""
+ },
+ "tulip": {
+  "gloss": "cup-shaped spring flower",
+  "other": ""
+ },
+ "turtle": {
+  "gloss": "reptile with a hard shell",
+  "other": ""
+ },
+ "twin": {
+  "gloss": "one of two children born together",
+  "other": ""
+ },
+ "umbrella": {
+  "gloss": "folding canopy that shields from rain",
+  "other": ""
+ },
+ "uncle": {
+  "gloss": "brother of your parent",
+  "other": ""
+ },
+ "uniform": {
+  "gloss": "standard outfit worn by a group",
+  "other": "the same throughout (adjective)"
+ },
+ "vacation": {
+  "gloss": "trip or time off for leisure",
+  "other": ""
+ },
+ "valley": {
+  "gloss": "low land between hills",
+  "other": ""
+ },
+ "vanilla": {
+  "gloss": "sweet flavoring from orchid pods",
+  "other": ""
+ },
+ "vase": {
+  "gloss": "container for holding cut flowers",
+  "other": ""
+ },
+ "vegetable": {
+  "gloss": "edible plant, like carrots or peas",
+  "other": ""
+ },
+ "video": {
+  "gloss": "recording of moving images",
+  "other": ""
+ },
+ "village": {
+  "gloss": "small community in the countryside",
+  "other": ""
+ },
+ "villain": {
+  "gloss": "evil character in a story",
+  "other": ""
+ },
+ "vine": {
+  "gloss": "climbing or trailing plant",
+  "other": ""
+ },
+ "vinegar": {
+  "gloss": "sour liquid used in cooking",
+  "other": ""
+ },
+ "violin": {
+  "gloss": "small stringed instrument played with bow",
+  "other": ""
+ },
+ "voice": {
+  "gloss": "sound made when speaking or singing",
+  "other": ""
+ },
+ "volcano": {
+  "gloss": "mountain that erupts lava",
+  "other": ""
+ },
+ "wall": {
+  "gloss": "upright side of a room",
+  "other": ""
+ },
+ "war": {
+  "gloss": "armed conflict between nations",
+  "other": ""
+ },
+ "wasp": {
+  "gloss": "stinging striped flying insect",
+  "other": ""
+ },
+ "water": {
+  "gloss": "clear liquid that falls as rain",
+  "other": ""
+ },
+ "waterfall": {
+  "gloss": "water falling over a rocky ledge",
+  "other": ""
+ },
+ "wave": {
+  "gloss": "moving ridge of water on the sea",
+  "other": "hand gesture of greeting"
+ },
+ "weather": {
+  "gloss": "daily atmospheric conditions like rain, sun",
+  "other": ""
+ },
+ "website": {
+  "gloss": "set of pages on the internet",
+  "other": ""
+ },
+ "wedding": {
+  "gloss": "ceremony where two people marry",
+  "other": ""
+ },
+ "week": {
+  "gloss": "period of seven days",
+  "other": ""
+ },
+ "weekend": {
+  "gloss": "Saturday and Sunday",
+  "other": ""
+ },
+ "weight": {
+  "gloss": "how heavy something is",
+  "other": ""
+ },
+ "whale": {
+  "gloss": "huge sea mammal",
+  "other": ""
+ },
+ "wheat": {
+  "gloss": "cereal grain used to make flour",
+  "other": ""
+ },
+ "wheel": {
+  "gloss": "round part that turns to move vehicles",
+  "other": ""
+ },
+ "whistle": {
+  "gloss": "device blown to make a shrill sound",
+  "other": ""
+ },
+ "wife": {
+  "gloss": "married woman in relation to spouse",
+  "other": ""
+ },
+ "wind": {
+  "gloss": "moving air outdoors",
+  "other": ""
+ },
+ "window": {
+  "gloss": "glass-filled opening in a wall",
+  "other": ""
+ },
+ "wine": {
+  "gloss": "alcoholic drink made from grapes",
+  "other": ""
+ },
+ "winner": {
+  "gloss": "person or team that wins",
+  "other": ""
+ },
+ "winter": {
+  "gloss": "coldest season of the year",
+  "other": ""
+ },
+ "wire": {
+  "gloss": "thin flexible strand of metal",
+  "other": ""
+ },
+ "wisdom": {
+  "gloss": "good judgment gained from experience",
+  "other": ""
+ },
+ "witch": {
+  "gloss": "woman who does magic",
+  "other": ""
+ },
+ "wizard": {
+  "gloss": "man who does magic",
+  "other": ""
+ },
+ "wolf": {
+  "gloss": "wild dog that howls in packs",
+  "other": ""
+ },
+ "woman": {
+  "gloss": "an adult female human",
+  "other": ""
+ },
+ "wood": {
+  "gloss": "hard material that trees are made of",
+  "other": ""
+ },
+ "word": {
+  "gloss": "unit of language with a meaning",
+  "other": ""
+ },
+ "worker": {
+  "gloss": "person who does a job",
+  "other": ""
+ },
+ "world": {
+  "gloss": "the planet and all its people",
+  "other": ""
+ },
+ "worm": {
+  "gloss": "long legless creature living in soil",
+  "other": ""
+ },
+ "worry": {
+  "gloss": "anxious feeling about possible problems",
+  "other": ""
+ },
+ "writer": {
+  "gloss": "person who writes books or stories",
+  "other": ""
+ },
+ "yard": {
+  "gloss": "grassy area around a house",
+  "other": "three-foot unit of length"
+ },
+ "year": {
+  "gloss": "period of twelve months",
+  "other": ""
+ },
+ "yogurt": {
+  "gloss": "thick tangy food made from milk",
+  "other": ""
+ },
+ "zebra": {
+  "gloss": "African horse with black-and-white stripes",
+  "other": ""
+ },
+ "zoo": {
+  "gloss": "place where animals are kept for viewing",
+  "other": ""
+ }
+}

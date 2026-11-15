@@ -47,6 +47,28 @@ def test_features_link_nouns_and_adjectives_are_not_tiles(links):
     assert not links.adjectives & links.words
 
 
+def test_arguable_links_are_links_but_not_obvious(links):
+    # "category vegetable: ... ?tomato": tomato is a kind of vegetable, arguably.
+    assert "kind" in links.types("tomato", "vegetable")
+    assert "kind" not in links.obvious("tomato", "vegetable")
+    assert "kind" not in links.obvious("tomato", "food")      # passes up through the arguable step
+    assert "family" in links.obvious("carrot", "potato")      # the rest of the line is obvious
+
+
+def test_arguable_loses_to_obvious(tmp_path):
+    f = tmp_path / "links.txt"
+    f.write_text("knife with: ?table\nknife with: table\nfork with: ?table\n")
+    links = load(f)
+    assert "found" in links.obvious("knife", "table")
+    assert "found" not in links.obvious("fork", "table") and "found" in links.types("fork", "table")
+
+
+def test_routes_use_only_obvious_links(links, boards):
+    for board, _ in boards:
+        for a, b, t in zip(board.route, board.route[1:], board.route_types):
+            assert t in links.obvious(a, b), (a, b, t)
+
+
 def test_assign_types_needs_distinct_types():
     links = Links()
     links.add("a", "b", "family", "")

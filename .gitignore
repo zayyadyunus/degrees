@@ -19,3 +19,6 @@ backend/data/numberbatch-en.txt.gz
 
 # Playtest screenshots and logs
 playtest-output/
+
+# Claude labelling runs (raw batch output; reviewed results are copied into proto/)
+backend/proto/labels/

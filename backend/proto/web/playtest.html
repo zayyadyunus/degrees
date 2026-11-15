@@ -1,0 +1,422 @@
+<title>Degrees Six-Type Playtest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Libre+Franklin:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a six-rung ladder (start → five slots → target) beside the tile board; stacks on phones. Tokens follow the live Degrees app. */
+:root {
+  --bg: #fdfdfc; --surface: #ffffff; --ink: #121212; --ink-2: #4a4a4a; --muted: #8c8c88;
+  --line: #e4e4e0; --line-strong: #c6c6c1;
+  --accent: #1a7f5a; --accent-deep: #136147; --accent-soft: #e4f3ec;
+  --bad: #c4453a; --bad-soft: #fbeae8; --gold: #b8901f;
+  --t-kind: #2f6fb3; --t-family: #7a4bb0; --t-part: #a8642a; --t-feature: #c0407a; --t-use: #2a8a8a; --t-found: #5f7d2a;
+  --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --sans: "Libre Franklin", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121213; --surface: #1d1d1f; --ink: #f3f3f1; --ink-2: #c9c9c5; --muted: #8a8a86;
+  --line: #2c2c2e; --line-strong: #4a4a4e;
+  --accent: #2fa275; --accent-deep: #8fd6b3; --accent-soft: #16352a;
+  --bad: #e06457; --bad-soft: #3a201d; --gold: #d9b44a;
+  --t-kind: #6aa6e8; --t-family: #b18ae6; --t-part: #e0a066; --t-feature: #ec7fb0; --t-use: #5cc4c4; --t-found: #a3c35f;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #121213; --surface: #1d1d1f; --ink: #f3f3f1; --ink-2: #c9c9c5; --muted: #8a8a86;
+  --line: #2c2c2e; --line-strong: #4a4a4e;
+  --accent: #2fa275; --accent-deep: #8fd6b3; --accent-soft: #16352a;
+  --bad: #e06457; --bad-soft: #3a201d; --gold: #d9b44a;
+  --t-kind: #6aa6e8; --t-family: #b18ae6; --t-part: #e0a066; --t-feature: #ec7fb0; --t-use: #5cc4c4; --t-found: #a3c35f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; -webkit-font-smoothing: antialiased; }
+button { font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 960px; margin: 0 auto; padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; flex-direction: column; gap: 2px; }
+.brand h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; margin: 0; line-height: 1.1; }
+.brand span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.picker { display: flex; align-items: center; gap: 6px; }
+.picker button { width: 36px; height: 36px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); font-size: 18px; line-height: 1; }
+.picker button:disabled { opacity: .35; cursor: default; }
+.picker select { height: 36px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font-family: inherit; font-size: 14px; padding: 0 8px; max-width: 220px; }
+
+.game { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 32px; padding-top: 24px; }
+@media (max-width: 720px) { .game { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+
+/* Ladder */
+.ladder { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.rung { display: flex; align-items: center; gap: 10px; min-height: 42px; }
+.rung .node { flex: 1; min-width: 0; height: 42px; display: flex; align-items: center; padding: 0 14px; border-radius: var(--radius);
+  border: 1.5px dashed var(--line-strong); color: var(--muted); font-size: 15px; background: transparent; text-align: left; }
+.rung .node.word { border-style: solid; border-color: var(--line-strong); background: var(--surface); color: var(--ink); font-weight: 600; }
+.rung .node.end { background: var(--ink); color: var(--bg); border-color: var(--ink); font-family: var(--serif); font-weight: 400; font-size: 19px; letter-spacing: .01em; }
+.rung .node.next { border-color: var(--accent); color: var(--accent); }
+.rung .node.target-live { cursor: pointer; }
+.rung .node.target-live:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rung .node.undo { cursor: pointer; }
+.rung .node.undo:hover { border-color: var(--ink-2); }
+.rung .deg { width: 18px; text-align: right; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.link { display: flex; align-items: center; gap: 10px; min-height: 26px; }
+.link .bar { width: 18px; display: flex; justify-content: flex-end; }
+.link .bar::after { content: ""; width: 2px; height: 26px; background: var(--line); margin-right: 4px; }
+.link.done .bar::after { background: var(--tc, var(--accent)); }
+.link .label { font-size: 12px; color: var(--tc, var(--muted)); font-weight: 600; padding-left: 14px; }
+.link .label i { font-style: normal; font-weight: 400; color: var(--ink-2); }
+
+/* Right column */
+.side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.eyebrow { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 8px; }
+
+.types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 460px) { .types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.type { border: 1.5px solid var(--tc); border-radius: var(--radius); padding: 7px 10px; font-size: 13px; font-weight: 600; color: var(--tc); background: var(--surface); min-width: 0; }
+.type small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.type.spent { border-style: dashed; opacity: .45; text-decoration: line-through; }
+.type.spent small { text-decoration: none; }
+.type.hinted { box-shadow: 0 0 0 3px var(--accent-soft); outline: 2px solid var(--accent); }
+
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 900px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.tile { height: 48px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); font-size: 16px; font-weight: 500; transition: transform .08s, border-color .1s; }
+.tile:hover:not(:disabled) { border-color: var(--ink-2); }
+.tile:active:not(:disabled) { transform: scale(.97); }
+.tile:disabled { opacity: .3; cursor: default; text-decoration: line-through; }
+.tile.shake { animation: shake .3s; border-color: var(--bad); }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .tile.shake { animation: none; } .tile { transition: none; } }
+
+.status { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.strikes { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.strikes b { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line-strong); }
+.strikes b.on { background: var(--bad); border-color: var(--bad); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { height: 36px; padding: 0 14px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); font-size: 14px; font-weight: 500; }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.msg { min-height: 44px; padding: 11px 14px; border-radius: var(--radius); background: var(--accent-soft); color: var(--ink); font-size: 14px; line-height: 1.4; }
+.msg.bad { background: var(--bad-soft); }
+.msg.quiet { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+
+.choose { border: 1.5px solid var(--accent); border-radius: var(--radius); padding: 12px; background: var(--surface); display: flex; flex-direction: column; gap: 8px; }
+.choose p { margin: 0; font-size: 14px; }
+.choose button { text-align: left; padding: 10px 12px; border-radius: var(--radius); border: 1.5px solid var(--tc); background: var(--surface); font-size: 14px; line-height: 1.35; }
+.choose button b { color: var(--tc); display: block; font-size: 13px; }
+.choose .cancel { border-color: var(--line); color: var(--muted); text-align: center; }
+
+.result { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+@media (max-width: 720px) { .result { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+.result h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin: 0 0 6px; text-wrap: balance; }
+.result .sub { color: var(--ink-2); margin: 0 0 14px; font-size: 14px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.steps li { border-left: 3px solid var(--tc); padding: 2px 0 2px 10px; line-height: 1.35; }
+.steps li b { color: var(--tc); font-size: 12px; display: block; }
+.sols { display: flex; flex-direction: column; gap: 14px; }
+.sols .path { font-size: 14px; line-height: 1.5; }
+.facts { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+.notes { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.notes textarea { width: 100%; min-height: 72px; resize: vertical; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font-family: inherit; font-size: 14px; padding: 10px 12px; line-height: 1.4; }
+.notes .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.rules { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span>Six-type prototype</span><h1>Degrees playtest</h1></div>
+    <div class="picker">
+      <button id="prev" aria-label="Previous board">‹</button>
+      <select id="pick" aria-label="Choose a board"></select>
+      <button id="next" aria-label="Next board">›</button>
+    </div>
+  </header>
+
+  <div class="game">
+    <ol class="ladder" id="ladder" aria-label="Your chain"></ol>
+    <div class="side">
+      <div>
+        <p class="eyebrow">Link types · each spends once</p>
+        <div class="types" id="types"></div>
+      </div>
+      <div class="msg quiet" id="msg" role="status"></div>
+      <div id="choose" hidden></div>
+      <div>
+        <p class="eyebrow">Tiles · tap one that links to your last word</p>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <div class="status">
+        <div class="strikes" id="strikes"></div>
+        <div class="actions">
+          <button class="btn" id="back">Back</button>
+          <button class="btn" id="hint">Hint</button>
+          <button class="btn" id="reveal">Give up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="result" id="result" hidden></section>
+
+  <section class="notes">
+    <p class="eyebrow" style="margin:0">Notes on this board</p>
+    <textarea id="note" placeholder="Links that felt wrong, links you expected, whether the type choice mattered…"></textarea>
+    <div class="row">
+      <span id="noteCount"></span>
+      <button class="btn" id="copy">Copy all notes</button>
+    </div>
+    <textarea id="copyOut" readonly hidden aria-label="All notes"></textarea>
+    <p class="rules">Six links from start to target, five words between. Each link type can be spent once. Back returns the type. Playing a link whose type is already spent, or a tile that doesn't link, costs a strike; three strikes ends the board. Hint names the type to spend next. Tap a word in your chain to go back to it.</p>
+  </section>
+</div>
+
+<script>
+const DATA = __DATA__;
+const { chain: CHAIN, types: TYPES, typeNames: NAMES, boards: BOARDS } = DATA;
+const STRIKES = 3;
+const $ = (id) => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+const tc = (t) => `--tc: var(--t-${t})`;
+const key = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+
+let bi = 0, B, S;
+let results = store.get("degrees6.results", {});
+let notes = store.get("degrees6.notes", {});
+
+function fits(b, x, y) { return b.edges[key(x, y)] || {}; }
+
+function load(i) {
+  bi = Math.max(0, Math.min(BOARDS.length - 1, i));
+  B = BOARDS[bi];
+  S = { path: [B.start], used: [], strikes: 0, backs: 0, hints: 0, hinted: null, over: false, pending: null, msg: null };
+  store.set("degrees6.last", bi);
+  $("note").value = notes[bi] || "";
+  render();
+}
+
+// Ways through from the current word: [tile, type] first moves of full solves.
+function nextSteps() {
+  const need = CHAIN - (S.path.length - 1);
+  const used = new Set(S.used), onPath = new Set(S.path);
+  const pool = B.tiles.filter((w) => !onPath.has(w));
+  const finishes = (here, left, taken, seen) => {
+    if (left === 1) return Object.keys(fits(B, here, B.target)).some((t) => !taken.has(t));
+    for (const w of pool) {
+      if (seen.has(w)) continue;
+      for (const t of Object.keys(fits(B, here, w))) {
+        if (taken.has(t)) continue;
+        seen.add(w); taken.add(t);
+        const ok = finishes(w, left - 1, taken, seen);
+        seen.delete(w); taken.delete(t);
+        if (ok) return true;
+      }
+    }
+    return false;
+  };
+  const here = S.path[S.path.length - 1], out = [];
+  const firsts = need === 1 ? [B.target] : pool;
+  for (const w of firsts) {
+    for (const t of Object.keys(fits(B, here, w))) {
+      if (used.has(t)) continue;
+      used.add(t);
+      if (need === 1 || finishes(w, need - 1, used, new Set([w]))) out.push([w, t]);
+      used.delete(t);
+    }
+  }
+  return out;
+}
+
+function say(text, kind) { S.msg = { text, kind }; }
+
+function play(word) {
+  if (S.over) return;
+  const here = S.path[S.path.length - 1];
+  const f = fits(B, here, word);
+  const all = Object.keys(f), free = all.filter((t) => !S.used.includes(t));
+  S.pending = null;
+  if (!all.length || !free.length) {
+    S.strikes++;
+    say(all.length
+      ? `Strike. ${cap(word)} is a ${all.map((t) => NAMES[t]).join(" / ")} link from ${here}, and you've spent that.`
+      : `Strike. ${cap(word)} doesn't link to ${here}.`, "bad");
+    shake(word);
+    if (S.strikes >= STRIKES) finish(false);
+    render();
+    return;
+  }
+  if (free.length > 1) { S.pending = { word, free }; say(`${cap(here)} → ${word} fits ${free.length} unused types. Pick one to spend.`); render(); return; }
+  commit(word, free[0]);
+}
+
+function commit(word, t) {
+  const here = S.path[S.path.length - 1];
+  S.path.push(word); S.used.push(t); S.pending = null; S.hinted = null;
+  say(`${NAMES[t]}: ${B.edges[key(here, word)][t]}.`);
+  if (word === B.target) finish(true);
+  render();
+}
+
+function backTo(n) {  // keep the first n+1 words
+  if (S.over) return;
+  while (S.path.length > n + 1) { S.path.pop(); const t = S.used.pop(); S.backs++; say(`Took back. ${NAMES[t]} is free again.`); }
+  S.pending = null; S.hinted = null;
+  render();
+}
+
+function hint() {
+  if (S.over) return;
+  S.hints++;
+  const steps = nextSteps();
+  if (steps.length) { S.hinted = steps[0][1]; say(`Spend ${NAMES[S.hinted]} next.`); }
+  else { S.hinted = null; say(`No way through from ${S.path[S.path.length - 1]}. Go back.`, "bad"); }
+  render();
+}
+
+function finish(won) {
+  S.over = true; S.won = won;
+  const prev = results[bi];
+  if (!prev || (won && !prev.won)) results[bi] = { won, clean: won && !S.strikes && !S.backs && !S.hints };
+  store.set("degrees6.results", results);
+  if (!won) say(S.strikes >= STRIKES ? "Three strikes. Here's how it connects." : "Here's how it connects.", "bad");
+}
+
+function shake(word) {
+  requestAnimationFrame(() => {
+    const el = [...document.querySelectorAll(".tile")].find((b) => b.dataset.w === word);
+    if (el) { el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); }
+  });
+}
+const cap = (s) => s[0].toUpperCase() + s.slice(1);
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+function render() {
+  // board picker
+  $("pick").innerHTML = BOARDS.map((b, i) => {
+    const r = results[i];
+    const mark = r ? (r.won ? (r.clean ? " ★" : " ✓") : " ✗") : "";
+    return `<option value="${i}"${i === bi ? " selected" : ""}>Board ${i + 1}: ${b.start} → ${b.target}${mark}</option>`;
+  }).join("");
+  $("prev").disabled = bi === 0; $("next").disabled = bi === BOARDS.length - 1;
+
+  // ladder: start, five slots, target
+  const L = [];
+  for (let i = 0; i <= CHAIN; i++) {
+    const word = i === CHAIN ? B.target : S.path[i];
+    const isEnd = i === 0 || i === CHAIN;
+    const reached = i < S.path.length;
+    const isNext = i === S.path.length && !S.over;
+    let cls = "node", inner = "", attrs = "";
+    if (isEnd) {
+      cls += " end";
+      inner = esc(word);
+      if (i === CHAIN && !reached && !S.over && S.path.length === CHAIN) { cls += " target-live"; attrs = ` data-play="${esc(word)}" role="button" tabindex="0" aria-label="Play ${esc(word)}"`; }
+    } else if (reached) {
+      cls += " word"; inner = esc(word);
+      if (!S.over) { cls += " undo"; attrs = ` data-back="${i}" role="button" tabindex="0" title="${i === S.path.length - 1 ? "Take this word back" : "Go back to this word"}"`; }
+    } else { inner = isNext ? "next word" : ""; if (isNext) cls += " next"; }
+    L.push(`<li class="rung"><span class="deg">${i === 0 || i === CHAIN ? "" : i}</span><span class="${cls}"${attrs}>${inner}</span></li>`);
+    if (i < CHAIN) {
+      const t = S.used[i];
+      L.push(t
+        ? `<li class="link done" style="${tc(t)}"><span class="bar"></span><span class="label">${NAMES[t]}</span></li>`
+        : `<li class="link"><span class="bar"></span><span class="label"></span></li>`);
+    }
+  }
+  $("ladder").innerHTML = L.join("");
+
+  // types
+  $("types").innerHTML = TYPES.map((t) => {
+    const k = S.used.indexOf(t);
+    const spent = k >= 0;
+    const detail = spent ? `${S.path[k]} → ${S.path[k + 1]}` : "free";
+    return `<div class="type${spent ? " spent" : ""}${S.hinted === t ? " hinted" : ""}" style="${tc(t)}">${NAMES[t]}<small>${esc(detail)}</small></div>`;
+  }).join("");
+
+  // tiles
+  $("tiles").innerHTML = B.tiles.map((w) =>
+    `<button class="tile" data-w="${esc(w)}"${S.path.includes(w) || S.over ? " disabled" : ""}>${esc(w)}</button>`).join("");
+
+  // message
+  const m = $("msg");
+  if (S.msg) { m.className = "msg" + (S.msg.kind === "bad" ? " bad" : ""); m.textContent = S.msg.text; }
+  else { m.className = "msg quiet"; m.textContent = `Start at ${B.start}. Reach ${B.target} in ${CHAIN} links.`; }
+
+  // type choice
+  const c = $("choose");
+  if (S.pending) {
+    const here = S.path[S.path.length - 1], w = S.pending.word;
+    c.hidden = false; c.className = "choose";
+    c.innerHTML = `<p><b>${esc(here)} → ${esc(w)}</b>: spend which type?</p>` +
+      S.pending.free.map((t) => `<button data-spend="${t}" style="${tc(t)}"><b>${NAMES[t]}</b>${esc(B.edges[key(here, w)][t])}</button>`).join("") +
+      `<button class="cancel" data-cancel>Cancel</button>`;
+  } else { c.hidden = true; c.innerHTML = ""; }
+
+  // strikes + actions
+  $("strikes").innerHTML = "Strikes " + Array.from({ length: STRIKES }, (_, i) => `<b class="${i < S.strikes ? "on" : ""}"></b>`).join("");
+  $("back").disabled = S.over || S.path.length < 2;
+  $("hint").disabled = S.over;
+  $("reveal").textContent = S.over ? "Play again" : "Give up";
+
+  renderResult();
+  const n = Object.values(notes).filter((v) => v && v.trim()).length;
+  $("noteCount").textContent = n ? `${n} board${n > 1 ? "s" : ""} with notes, saved in this browser` : "Notes save in this browser";
+}
+
+function stepsHtml(path, types) {
+  return `<ol class="steps">${types.map((t, i) =>
+    `<li style="${tc(t)}"><b>${NAMES[t]}</b>${esc(path[i])} → ${esc(path[i + 1])}: ${esc(B.edges[key(path[i], path[i + 1])][t])}</li>`).join("")}</ol>`;
+}
+
+function renderResult() {
+  const r = $("result");
+  if (!S.over) { r.hidden = true; r.innerHTML = ""; return; }
+  r.hidden = false;
+  const clean = !S.strikes && !S.backs && !S.hints;
+  const yours = S.won
+    ? `<div><h2>${clean ? "Clean solve" : "Connected"}</h2><p class="sub">${clean ? "No strikes, backs or hints." : `${S.strikes} strike${S.strikes === 1 ? "" : "s"}, ${S.backs} back${S.backs === 1 ? "" : "s"}, ${S.hints} hint${S.hints === 1 ? "" : "s"}.`}</p>${stepsHtml(S.path, S.used)}</div>`
+    : `<div><h2>Not this time</h2><p class="sub">You got ${S.path.length - 1} of ${CHAIN} links.</p>${S.used.length ? stepsHtml(S.path, S.used) : ""}</div>`;
+  const yourKey = S.path.join(" ");
+  const sols = B.solutions.map((s, i) =>
+    `<div><p class="eyebrow">${B.solutions.length > 1 ? `Solution ${i + 1}` : "The solution"}${s.path.join(" ") === yourKey ? " · yours" : ""}</p>${stepsHtml(s.path, s.types)}</div>`).join("");
+  r.innerHTML = yours + `<div class="sols">${sols}<div class="facts"><span>${B.solutions.length} solution${B.solutions.length > 1 ? "s" : ""}</span><span>${B.traps} traps</span><span>random win ${(B.randomWin * 100).toFixed(0)}%</span></div></div>`;
+}
+
+// events
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-w],[data-play],[data-back],[data-spend],[data-cancel]");
+  if (!el) return;
+  if (el.dataset.w) play(el.dataset.w);
+  else if (el.dataset.play) play(el.dataset.play);
+  else if (el.dataset.back != null) { const i = +el.dataset.back; backTo(i === S.path.length - 1 ? i - 1 : i); }
+  else if (el.dataset.spend) commit(S.pending.word, el.dataset.spend);
+  else if ("cancel" in el.dataset) { S.pending = null; S.msg = null; render(); }
+});
+document.addEventListener("keydown", (e) => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches("[data-play],[data-back]")) { e.preventDefault(); e.target.click(); }
+});
+$("back").onclick = () => backTo(S.path.length - 2);
+$("hint").onclick = hint;
+$("reveal").onclick = () => { if (S.over) load(bi); else { finish(false); render(); } };
+$("prev").onclick = () => load(bi - 1);
+$("next").onclick = () => load(bi + 1);
+$("pick").onchange = (e) => load(+e.target.value);
+$("note").oninput = (e) => { notes[bi] = e.target.value; store.set("degrees6.notes", notes); render(); };
+$("copy").onclick = async () => {
+  const lines = BOARDS.map((b, i) => notes[i] && notes[i].trim() ? `Board ${i + 1} (${b.start} → ${b.target}): ${notes[i].trim()}` : null).filter(Boolean);
+  const text = lines.length ? `Six-type playtest notes (seed ${DATA.seed})\n` + lines.join("\n") : "";
+  if (!text) { $("noteCount").textContent = "No notes yet"; return; }
+  try { await navigator.clipboard.writeText(text); $("noteCount").textContent = `Copied notes for ${lines.length} board${lines.length > 1 ? "s" : ""}`; }
+  catch { const t = $("copyOut"); t.hidden = false; t.value = text; t.select(); $("noteCount").textContent = "Couldn't copy automatically. All notes are selected below; copy them by hand."; }
+};
+
+load(store.get("degrees6.last", 0));
+</script>
