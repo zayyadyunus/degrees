@@ -304,7 +304,7 @@ export default function App() {
   );
 }
 
-/** "2026-11-21" -> "21 November" in the player's locale. */
+/** "2027-01-02" -> "2 January" in the player's locale. */
 function formatDay(isoDate: string): string {
   return new Date(`${isoDate}T00:00:00`).toLocaleDateString(undefined, {
     day: "numeric",
