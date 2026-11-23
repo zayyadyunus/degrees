@@ -67,6 +67,18 @@ class Settings:
     # Reviewed dailies, served exactly as frozen (scripts/freeze_dailies.py).
     dailies_path: Path = Path(os.environ.get("DEGREES_DAILIES", str(DATA_DIR / "dailies.json")))
 
+    # --- Six-type rules ----------------------------------------------------
+    # Dailies from this date on use the six-type rules (app/sixtype/);
+    # earlier ones stay classic. Unset: every game is classic.
+    sixtype_from: dt.date | None = (
+        dt.date.fromisoformat(os.environ["DEGREES_SIXTYPE_FROM"])
+        if os.environ.get("DEGREES_SIXTYPE_FROM") else None
+    )
+    typed_links_path: Path = Path(os.environ.get("DEGREES_TYPED_LINKS", str(DATA_DIR / "typed_links.txt")))
+    typed_dailies_path: Path = Path(
+        os.environ.get("DEGREES_TYPED_DAILIES", str(DATA_DIR / "typed_dailies.json"))
+    )
+
     # Cap the graph size to keep the dense similarity matrix affordable.
     max_words: int = int(os.environ.get("DEGREES_MAX_WORDS", "5000"))
 

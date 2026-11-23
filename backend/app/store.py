@@ -16,6 +16,7 @@ from collections import OrderedDict
 from typing import Callable
 
 from .game import Game
+from .sixtype.engine import TypedGame
 
 
 class GameStore:
@@ -26,7 +27,7 @@ class GameStore:
         clock: Callable[[], float] = time.monotonic,
     ) -> None:
         # id -> (game, last access time), oldest access first.
-        self._games: OrderedDict[str, tuple[Game, float]] = OrderedDict()
+        self._games: OrderedDict[str, tuple[Game | TypedGame, float]] = OrderedDict()
         self._lock = threading.Lock()
         self._ttl = ttl_seconds
         self._max = max_games
@@ -36,14 +37,14 @@ class GameStore:
         with self._lock:
             return len(self._games)
 
-    def save(self, game: Game) -> None:
+    def save(self, game: Game | TypedGame) -> None:
         with self._lock:
             now = self._clock()
             self._games[game.id] = (game, now)
             self._games.move_to_end(game.id)
             self._prune(now)
 
-    def get(self, game_id: str) -> Game | None:
+    def get(self, game_id: str) -> Game | TypedGame | None:
         with self._lock:
             now = self._clock()
             self._prune(now)

@@ -179,6 +179,9 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_WORDNET_SENSES`  | `3`     | WordNet senses per part of speech used to name links (`0` = all) |
 | `DEGREES_DAILY_PAR_BY_WEEKDAY` | `3,3,4,4,4,5,4` | par each weekday's daily aims for, Monday first |
 | `DEGREES_DAILIES`         | `data/dailies.json` | frozen (reviewed) daily puzzles |
+| `DEGREES_SIXTYPE_FROM`    | unset   | dailies from this date on use the six-type rules (`app/sixtype/`); unset = all classic |
+| `DEGREES_TYPED_LINKS`     | `data/typed_links.txt` | six-type link data |
+| `DEGREES_TYPED_DAILIES`   | `data/typed_dailies.json` | frozen six-type dailies, checked against the links at startup |
 
 ## Tests
 

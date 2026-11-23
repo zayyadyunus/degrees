@@ -13,11 +13,13 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .bootstrap import build_engine
+from .bootstrap import build_engine, build_sixtype
 from .config import settings
 from .game import PuzzleUnavailable
 from .ratelimit import RateLimiter
 from .models import (
+    RULES_SIXTYPE,
+    Choice,
     GameState,
     HintResponse,
     MoveRequest,
@@ -25,6 +27,8 @@ from .models import (
     NewGameRequest,
     ScoreResponse,
 )
+from .sixtype.engine import TypedGame
+from .sixtype.links import CHAIN, TYPE_NAMES
 from .store import GameStore
 
 logging.basicConfig(level=logging.INFO)
@@ -52,6 +56,8 @@ app.add_middleware(
 # expensive part, so we do it a single time and share it across requests.
 _engine = build_engine(settings)
 _embeddings, _graph, _overlay = _engine.embeddings, _engine.graph, _engine.overlay
+# The six-type rules (app/sixtype/): dailies from settings.sixtype_from on.
+_sixtype, _typed_dailies = build_sixtype(settings)
 _store = GameStore(ttl_seconds=settings.game_ttl_seconds, max_games=settings.max_games)
 _limit_new_games = RateLimiter(
     settings.new_games_per_minute, client_ip_header=settings.client_ip_header
@@ -72,6 +78,14 @@ def _daily_date(requested: dt.date | None) -> dt.date:
             detail={"error": "no_daily_yet", "daily_starts": settings.daily_epoch.isoformat()},
         )
     return day
+
+
+def _is_sixtype_day(day: dt.date) -> bool:
+    return settings.sixtype_from is not None and day >= settings.sixtype_from
+
+
+def _engine_for(game):
+    return _sixtype if isinstance(game, TypedGame) else _engine
 
 
 def _require_game(game_id: str):
@@ -96,6 +110,10 @@ def health() -> dict:
         "k": _graph.k,
         "relation_overlay_edges": len(_overlay.edges),
         "max_connections": settings.max_connections,
+        "sixtype_from": settings.sixtype_from.isoformat() if settings.sixtype_from else None,
+        "sixtype_dailies_through": (
+            _typed_dailies.last_day.isoformat() if _typed_dailies.last_day else None
+        ),
     }
 
 
@@ -109,7 +127,14 @@ def create_game(req: NewGameRequest | None = None) -> GameState:
     req = req or NewGameRequest()
     try:
         if req.daily:
-            game = _engine.daily_game(_daily_date(req.date))
+            day = _daily_date(req.date)
+            if _is_sixtype_day(day):
+                puzzle = _typed_dailies.puzzle(day)
+                if puzzle is None:
+                    raise PuzzleUnavailable(f"no six-type daily frozen for {day}")
+                game = _sixtype.start_game(puzzle, daily_number=_typed_dailies.number(day))
+            else:
+                game = _engine.daily_game(day)
         else:
             game = _engine.new_game(req.min_distance, req.max_distance)
     except (PuzzleUnavailable, ValueError) as exc:
@@ -130,6 +155,19 @@ def get_game(game_id: str) -> GameState:
 )
 def submit_move(game_id: str, req: MoveRequest) -> MoveResponse:
     game = _require_game(game_id)
+    if isinstance(game, TypedGame):
+        r = _sixtype.submit(game, req.word, req.type)
+        _store.save(game)
+        return MoveResponse(
+            accepted=r.accepted,
+            reason=r.reason,
+            relation=TYPE_NAMES[r.type] if r.type else None,
+            strike=r.strike,
+            type=r.type,
+            why=r.why,
+            choices=[Choice(type=c.type, name=c.name, why=c.why) for c in r.choices],
+            game=GameState.from_game(game),
+        )
     result = _engine.submit(game, req.word)
     _store.save(game)  # strikes change the game too
     return MoveResponse(
@@ -148,9 +186,10 @@ def submit_move(game_id: str, req: MoveRequest) -> MoveResponse:
     dependencies=[Depends(_limit_moves)],
 )
 def take_back(game_id: str) -> GameState:
-    """Undo the last word (out of a dead end). The move still counts."""
+    """Undo the last word (out of a dead end). Classic: the move still
+    counts. Six-type: the link's type is refunded."""
     game = _require_game(game_id)
-    if not _engine.back(game):
+    if not _engine_for(game).back(game):
         raise HTTPException(status_code=409, detail="nothing to take back")
     _store.save(game)
     return GameState.from_game(game)
@@ -164,20 +203,29 @@ def take_back(game_id: str) -> GameState:
 )
 def get_hint(game_id: str) -> HintResponse:
     game = _require_game(game_id)
-    hint = _engine.hint(game)
+    hint = _engine_for(game).hint(game)
     _store.save(game)
-    return HintResponse(
-        hint=hint,
-        message=None if hint else (
-            "Dead end — go back a step" if game.status == "in_progress" else "game is already over"
-        ),
-        game=GameState.from_game(game),
-    )
+    if hint is None:
+        message = "Dead end — go back a step" if game.status == "in_progress" else "game is already over"
+    elif isinstance(game, TypedGame):
+        message = f"Spend {TYPE_NAMES[hint]} next"
+    else:
+        message = None
+    return HintResponse(hint=hint, message=message, game=GameState.from_game(game))
 
 
 @app.get("/games/{game_id}/score", response_model=ScoreResponse)
 def get_score(game_id: str) -> ScoreResponse:
-    return ScoreResponse(**_engine.score(_require_game(game_id)))
+    game = _require_game(game_id)
+    if isinstance(game, TypedGame):
+        s = _sixtype.score(game)
+        return ScoreResponse(
+            status=s["status"], rules=RULES_SIXTYPE, connections_used=s["links"],
+            moves=game.events.count("move"), optimal_distance=CHAIN, over_optimal=None,
+            is_optimal=s["clean"], strikes=s["strikes"], hints_used=s["hints_used"],
+            backs=s["backs"], clean=s["clean"],
+        )
+    return ScoreResponse(**_engine.score(game))
 
 
 # Mounted last so the API routes above take precedence over static files.
