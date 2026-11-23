@@ -66,7 +66,7 @@ def main() -> None:
     nouns = sorted(full.words)
     fracs = [1.0] if args.quick else [float(f) for f in args.fracs.split(",")]
     seeds = [0] if args.quick else [0, 1, 2]
-    windows = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 80, 100, 125, 150, 200, 250, 300]
+    windows = [10, 20, 40, 60, 80, 100, 150, 200, 300]
 
     results: dict[float, list[int]] = defaultdict(list)
     for frac in fracs:
