@@ -182,6 +182,7 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_SIXTYPE_FROM`    | unset   | dailies from this date on use the six-type rules (`app/sixtype/`); unset = all classic |
 | `DEGREES_TYPED_LINKS`     | `data/typed_links.txt` | six-type link data |
 | `DEGREES_TYPED_DAILIES`   | `data/typed_dailies.json` | frozen six-type dailies, checked against the links at startup |
+| `DEGREES_TYPED_PRACTICE`  | `data/typed_practice.json` | six-type practice boards (`scripts/build_typed_practice.py`), checked at startup |
 
 ## Tests
 
@@ -214,6 +215,23 @@ players behind UTC can still open yesterday's puzzle, so make the last old
 frozen day a **bridge day**: a puzzle (route, par and board) that fits both
 the old and the new data. Run `pytest` before deploying: it fails while any
 frozen day still to be served doesn't fit the new data.
+
+## Six-type rules
+
+`app/sixtype/` holds the six-type game: typed links (`data/typed_links.txt`),
+the rules engine, the board generator and the frozen dailies. Set
+`DEGREES_SIXTYPE_FROM` to switch: dailies from that date on, and practice
+games from that UTC date on, are six-type; earlier dailies stay classic.
+
+```bash
+python scripts/freeze_typed_dailies.py --from 2027-01-09 --through 2027-02-05   # freeze a month
+python scripts/freeze_typed_dailies.py --show --from 2027-01-09 --days 28        # review
+python scripts/freeze_typed_dailies.py --reroll 2027-01-12                       # swap a bad day
+python scripts/build_typed_practice.py --n 300                                   # practice pool
+```
+
+The look-alike check (a decoy mustn't look linked to a board word it isn't)
+reads `data/typed_words.json` and `data/typed_vectors.npy`.
 
 ## Not yet built (future)
 

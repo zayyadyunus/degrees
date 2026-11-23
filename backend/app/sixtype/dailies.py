@@ -15,7 +15,8 @@ import json
 from pathlib import Path
 
 from .engine import TypedPuzzle
-from .links import BOARD, CHAIN, TYPES, Links, assign_types, chains
+from .board import keeps_rules
+from .links import BOARD, CHAIN, TYPES, Links
 
 
 class TypedDailiesInvalid(RuntimeError):
@@ -33,6 +34,16 @@ def load_typed(path: Path) -> dict[dt.date, TypedPuzzle]:
         )
         for d in raw.get("dailies", [])
     }
+
+
+def load_practice(path: Path) -> list[TypedPuzzle]:
+    if not path.exists():
+        return []
+    return [
+        TypedPuzzle(start=b["start"], target=b["target"], route=tuple(b["route"]),
+                    route_types=tuple(b["route_types"]), tiles=tuple(b["tiles"]))
+        for b in json.loads(path.read_text()).get("boards", [])
+    ]
 
 
 def save_typed(path: Path, dailies: dict[dt.date, TypedPuzzle]) -> None:
@@ -60,17 +71,20 @@ def problem(links: Links, p: TypedPuzzle) -> str | None:
     unknown = set(p.tiles) - links.words
     if unknown:
         return f"unknown tiles: {', '.join(sorted(unknown))}"
-    for c in chains(links, p.start, p.target, list(p.tiles), max_len=CHAIN - 1):
-        if assign_types(links, c) is not None:
-            return f"shorter chain: {' -> '.join(c)}"
+    if not keeps_rules(links, p.start, p.target, list(p.tiles)):
+        return "a chain shorter than six works on this board"
     return None
 
 
 class TypedDailies:
-    def __init__(self, links: Links, epoch: dt.date, dailies: dict[dt.date, TypedPuzzle]):
+    """Frozen dailies, plus the practice pool (checked the same way)."""
+
+    def __init__(self, links: Links, epoch: dt.date, dailies: dict[dt.date, TypedPuzzle],
+                 practice: list[TypedPuzzle] | None = None):
         self.links = links
         self.epoch = epoch
         self.dailies = dailies
+        self.practice = practice or []
 
     def number(self, day: dt.date) -> int:
         return (day - self.epoch).days + 1
@@ -82,16 +96,20 @@ class TypedDailies:
     def last_day(self) -> dt.date | None:
         return max(self.dailies) if self.dailies else None
 
-    def problems(self) -> dict[dt.date, str]:
-        out = {}
+    def problems(self) -> dict[dt.date | str, str]:
+        out: dict = {}
         for day, p in self.dailies.items():
             why = problem(self.links, p)
             if why:
                 out[day] = why
+        for i, p in enumerate(self.practice):
+            why = problem(self.links, p)
+            if why:
+                out[f"practice #{i}"] = why
         return out
 
     def raise_if_invalid(self) -> None:
         bad = self.problems()
         if bad:
-            lines = "; ".join(f"{d}: {m}" for d, m in sorted(bad.items()))
+            lines = "; ".join(f"{d}: {m}" for d, m in sorted(bad.items(), key=lambda kv: str(kv[0])))
             raise TypedDailiesInvalid(f"six-type dailies break the rules: {lines}")

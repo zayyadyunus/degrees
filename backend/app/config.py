@@ -78,6 +78,11 @@ class Settings:
     typed_dailies_path: Path = Path(
         os.environ.get("DEGREES_TYPED_DAILIES", str(DATA_DIR / "typed_dailies.json"))
     )
+    # Pre-built practice boards (scripts/build_typed_practice.py): a board
+    # takes seconds to generate, too slow to build per request.
+    typed_practice_path: Path = Path(
+        os.environ.get("DEGREES_TYPED_PRACTICE", str(DATA_DIR / "typed_practice.json"))
+    )
 
     # Cap the graph size to keep the dense similarity matrix affordable.
     max_words: int = int(os.environ.get("DEGREES_MAX_WORDS", "5000"))

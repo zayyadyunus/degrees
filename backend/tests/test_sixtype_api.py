@@ -47,7 +47,8 @@ def client(monkeypatch):
     monkeypatch.setattr(settings, "daily_epoch", today - dt.timedelta(days=50))
     monkeypatch.setattr(settings, "sixtype_from", today)
     monkeypatch.setattr(main, "_sixtype", SixTypeEngine(links))
-    monkeypatch.setattr(main, "_typed_dailies", TypedDailies(links, settings.daily_epoch, {today: PUZZLE}))
+    monkeypatch.setattr(main, "_typed_dailies",
+                        TypedDailies(links, settings.daily_epoch, {today: PUZZLE}, practice=[PUZZLE]))
     return TestClient(main.app)
 
 
@@ -120,6 +121,17 @@ def test_missing_sixtype_daily_is_unavailable(client):
     assert client.post("/games", json={"daily": True}).status_code == 503
 
 
+def test_practice_is_sixtype_after_the_switch(client):
+    r = client.post("/games", json={})
+    assert r.status_code == 201 and r.json()["rules"] == "sixtype" and r.json()["daily_number"] is None
+
+
+def test_practice_is_classic_before_the_switch(client, monkeypatch):
+    monkeypatch.setattr(settings, "sixtype_from", dt.datetime.now(dt.timezone.utc).date() + dt.timedelta(days=1))
+    r = client.post("/games", json={})
+    assert r.status_code == 201 and r.json()["rules"] == "classic"
+
+
 def test_health_reports_the_switch(client):
     h = client.get("/health").json()
     assert h["sixtype_from"] == dt.datetime.now(dt.timezone.utc).date().isoformat()
@@ -138,7 +150,13 @@ def test_wrong_type_on_route_is_caught():
 def test_shortcut_on_board_is_caught():
     links = make_links()
     links.add("b", "t", "use", "b use t")            # s a b t: kind family use
-    assert "shorter chain" in problem(links, PUZZLE)
+    assert "shorter than six" in problem(links, PUZZLE)
+
+
+def test_broken_practice_board_is_caught():
+    bad = TypedPuzzle("s", "t", ROUTE, ROUTE_TYPES, TILES[:-1])
+    d = TypedDailies(make_links(), dt.date(2027, 1, 1), {}, practice=[PUZZLE, bad])
+    assert list(d.problems()) == ["practice #1"]
 
 
 def test_unknown_tile_is_caught():

@@ -29,6 +29,7 @@ from .typed import load
 
 HERE = Path(__file__).parent
 LABELS = HERE / "labels"
+DATA = HERE.parent / "data"
 
 
 def tiles() -> list[str]:
@@ -42,8 +43,8 @@ def tiles() -> list[str]:
 
 def vector_pairs(words: list[str], k: int) -> dict[frozenset[str], int]:
     """pair -> best neighbour rank (1 = nearest), over each word's k nearest."""
-    have = json.loads((LABELS / "words-next.json").read_text())
-    vecs = np.load(LABELS / "vectors-next.npy")
+    have = json.loads((DATA / "typed_words.json").read_text())
+    vecs = np.load(DATA / "typed_vectors.npy")
     where = {w: i for i, w in enumerate(have)}
     vocab = [w for w in words if w in where]
     m = vecs[[where[w] for w in vocab]]

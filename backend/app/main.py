@@ -114,6 +114,7 @@ def health() -> dict:
         "sixtype_dailies_through": (
             _typed_dailies.last_day.isoformat() if _typed_dailies.last_day else None
         ),
+        "sixtype_practice_boards": len(_typed_dailies.practice),
     }
 
 
@@ -135,6 +136,11 @@ def create_game(req: NewGameRequest | None = None) -> GameState:
                 game = _sixtype.start_game(puzzle, daily_number=_typed_dailies.number(day))
             else:
                 game = _engine.daily_game(day)
+        elif _is_sixtype_day(dt.datetime.now(dt.timezone.utc).date()):
+            if not _typed_dailies.practice:
+                raise PuzzleUnavailable("no six-type practice boards built")
+            pool = _typed_dailies.practice
+            game = _sixtype.start_game(pool[int(_engine.rng.integers(len(pool)))])
         else:
             game = _engine.new_game(req.min_distance, req.max_distance)
     except (PuzzleUnavailable, ValueError) as exc:
