@@ -172,7 +172,7 @@ Words longer than 64 characters are rejected with a 422. `POST /games` and
 | `DEGREES_MOVES_PER_MIN`   | `120`   | moves + hints per client IP per minute (`0` = off) |
 | `DEGREES_CLIENT_IP_HEADER` | unset  | proxy header carrying the real client IP |
 | `DEGREES_MAX_STRIKES`     | `3`     | unconnected guesses allowed before losing |
-| `DEGREES_DAILY_EPOCH`     | `2027-01-02` | date of daily puzzle #1 |
+| `DEGREES_DAILY_EPOCH`     | `2026-11-28` | date of daily puzzle #1 |
 | `DEGREES_DAILY_FRESH_ENDS_DAYS` | `14` | a daily's start/target can't have started/ended a daily this recently |
 | `DEGREES_DAILY_FRESH_ROUTE_DAYS` | `7` | words on a route this recently can't appear in today's daily |
 | `DEGREES_DAILY_FRESH_LINK_DAYS` | `45` | links on a par route this recently can't be on today's |
@@ -190,7 +190,7 @@ python -m pytest        # needs requirements-dev.txt
 
 `data/wordlist.next.txt` holds the next vocabulary: 819 words, against 389
 today, for the January release, once the reviewed launch month (frozen
-through 2027-02-12) has been played.
+through 2027-01-08) has been played.
 
 Growing the word list changes the graph under every puzzle, so plan for it:
 

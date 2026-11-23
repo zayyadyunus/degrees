@@ -48,7 +48,7 @@ class Settings:
     max_moves: int = int(os.environ.get("DEGREES_MAX_MOVES", "8"))
 
     # Daily puzzle #1 falls on this date (YYYY-MM-DD).
-    daily_epoch: dt.date = dt.date.fromisoformat(os.environ.get("DEGREES_DAILY_EPOCH", "2027-01-02"))
+    daily_epoch: dt.date = dt.date.fromisoformat(os.environ.get("DEGREES_DAILY_EPOCH", "2026-11-28"))
 
     # Keep consecutive dailies feeling different: a word that started or
     # ended a daily in the last N days can't start/end today's, and a word

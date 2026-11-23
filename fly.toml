@@ -13,7 +13,7 @@ primary_region = "lhr"
   # Fly's proxy sets this to the real client IP; clients can't spoof it.
   DEGREES_CLIENT_IP_HEADER = "Fly-Client-IP"
   # Daily puzzle #1. Must match the first date in backend/data/dailies.json.
-  DEGREES_DAILY_EPOCH = "2027-01-02"
+  DEGREES_DAILY_EPOCH = "2026-11-28"
 
 [http_service]
   internal_port = 8000

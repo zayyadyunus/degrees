@@ -1,7 +1,7 @@
 {
   "dailies": [
     {
-      "date": "2027-01-02",
+      "date": "2026-11-28",
       "start": "smoke",
       "target": "orange",
       "par": 4,
@@ -26,7 +26,7 @@
       ]
     },
     {
-      "date": "2027-01-03",
+      "date": "2026-11-29",
       "start": "tomato",
       "target": "bitter",
       "par": 4,
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "date": "2027-01-04",
+      "date": "2026-11-30",
       "start": "insect",
       "target": "seed",
       "par": 3,
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "date": "2027-01-05",
+      "date": "2026-12-01",
       "start": "poem",
       "target": "secret",
       "par": 3,
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "date": "2027-01-06",
+      "date": "2026-12-02",
       "start": "paint",
       "target": "robot",
       "par": 4,
@@ -124,7 +124,7 @@
       ]
     },
     {
-      "date": "2027-01-07",
+      "date": "2026-12-03",
       "start": "engine",
       "target": "castle",
       "par": 4,
@@ -149,7 +149,7 @@
       ]
     },
     {
-      "date": "2027-01-08",
+      "date": "2026-12-04",
       "start": "pen",
       "target": "apple",
       "par": 4,
@@ -174,7 +174,7 @@
       ]
     },
     {
-      "date": "2027-01-09",
+      "date": "2026-12-05",
       "start": "turtle",
       "target": "flame",
       "par": 5,
@@ -200,7 +200,7 @@
       ]
     },
     {
-      "date": "2027-01-10",
+      "date": "2026-12-06",
       "start": "fruit",
       "target": "coin",
       "par": 4,
@@ -225,7 +225,7 @@
       ]
     },
     {
-      "date": "2027-01-11",
+      "date": "2026-12-07",
       "start": "glass",
       "target": "island",
       "par": 3,
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "date": "2027-01-12",
+      "date": "2026-12-08",
       "start": "spring",
       "target": "clock",
       "par": 3,
@@ -272,7 +272,7 @@
       ]
     },
     {
-      "date": "2027-01-13",
+      "date": "2026-12-09",
       "start": "summer",
       "target": "hill",
       "par": 4,
@@ -297,7 +297,7 @@
       ]
     },
     {
-      "date": "2027-01-14",
+      "date": "2026-12-10",
       "start": "branch",
       "target": "dark",
       "par": 4,
@@ -322,32 +322,32 @@
       ]
     },
     {
-      "date": "2027-01-15",
-      "start": "elephant",
-      "target": "machine",
+      "date": "2026-12-11",
+      "start": "color",
+      "target": "thought",
       "par": 4,
       "route": [
-        "elephant",
-        "monkey",
-        "mouse",
-        "computer",
-        "machine"
+        "color",
+        "red",
+        "love",
+        "feeling",
+        "thought"
       ],
       "tiles": [
-        "deer",
-        "sound",
-        "monkey",
-        "computer",
-        "screen",
-        "cat",
-        "drum",
-        "program",
-        "mouse",
-        "metal"
+        "yellow",
+        "red",
+        "hope",
+        "question",
+        "purple",
+        "joy",
+        "feeling",
+        "orange",
+        "sadness",
+        "love"
       ]
     },
     {
-      "date": "2027-01-16",
+      "date": "2026-12-12",
       "start": "dinner",
       "target": "eagle",
       "par": 5,
@@ -373,7 +373,7 @@
       ]
     },
     {
-      "date": "2027-01-17",
+      "date": "2026-12-13",
       "start": "desk",
       "target": "hard",
       "par": 4,
@@ -398,7 +398,7 @@
       ]
     },
     {
-      "date": "2027-01-18",
+      "date": "2026-12-14",
       "start": "planet",
       "target": "town",
       "par": 3,
@@ -422,7 +422,7 @@
       ]
     },
     {
-      "date": "2027-01-19",
+      "date": "2026-12-15",
       "start": "spoon",
       "target": "sand",
       "par": 3,
@@ -446,32 +446,31 @@
       ]
     },
     {
-      "date": "2027-01-20",
-      "start": "earth",
-      "target": "ink",
-      "par": 4,
+      "date": "2026-12-16",
+      "start": "home",
+      "target": "road",
+      "par": 3,
       "route": [
-        "earth",
-        "sky",
-        "blue",
-        "color",
-        "ink"
+        "home",
+        "building",
+        "bridge",
+        "road"
       ],
       "tiles": [
-        "blue",
-        "sky",
-        "planet",
-        "paper",
-        "page",
-        "orange",
-        "sun",
-        "cloud",
-        "color",
-        "book"
+        "building",
+        "garden",
+        "engine",
+        "house",
+        "traffic",
+        "bridge",
+        "truck",
+        "office",
+        "car",
+        "fuel"
       ]
     },
     {
-      "date": "2027-01-21",
+      "date": "2026-12-17",
       "start": "meal",
       "target": "peace",
       "par": 4,
@@ -496,7 +495,7 @@
       ]
     },
     {
-      "date": "2027-01-22",
+      "date": "2026-12-18",
       "start": "room",
       "target": "brown",
       "par": 4,
@@ -521,7 +520,7 @@
       ]
     },
     {
-      "date": "2027-01-23",
+      "date": "2026-12-19",
       "start": "surprise",
       "target": "banana",
       "par": 5,
@@ -547,32 +546,32 @@
       ]
     },
     {
-      "date": "2027-01-24",
-      "start": "onion",
-      "target": "purple",
+      "date": "2026-12-20",
+      "start": "weather",
+      "target": "ship",
       "par": 4,
       "route": [
-        "onion",
-        "carrot",
-        "fruit",
-        "orange",
-        "purple"
+        "weather",
+        "rain",
+        "water",
+        "boat",
+        "ship"
       ],
       "tiles": [
-        "peace",
-        "love",
-        "orange",
-        "fruit",
-        "color",
-        "sky",
-        "red",
-        "carrot",
-        "blood",
-        "blue"
+        "stream",
+        "cloud",
+        "rain",
+        "plane",
+        "boat",
+        "water",
+        "fish",
+        "lake",
+        "truck",
+        "sun"
       ]
     },
     {
-      "date": "2027-01-25",
+      "date": "2026-12-21",
       "start": "wolf",
       "target": "human",
       "par": 3,
@@ -596,7 +595,7 @@
       ]
     },
     {
-      "date": "2027-01-26",
+      "date": "2026-12-22",
       "start": "vegetable",
       "target": "wine",
       "par": 3,
@@ -620,7 +619,7 @@
       ]
     },
     {
-      "date": "2027-01-27",
+      "date": "2026-12-23",
       "start": "photo",
       "target": "math",
       "par": 4,
@@ -645,7 +644,7 @@
       ]
     },
     {
-      "date": "2027-01-28",
+      "date": "2026-12-24",
       "start": "sky",
       "target": "money",
       "par": 4,
@@ -667,7 +666,7 @@
       ]
     },
     {
-      "date": "2027-01-29",
+      "date": "2026-12-25",
       "start": "brain",
       "target": "lie",
       "par": 4,
@@ -691,7 +690,7 @@
       ]
     },
     {
-      "date": "2027-01-30",
+      "date": "2026-12-26",
       "start": "potato",
       "target": "storm",
       "par": 5,
@@ -717,7 +716,7 @@
       ]
     },
     {
-      "date": "2027-01-31",
+      "date": "2026-12-27",
       "start": "feeling",
       "target": "shield",
       "par": 4,
@@ -742,7 +741,7 @@
       ]
     },
     {
-      "date": "2027-02-01",
+      "date": "2026-12-28",
       "start": "salad",
       "target": "beer",
       "par": 3,
@@ -766,7 +765,7 @@
       ]
     },
     {
-      "date": "2027-02-02",
+      "date": "2026-12-29",
       "start": "dance",
       "target": "loud",
       "par": 3,
@@ -790,7 +789,7 @@
       ]
     },
     {
-      "date": "2027-02-03",
+      "date": "2026-12-30",
       "start": "chair",
       "target": "city",
       "par": 4,
@@ -815,7 +814,7 @@
       ]
     },
     {
-      "date": "2027-02-04",
+      "date": "2026-12-31",
       "start": "sweet",
       "target": "meat",
       "par": 4,
@@ -839,7 +838,7 @@
       ]
     },
     {
-      "date": "2027-02-05",
+      "date": "2027-01-01",
       "start": "jewel",
       "target": "engine",
       "par": 4,
@@ -864,7 +863,7 @@
       ]
     },
     {
-      "date": "2027-02-06",
+      "date": "2027-01-02",
       "start": "stranger",
       "target": "country",
       "par": 4,
@@ -885,7 +884,7 @@
       ]
     },
     {
-      "date": "2027-02-07",
+      "date": "2027-01-03",
       "start": "sofa",
       "target": "dark",
       "par": 3,
@@ -909,7 +908,7 @@
       ]
     },
     {
-      "date": "2027-02-08",
+      "date": "2027-01-04",
       "start": "evening",
       "target": "heat",
       "par": 3,
@@ -933,7 +932,7 @@
       ]
     },
     {
-      "date": "2027-02-09",
+      "date": "2027-01-05",
       "start": "cold",
       "target": "ash",
       "par": 3,
@@ -957,32 +956,31 @@
       ]
     },
     {
-      "date": "2027-02-10",
-      "start": "treasure",
-      "target": "grass",
-      "par": 4,
+      "date": "2027-01-06",
+      "start": "forest",
+      "target": "pen",
+      "par": 3,
       "route": [
-        "treasure",
-        "gold",
-        "purple",
-        "green",
-        "grass"
+        "forest",
+        "wood",
+        "pencil",
+        "pen"
       ],
       "tiles": [
-        "purple",
-        "tree",
-        "green",
-        "branch",
-        "rock",
-        "gold",
-        "seed",
-        "metal",
-        "money",
-        "coin"
+        "pencil",
+        "ink",
+        "study",
+        "page",
+        "wood",
+        "book",
+        "paper",
+        "nail",
+        "story",
+        "tree"
       ]
     },
     {
-      "date": "2027-02-11",
+      "date": "2027-01-07",
       "start": "milk",
       "target": "vegetable",
       "par": 3,
@@ -1005,7 +1003,7 @@
       ]
     },
     {
-      "date": "2027-02-12",
+      "date": "2027-01-08",
       "start": "rabbit",
       "target": "stream",
       "par": 4,

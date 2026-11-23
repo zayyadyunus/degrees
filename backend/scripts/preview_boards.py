@@ -5,7 +5,7 @@ For each day: the board as a player would see it, then each tile's role
 how a greedy player and random play fare.
 
     python scripts/preview_boards.py                       # launch week
-    python scripts/preview_boards.py --from 2027-01-02 --days 7
+    python scripts/preview_boards.py --from 2026-11-28 --days 7
     python scripts/preview_boards.py --blind               # boards only, for play-testing on paper
 """
 from __future__ import annotations
