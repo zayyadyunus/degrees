@@ -17,7 +17,7 @@ STRIKES = 3
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--seed", type=int, default=None)
-    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
+    ap.add_argument("--next", action="store_true", help="use data/typed_links.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
     seed = args.seed if args.seed is not None else random.randrange(10_000)
     links = load(NEXT_PATH) if args.next else load()

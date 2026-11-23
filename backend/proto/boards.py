@@ -33,7 +33,7 @@ def main() -> None:
     ap.add_argument("--brief", action="store_true")
     ap.add_argument("--stats", action="store_true")
     ap.add_argument("--gaps", action="store_true", help="list unlinked pairs that look linked")
-    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
+    ap.add_argument("--next", action="store_true", help="use data/typed_links.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
 
     links = load(NEXT_PATH) if args.next else load()

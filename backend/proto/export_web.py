@@ -50,7 +50,7 @@ def main() -> None:
     ap.add_argument("out")
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
+    ap.add_argument("--next", action="store_true", help="use data/typed_links.txt (the Phase 2 vocabulary)")
     args = ap.parse_args()
     boards = export(args.n, args.seed, args.next)
     data = {"set": "next" if args.next else "proto",

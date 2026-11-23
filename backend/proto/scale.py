@@ -59,7 +59,7 @@ def sustains(links: Links, window: int, seed: int, extra: int = 20, max_failures
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true", help="one size, one seed, for timing")
-    ap.add_argument("--next", action="store_true", help="use links.next.txt (the Phase 2 vocabulary)")
+    ap.add_argument("--next", action="store_true", help="use data/typed_links.txt (the Phase 2 vocabulary)")
     ap.add_argument("--fracs", default="0.4,0.55,0.7,0.85,1.0", help="vocabulary shares to test")
     args = ap.parse_args()
     full = load(NEXT_PATH) if args.next else load()

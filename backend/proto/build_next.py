@@ -1,4 +1,4 @@
-"""Assemble links.next.txt for the Phase 2 vocabulary from Claude's labelling runs.
+"""Assemble data/typed_links.txt for the Phase 2 vocabulary from Claude's labelling runs.
 
     cd backend && .venv/bin/python -m proto.build_next
 
@@ -7,7 +7,7 @@ Reads (proto/labels/, git-ignored):
   categories-next.links.txt   "category" / "kinds" lines
   features-next.links.txt     "ADJ feature: ..." lines
 Adds MANUAL below (links the candidate pairs missed), and writes
-proto/links.next.txt with the header of links.txt, which typed.load() reads.
+data/typed_links.txt with the header of links.txt, which typed.load() reads.
 """
 from __future__ import annotations
 
@@ -219,7 +219,7 @@ def main() -> None:
     text = "\n".join(apply_edits(text.split("\n")))
     text, dropped = drop_redundant_found(text)
     print(f"  dropped {dropped} found links where the pair has a more specific obvious type")
-    out = HERE / "links.next.txt"
+    out = HERE.parent / "data" / "typed_links.txt"
     out.write_text(text)
     print(f"wrote {out}: {len(rel_lines)} relation lines, {len(avoid)} avoid pairs, "
           f"{cats.count(chr(10)) + 1} category lines, {feats.count(chr(10)) + 1} feature lines")
