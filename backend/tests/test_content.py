@@ -54,13 +54,37 @@ def test_rules_examples_are_accepted(engine):
     assert _check_pairs(engine, pairs) == []
 
 
+# The six-type examples in How to Play: (type name, examples) rows.
+SIX_TYPE_BLOCK = re.compile(r"const SIX_TYPE_EXAMPLES[^;]*;", re.S)
+SIX_TYPE_NAMES = {
+    "Kind of": "kind", "Same family": "family", "Part of / made of": "part",
+    "Share a feature": "feature", "Used for / makes": "use", "Found with": "found",
+}
+
+
 def test_how_to_play_examples_are_accepted(engine):
-    source = HOW_TO_PLAY.read_text(encoding="utf-8")
+    # Classic examples only: the six-type ones are checked below.
+    source = SIX_TYPE_BLOCK.sub("", HOW_TO_PLAY.read_text(encoding="utf-8"))
     pairs = PAIR.findall(source)
     chain = re.search(r"EXAMPLE_CHAIN = \[([^\]]*)\]", source)
     words = re.findall(r'"([a-z]+)"', chain.group(1))
     pairs += list(zip(words, words[1:]))
     assert _check_pairs(engine, pairs) == []
+
+
+def test_six_type_how_to_play_examples_have_their_type():
+    from app.sixtype.links import load
+
+    links = load()
+    block = SIX_TYPE_BLOCK.search(HOW_TO_PLAY.read_text(encoding="utf-8")).group(0)
+    rows = re.findall(r'\["([^"]+)", "([^"]+)"\]', block)
+    assert len(rows) == 6
+    bad = []
+    for name, examples in rows:
+        for a, b in PAIR.findall(examples):
+            if SIX_TYPE_NAMES[name] not in links.types(a, b):
+                bad.append(f"{a}-{b} isn't {name}")
+    assert bad == []
 
 
 def test_par_routes_use_only_named_links(engine):
