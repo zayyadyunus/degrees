@@ -1,7 +1,7 @@
 {
   "dailies": [
     {
-      "date": "2027-01-09",
+      "date": "2026-11-28",
       "start": "sail",
       "target": "night",
       "route": [
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "date": "2027-01-10",
+      "date": "2026-11-29",
       "start": "feeling",
       "target": "plum",
       "route": [
@@ -69,7 +69,7 @@
       ]
     },
     {
-      "date": "2027-01-11",
+      "date": "2026-11-30",
       "start": "bread",
       "target": "drum",
       "route": [
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "date": "2027-01-12",
+      "date": "2026-12-01",
       "start": "planet",
       "target": "blanket",
       "route": [
@@ -137,7 +137,7 @@
       ]
     },
     {
-      "date": "2027-01-13",
+      "date": "2026-12-02",
       "start": "fork",
       "target": "man",
       "route": [
@@ -171,7 +171,7 @@
       ]
     },
     {
-      "date": "2027-01-14",
+      "date": "2026-12-03",
       "start": "nurse",
       "target": "ice",
       "route": [
@@ -205,7 +205,7 @@
       ]
     },
     {
-      "date": "2027-01-15",
+      "date": "2026-12-04",
       "start": "hunter",
       "target": "wind",
       "route": [
@@ -239,7 +239,7 @@
       ]
     },
     {
-      "date": "2027-01-16",
+      "date": "2026-12-05",
       "start": "carpet",
       "target": "pepper",
       "route": [
@@ -273,7 +273,7 @@
       ]
     },
     {
-      "date": "2027-01-17",
+      "date": "2026-12-06",
       "start": "hand",
       "target": "cave",
       "route": [
@@ -307,7 +307,7 @@
       ]
     },
     {
-      "date": "2027-01-18",
+      "date": "2026-12-07",
       "start": "gold",
       "target": "kite",
       "route": [
@@ -341,7 +341,7 @@
       ]
     },
     {
-      "date": "2027-01-19",
+      "date": "2026-12-08",
       "start": "thread",
       "target": "pea",
       "route": [
@@ -375,7 +375,7 @@
       ]
     },
     {
-      "date": "2027-01-20",
+      "date": "2026-12-09",
       "start": "sauce",
       "target": "moss",
       "route": [
@@ -409,7 +409,7 @@
       ]
     },
     {
-      "date": "2027-01-21",
+      "date": "2026-12-10",
       "start": "ink",
       "target": "lamb",
       "route": [
@@ -443,7 +443,7 @@
       ]
     },
     {
-      "date": "2027-01-22",
+      "date": "2026-12-11",
       "start": "bed",
       "target": "wine",
       "route": [
@@ -477,7 +477,7 @@
       ]
     },
     {
-      "date": "2027-01-23",
+      "date": "2026-12-12",
       "start": "picnic",
       "target": "ostrich",
       "route": [
@@ -511,7 +511,7 @@
       ]
     },
     {
-      "date": "2027-01-24",
+      "date": "2026-12-13",
       "start": "mask",
       "target": "flute",
       "route": [
@@ -545,7 +545,7 @@
       ]
     },
     {
-      "date": "2027-01-25",
+      "date": "2026-12-14",
       "start": "monkey",
       "target": "canvas",
       "route": [
@@ -579,7 +579,7 @@
       ]
     },
     {
-      "date": "2027-01-26",
+      "date": "2026-12-15",
       "start": "rocket",
       "target": "music",
       "route": [
@@ -613,7 +613,7 @@
       ]
     },
     {
-      "date": "2027-01-27",
+      "date": "2026-12-16",
       "start": "robot",
       "target": "thief",
       "route": [
@@ -647,7 +647,7 @@
       ]
     },
     {
-      "date": "2027-01-28",
+      "date": "2026-12-17",
       "start": "skin",
       "target": "fire",
       "route": [
@@ -681,7 +681,7 @@
       ]
     },
     {
-      "date": "2027-01-29",
+      "date": "2026-12-18",
       "start": "car",
       "target": "jungle",
       "route": [
@@ -715,7 +715,7 @@
       ]
     },
     {
-      "date": "2027-01-30",
+      "date": "2026-12-19",
       "start": "office",
       "target": "whistle",
       "route": [
@@ -749,7 +749,7 @@
       ]
     },
     {
-      "date": "2027-01-31",
+      "date": "2026-12-20",
       "start": "theater",
       "target": "sea",
       "route": [
@@ -783,7 +783,7 @@
       ]
     },
     {
-      "date": "2027-02-01",
+      "date": "2026-12-21",
       "start": "surf",
       "target": "peacock",
       "route": [
@@ -817,7 +817,7 @@
       ]
     },
     {
-      "date": "2027-02-02",
+      "date": "2026-12-22",
       "start": "ash",
       "target": "smile",
       "route": [
@@ -851,7 +851,7 @@
       ]
     },
     {
-      "date": "2027-02-03",
+      "date": "2026-12-23",
       "start": "snake",
       "target": "shelf",
       "route": [
@@ -885,7 +885,7 @@
       ]
     },
     {
-      "date": "2027-02-04",
+      "date": "2026-12-24",
       "start": "tower",
       "target": "rice",
       "route": [
@@ -919,7 +919,7 @@
       ]
     },
     {
-      "date": "2027-02-05",
+      "date": "2026-12-25",
       "start": "park",
       "target": "plate",
       "route": [
