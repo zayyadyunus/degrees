@@ -51,8 +51,12 @@ class TypedGame:
     puzzle: TypedPuzzle
     max_strikes: int = 3
     path: list[str] = field(default_factory=list)
-    # spent[i] is the type the link path[i] -> path[i+1] spent.
+    # spent[i] is the type the link path[i] -> path[i+1] spent, and whys[i]
+    # the sentence that explains it ("hammer is used for nail").
     spent: list[str] = field(default_factory=list)
+    whys: list[str] = field(default_factory=list)
+    # The intended route's sentences, link by link, for the end screen.
+    route_whys: list[str] = field(default_factory=list)
     status: str = STATUS_IN_PROGRESS
     strikes: int = 0
     # Chain lengths at which a hint was shown, so asking twice in a row
@@ -123,6 +127,8 @@ class SixTypeEngine:
             max_strikes=self.max_strikes,
             path=[puzzle.start],
             daily_number=daily_number,
+            route_whys=[self.links.types(a, b)[t]
+                        for a, b, t in zip(puzzle.route, puzzle.route[1:], puzzle.route_types)],
         )
 
     # -- moves -----------------------------------------------------------
@@ -164,6 +170,7 @@ class SixTypeEngine:
         spend = type_ or free[0]
         game.path.append(word)
         game.spent.append(spend)
+        game.whys.append(fits[spend])
         game.events.append(EVENT_MOVE)
         if word == game.target:
             game.status = STATUS_WON
@@ -186,6 +193,7 @@ class SixTypeEngine:
             return False
         game.path.pop()
         game.spent.pop()
+        game.whys.pop()
         game.events.append(EVENT_BACK)
         return True
 

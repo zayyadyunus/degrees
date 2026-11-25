@@ -97,6 +97,7 @@ def test_full_solve_with_a_type_choice(client):
     g = r["game"]
     assert g["status"] == "won" and g["solution"] == list(ROUTE)
     assert g["solution_types"] == list(ROUTE_TYPES)
+    assert g["whys"][4] == "d use e" and g["solution_whys"][0] == "s kind a"
     score = client.get(f"/games/{gid}/score").json()
     assert score["rules"] == "sixtype" and score["clean"] and score["connections_used"] == 6
 
@@ -108,7 +109,7 @@ def test_strike_back_and_hint(client):
     r = move(client, gid, "x")                       # kind is spent
     assert r["strike"] and "already spent" in r["reason"]
     g = client.post(f"/games/{gid}/back").json()
-    assert g["path"] == ["s"] and any(t["type"] == "kind" for t in g["types_left"])
+    assert g["path"] == ["s"] and g["whys"] == [] and any(t["type"] == "kind" for t in g["types_left"])
     h = client.post(f"/games/{gid}/hint").json()
     assert h["hint"] == "kind" and h["message"] == "Spend kind of next"
     score = client.get(f"/games/{gid}/score").json()

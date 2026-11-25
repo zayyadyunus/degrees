@@ -11,6 +11,14 @@ const EMOJI = { move: "🟩", strike: "🟥", hint: "💡", back: "↩️" } as 
  */
 export function shareText(game: GameState, url: string): string {
   const title = game.daily_number ? `Degrees #${game.daily_number}` : "Degrees (practice)";
+  const grid = game.events.map((e) => EMOJI[e]).join("");
+  if (game.rules === "sixtype") {
+    // Six links every time: the score is whether you got there, and ⭐ for
+    // a clean solve (no mistakes, backs or hints).
+    const clean = game.status === "won" && game.events.every((e) => e === "move");
+    const score = game.status === "won" ? `6/6${clean ? " ⭐" : ""}` : `X/6`;
+    return `${title}  ${score}\n${grid}\n${url}`;
+  }
   const used = game.moves;
   const par = game.optimal_distance;
   let score: string;
@@ -20,7 +28,6 @@ export function shareText(game: GameState, url: string): string {
   } else {
     score = `X (par ${par})`;
   }
-  const grid = game.events.map((e) => EMOJI[e]).join("");
   return `${title}  ${score}\n${grid}\n${url}`;
 }
 

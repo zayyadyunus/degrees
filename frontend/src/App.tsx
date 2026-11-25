@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, dailyStartsOn, localDate } from "./api";
-import type { GameState } from "./types";
+import type { Choice, GameState } from "./types";
 import { Header } from "./components/Header";
 import { Board } from "./components/Board";
 import { TileGrid } from "./components/TileGrid";
 import { Toast, type ToastData } from "./components/Toast";
 import { HowToPlayModal } from "./components/HowToPlayModal";
 import { Modal } from "./components/Modal";
+import { SixTypeBoard, SixTypeResult, TypeChoice } from "./components/SixType";
 import {
   hasSeenHelp,
   loadCurrent,
@@ -26,6 +27,10 @@ export default function App() {
   const [game, setGame] = useState<GameState | null>(null);
   const [mode, setMode] = useState<Mode>("daily");
   const [hint, setHint] = useState<string | null>(null);
+  // Six-type: the type a hint named, and the pending type choice when a
+  // link fits more than one unspent type.
+  const [hintType, setHintType] = useState<string | null>(null);
+  const [choice, setChoice] = useState<{ from: string; word: string; choices: Choice[] } | null>(null);
   // The tile that just cost a strike (shakes until the next play).
   const [struck, setStruck] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastData | null>(null);
@@ -52,6 +57,8 @@ export default function App() {
     setGame(next);
     setMode(nextMode);
     setHint(null);
+    setHintType(null);
+    setChoice(null);
     setStruck(null);
     setToast(null);
     setError(null);
@@ -136,24 +143,32 @@ export default function App() {
 
   const used = useMemo(() => new Set(game?.path ?? []), [game]);
 
-  async function submit(word: string) {
+  async function submit(word: string, type?: string) {
     if (!game || game.status !== "in_progress" || busy) return;
     setBusy(true);
     setStruck(null);
+    setChoice(null);
     try {
-      const res = await api.submitMove(game.id, word);
+      const res = await api.submitMove(game.id, word, type);
       setGame(res.game);
       if (!res.accepted) {
+        // Six-type: the link fits several unspent types; ask which.
+        if (res.choices && res.choices.length > 0) {
+          setChoice({ from: game.current_word, word, choices: res.choices });
+          return;
+        }
         const reason = res.reason ?? "Invalid move";
         if (res.strike) setStruck(word);
+        const penalty = res.game.rules === "sixtype" ? "mistake" : "strike";
         showToast(
           res.strike && res.game.status === "in_progress"
-            ? `${reason} — strike ${res.game.strikes} of ${res.game.max_strikes}`
+            ? `${reason} — ${penalty} ${res.game.strikes} of ${res.game.max_strikes}`
             : reason,
         );
         return;
       }
       setHint(null);
+      setHintType(null);
     } catch (e) {
       showToast(errorText(e));
     } finally {
@@ -173,11 +188,35 @@ export default function App() {
     }
   }
 
+  /** Six-type: keep the first n + 1 words, taking back the rest one by one
+   * (each refunds its type). */
+  async function backTo(n: number) {
+    if (!game || game.status !== "in_progress" || busy) return;
+    setBusy(true);
+    try {
+      let g = game;
+      while (g.path.length > n + 1) g = await api.back(g.id);
+      setGame(g);
+      setHintType(null);
+      setStruck(null);
+    } catch (e) {
+      showToast(errorText(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function getHint() {
     if (!game || game.status !== "in_progress") return;
     try {
       const res = await api.hint(game.id);
       setGame(res.game);
+      if (res.game.rules === "sixtype") {
+        // The hint names a type, not a tile: outline its key.
+        setHintType(res.hint);
+        showToast(res.message ?? "No hint available");
+        return;
+      }
       if (!res.hint) {
         showToast(res.message ?? "No hint available");
       } else if (res.hint === game.target) {
@@ -201,7 +240,17 @@ export default function App() {
     <div className="app">
       <Header onHelp={() => setShowHelp(true)} onNewGame={requestPractice} />
       <Toast toast={toast} />
-      <HowToPlayModal open={showHelp} onClose={closeHelp} />
+      <HowToPlayModal open={showHelp} onClose={closeHelp} rules={game?.rules} />
+      <Modal open={choice !== null} onClose={() => setChoice(null)} title="Choose a link type">
+        {choice && (
+          <TypeChoice
+            from={choice.from}
+            word={choice.word}
+            choices={choice.choices}
+            onPick={(t) => void submit(choice.word, t)}
+          />
+        )}
+      </Modal>
       <Modal open={confirmNew} onClose={() => setConfirmNew(false)} title="New puzzle?">
         <p className="howto-lede">You'll lose your progress on this practice puzzle.</p>
         <div className="actions">
@@ -251,12 +300,42 @@ export default function App() {
                   </>
                 )}
               </span>
-              <span>
-                Par <strong>{game.optimal_distance}</strong>
-                <Strikes used={game.strikes} max={game.max_strikes} />
-              </span>
+              {game.rules === "sixtype" ? (
+                <span>
+                  <strong>6</strong> links
+                </span>
+              ) : (
+                <span>
+                  Par <strong>{game.optimal_distance}</strong>
+                  <Strikes used={game.strikes} max={game.max_strikes} />
+                </span>
+              )}
             </div>
 
+            {game.rules === "sixtype" ? (
+              <>
+                <SixTypeBoard
+                  game={game}
+                  hintType={hintType}
+                  struck={struck}
+                  busy={busy}
+                  onPlay={(w) => void submit(w)}
+                  onBackTo={(n) => void backTo(n)}
+                  onHint={getHint}
+                />
+                {game.status !== "in_progress" && (
+                  <SixTypeResult
+                    game={game}
+                    mode={mode}
+                    dailyAvailable={!dailyStarts}
+                    onShare={onShare}
+                    onPractice={requestPractice}
+                    onDaily={() => void openDaily()}
+                  />
+                )}
+              </>
+            ) : (
+            <>
             <Board game={game} hint={hint} onPlayHint={(w) => void submit(w)} />
 
             {game.status === "in_progress" ? (
@@ -296,6 +375,8 @@ export default function App() {
                 onPractice={requestPractice}
                 onDaily={() => void openDaily()}
               />
+            )}
+            </>
             )}
           </>
         )}

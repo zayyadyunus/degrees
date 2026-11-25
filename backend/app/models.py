@@ -63,11 +63,13 @@ class GameState(BaseModel):
     # Six-type only: the type each link spent, and the types still free
     # (in the order the UI shows its six keys).
     spent: list[str] | None = None
+    whys: list[str] | None = None
     types_left: list[LinkType] | None = None
     # A par route, revealed only once the game is over. Six-type adds the
     # type each of its links spends.
     solution: list[str] | None
     solution_types: list[str] | None = None
+    solution_whys: list[str] | None = None
 
     @classmethod
     def from_game(cls, game: Game | TypedGame) -> "GameState":
@@ -120,9 +122,11 @@ class GameState(BaseModel):
             events=list(game.events),
             daily_number=game.daily_number,
             spent=list(game.spent),
+            whys=list(game.whys),
             types_left=[LinkType(type=t, name=TYPE_NAMES[t]) for t in game.types_left],
             solution=list(game.puzzle.route) if over else None,
             solution_types=list(game.puzzle.route_types) if over else None,
+            solution_whys=list(game.route_whys) if over else None,
         )
 
 

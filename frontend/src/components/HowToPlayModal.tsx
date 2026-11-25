@@ -1,3 +1,4 @@
+import type { Rules } from "../types";
 import { Modal } from "./Modal";
 
 interface Relation {
@@ -20,13 +21,58 @@ const RELATIONS: Relation[] = [
 
 const EXAMPLE_CHAIN = ["night", "dark", "light", "sun"];
 
+const SIX_TYPE_EXAMPLES: [string, string][] = [
+  ["Kind of", "eagle → bird · violin → instrument"],
+  ["Same family", "lion ↔ tiger · fork ↔ spoon"],
+  ["Part of / made of", "wheel → car · glass → sand"],
+  ["Share a feature", "snow ↔ milk (both white)"],
+  ["Used for / makes", "hammer → nail · bee → honey"],
+  ["Found with", "sand → beach · salt → pepper"],
+];
+
 export function HowToPlayModal({
   open,
   onClose,
+  rules = "classic",
 }: {
   open: boolean;
   onClose: () => void;
+  rules?: Rules;
 }) {
+  if (rules === "sixtype") {
+    return (
+      <Modal open={open} onClose={onClose} title="How to Play">
+        <p className="howto-lede">
+          Connect the <strong>start</strong> word to the <strong>target</strong> in{" "}
+          <strong>six links</strong>: five words in between. A new puzzle every day.
+        </p>
+        <ol className="howto-rules">
+          <li>Tap a tile that links to the last word in your chain.</li>
+          <li>
+            Every link is one of six types, and <strong>each type can be spent only once</strong>.
+            If a link fits two unspent types, you choose which to spend.
+          </li>
+          <li>
+            A tile that doesn’t link, or a link whose type is already spent, is a{" "}
+            <strong>mistake</strong>. Three mistakes and the board is over.
+          </li>
+          <li>
+            Tap a word in your chain, or <strong>Back</strong>, to undo. Its type comes back.
+          </li>
+          <li>A hint names the type to spend next. Hints show on your result.</li>
+        </ol>
+        <p className="howto-heading">The six types</p>
+        <ul className="relation-list">
+          {SIX_TYPE_EXAMPLES.map(([name, ex]) => (
+            <li key={name}>
+              <span className="relation-name">{name}</span>
+              <span className="relation-ex">{ex}</span>
+            </li>
+          ))}
+        </ul>
+      </Modal>
+    );
+  }
   return (
     <Modal open={open} onClose={onClose} title="How to Play">
       <p className="howto-lede">

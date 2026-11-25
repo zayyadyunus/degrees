@@ -62,10 +62,11 @@ export const api = {
 
   getGame: (gameId: string) => request<GameState>(`/games/${gameId}`),
 
-  submitMove: (gameId: string, word: string) =>
+  /** `type` picks which link type to spend (six-type, when a link fits several). */
+  submitMove: (gameId: string, word: string, type?: string) =>
     request<MoveResponse>(`/games/${gameId}/moves`, {
       method: "POST",
-      body: JSON.stringify({ word }),
+      body: JSON.stringify(type ? { word, type } : { word }),
     }),
 
   back: (gameId: string) =>
