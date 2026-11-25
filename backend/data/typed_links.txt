@@ -523,7 +523,7 @@ boss with: ?business ?job ?power
 bottle in: ?fridge
 bottle use: beer juice ?lemonade milk soda water wine
 bottle with: ?baby ?glass
-bowl in: kitchen
+bowl in: kitchen ?restaurant
 bowl made: ?wood
 bowl use: cereal food ?fruit ?meal ?noodle ?pasta rice salad soup ?sugar ?yogurt
 bowl with: ?breakfast ?dinner ?dog ?table
@@ -779,7 +779,7 @@ coconut makes: ?milk
 coconut with: ?chocolate ?island
 code with: computer ?data ?internet ?robot ?secret
 coffee in: cafe ?restaurant
-coffee made: bean ?water
+coffee made: ?bean ?water
 coffee makes: ?energy
 coffee with: breakfast ?cereal morning
 coin in: ?jar ?pocket
@@ -853,7 +853,7 @@ crown with: ?castle king ?palace prince queen ?treasure ?winner
 cucumber in: ?farm garden
 cucumber kind: food vegetable
 cucumber part: salad ?sandwich
-cup in: cafe kitchen
+cup in: cafe kitchen ?restaurant
 cup use: coffee ?juice ?milk ?soda tea ?water
 cup with: ?breakfast ?medal ?table ?winner
 curiosity kind: ?emotion ?feeling
@@ -1504,7 +1504,7 @@ magazine with: ?month
 mall in: ?city ?town
 mall kind: building
 man kind: ?human person
-map kind: drawing ?picture
+map kind: ?drawing ?picture
 map made: paper
 map use: ?hike ?journey ?town travel ?trip
 map with: ?city ?hike ?road ?street ?trip ?vacation ?world
@@ -1707,7 +1707,7 @@ parent with: baby
 park in: city ?town
 parrot in: ?forest jungle tree ?zoo
 parrot kind: animal bird
-parrot makes: sound ?voice ?word
+parrot makes: ?sound ?voice ?word
 parrot with: ?nut pirate
 party makes: ?noise
 party with: ?holiday ?house ?night ?weekend

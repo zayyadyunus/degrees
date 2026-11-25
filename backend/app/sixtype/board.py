@@ -205,6 +205,14 @@ class History:
         self.features.append(used)
 
 
+def daily_history() -> History:
+    """History for a run of dailies: players see every day, so ends and
+    route links stay away for a month (at 10 boards the generator came back
+    to the same chains every two to three weeks), hub words for four uses
+    in that month, and shared features for five days."""
+    return History(window=28, max_uses=4, feature_window=5, edge_window=28)
+
+
 def random_route(links: Links, rng: random.Random, start: str, min_distance: int,
                  history: History, budget: int = 3000) -> tuple[list[str], list[str]] | None:
     """A six-link route from `start` that spends each type once.

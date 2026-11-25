@@ -23,7 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.config import settings  # noqa: E402
-from app.sixtype.board import Board, History, assess, build_board  # noqa: E402
+from app.sixtype.board import Board, History, assess, build_board, daily_history  # noqa: E402
 from app.sixtype.dailies import TypedDailies, load_typed, problem, save_typed  # noqa: E402
 from app.sixtype.engine import TypedPuzzle  # noqa: E402
 from app.sixtype.links import TYPE_NAMES, Links, load  # noqa: E402
@@ -32,13 +32,36 @@ MAX_SALTS = 40
 
 
 def history_before(links: Links, frozen: dict[dt.date, TypedPuzzle], day: dt.date) -> History:
-    h = History()
+    h = daily_history()
     for d in sorted(frozen):
         if d >= day:
             break
         p = frozen[d]
         h.record(Board(p.start, p.target, list(p.route), list(p.route_types), list(p.tiles), {}), links)
     return h
+
+
+def clash_after(links: Links, frozen: dict[dt.date, TypedPuzzle], day: dt.date, p: TypedPuzzle) -> str | None:
+    """Why `p` on `day` breaks the run rules against the frozen days after
+    it, or None. History only looks back, so a re-roll checks forward here:
+    the same windows, measured from the following days."""
+    h = daily_history()
+    features = {f for (a, b), t in zip(zip(p.route, p.route[1:]), p.route_types) if t == "feature"
+                for f in links.shared_features(a, b)}
+    edges = {frozenset(e) for e in zip(p.route, p.route[1:])}
+    for i in range(1, h.window + 1):
+        q = frozen.get(day + dt.timedelta(days=i))
+        if q is None:
+            continue
+        if {p.start, p.target} & {q.start, q.target}:
+            return f"end word repeats {day + dt.timedelta(days=i)}"
+        if i <= h.edge_window and edges & {frozenset(e) for e in zip(q.route, q.route[1:])}:
+            return f"route link repeats {day + dt.timedelta(days=i)}"
+        if i <= h.feature_window and features & {
+                f for (a, b), t in zip(zip(q.route, q.route[1:]), q.route_types) if t == "feature"
+                for f in links.shared_features(a, b)}:
+            return f"feature repeats {day + dt.timedelta(days=i)}"
+    return None
 
 
 def generate(links: Links, frozen: dict[dt.date, TypedPuzzle], day: dt.date, salt: int = 0) -> TypedPuzzle | None:
@@ -107,7 +130,8 @@ def main() -> None:
         rest = {d: p for d, p in frozen.items() if d != day}
         for salt in range(1, MAX_SALTS + 1):
             new = generate(links, rest, day, salt)
-            if new and (new.start, new.target) != (old.start, old.target):
+            if new and (new.start, new.target) != (old.start, old.target) \
+                    and clash_after(links, rest, day, new) is None:
                 break
         else:
             sys.exit(f"No new board for {day} after {MAX_SALTS} seeds.")

@@ -1,0 +1,956 @@
+{
+  "dailies": [
+    {
+      "date": "2027-01-09",
+      "start": "sail",
+      "target": "night",
+      "route": [
+        "sail",
+        "cloth",
+        "wood",
+        "fire",
+        "sun",
+        "star",
+        "night"
+      ],
+      "route_types": [
+        "part",
+        "family",
+        "use",
+        "feature",
+        "kind",
+        "found"
+      ],
+      "tiles": [
+        "evening",
+        "sky",
+        "wood",
+        "canvas",
+        "sunset",
+        "dawn",
+        "fire",
+        "sun",
+        "star",
+        "cloth"
+      ]
+    },
+    {
+      "date": "2027-01-10",
+      "start": "feeling",
+      "target": "plum",
+      "route": [
+        "feeling",
+        "love",
+        "rose",
+        "leaf",
+        "moss",
+        "tree",
+        "plum"
+      ],
+      "route_types": [
+        "kind",
+        "found",
+        "part",
+        "feature",
+        "family",
+        "use"
+      ],
+      "tiles": [
+        "moss",
+        "rose",
+        "seed",
+        "love",
+        "panic",
+        "leaf",
+        "trust",
+        "loneliness",
+        "sadness",
+        "tree"
+      ]
+    },
+    {
+      "date": "2027-01-11",
+      "start": "bread",
+      "target": "drum",
+      "route": [
+        "bread",
+        "flour",
+        "snow",
+        "rain",
+        "thunder",
+        "noise",
+        "drum"
+      ],
+      "route_types": [
+        "part",
+        "feature",
+        "family",
+        "found",
+        "kind",
+        "use"
+      ],
+      "tiles": [
+        "rain",
+        "flour",
+        "oven",
+        "thunder",
+        "salt",
+        "egg",
+        "kitchen",
+        "food",
+        "noise",
+        "snow"
+      ]
+    },
+    {
+      "date": "2027-01-12",
+      "start": "planet",
+      "target": "blanket",
+      "route": [
+        "planet",
+        "moon",
+        "wolf",
+        "animal",
+        "head",
+        "pillow",
+        "blanket"
+      ],
+      "route_types": [
+        "family",
+        "found",
+        "kind",
+        "part",
+        "use",
+        "feature"
+      ],
+      "tiles": [
+        "wolf",
+        "kitten",
+        "head",
+        "rug",
+        "moon",
+        "gravity",
+        "earth",
+        "astronaut",
+        "pillow",
+        "animal"
+      ]
+    },
+    {
+      "date": "2027-01-13",
+      "start": "fork",
+      "target": "man",
+      "route": [
+        "fork",
+        "metal",
+        "paper",
+        "scissors",
+        "sword",
+        "knight",
+        "man"
+      ],
+      "route_types": [
+        "part",
+        "family",
+        "use",
+        "feature",
+        "found",
+        "kind"
+      ],
+      "tiles": [
+        "knight",
+        "breakfast",
+        "silver",
+        "paper",
+        "table",
+        "scissors",
+        "sword",
+        "drawer",
+        "metal",
+        "king"
+      ]
+    },
+    {
+      "date": "2027-01-14",
+      "start": "nurse",
+      "target": "ice",
+      "route": [
+        "nurse",
+        "person",
+        "foot",
+        "sock",
+        "scarf",
+        "winter",
+        "ice"
+      ],
+      "route_types": [
+        "kind",
+        "part",
+        "use",
+        "family",
+        "found",
+        "feature"
+      ],
+      "tiles": [
+        "winter",
+        "person",
+        "job",
+        "scarf",
+        "fridge",
+        "uniform",
+        "frost",
+        "foot",
+        "sock",
+        "shoe"
+      ]
+    },
+    {
+      "date": "2027-01-15",
+      "start": "hunter",
+      "target": "wind",
+      "route": [
+        "hunter",
+        "person",
+        "hand",
+        "soap",
+        "water",
+        "rain",
+        "wind"
+      ],
+      "route_types": [
+        "kind",
+        "part",
+        "use",
+        "found",
+        "feature",
+        "family"
+      ],
+      "tiles": [
+        "rain",
+        "fog",
+        "water",
+        "soap",
+        "knife",
+        "frost",
+        "snow",
+        "person",
+        "hand",
+        "storm"
+      ]
+    },
+    {
+      "date": "2027-01-16",
+      "start": "carpet",
+      "target": "pepper",
+      "route": [
+        "carpet",
+        "floor",
+        "building",
+        "cafe",
+        "coffee",
+        "cinnamon",
+        "pepper"
+      ],
+      "route_types": [
+        "use",
+        "part",
+        "kind",
+        "found",
+        "feature",
+        "family"
+      ],
+      "tiles": [
+        "building",
+        "rug",
+        "floor",
+        "cafe",
+        "house",
+        "coffee",
+        "vanilla",
+        "stairs",
+        "cinnamon",
+        "dust"
+      ]
+    },
+    {
+      "date": "2027-01-17",
+      "start": "hand",
+      "target": "cave",
+      "route": [
+        "hand",
+        "neck",
+        "necklace",
+        "jewel",
+        "stone",
+        "rock",
+        "cave"
+      ],
+      "route_types": [
+        "family",
+        "use",
+        "part",
+        "kind",
+        "feature",
+        "found"
+      ],
+      "tiles": [
+        "muscle",
+        "body",
+        "necklace",
+        "arm",
+        "rock",
+        "jewel",
+        "shoulder",
+        "stone",
+        "leg",
+        "neck"
+      ]
+    },
+    {
+      "date": "2027-01-18",
+      "start": "gold",
+      "target": "kite",
+      "route": [
+        "gold",
+        "metal",
+        "trumpet",
+        "thunder",
+        "storm",
+        "wind",
+        "kite"
+      ],
+      "route_types": [
+        "kind",
+        "part",
+        "feature",
+        "use",
+        "family",
+        "found"
+      ],
+      "tiles": [
+        "bracelet",
+        "storm",
+        "trumpet",
+        "thunder",
+        "metal",
+        "wind",
+        "trophy",
+        "cloud",
+        "sky",
+        "chain"
+      ]
+    },
+    {
+      "date": "2027-01-19",
+      "start": "thread",
+      "target": "pea",
+      "route": [
+        "thread",
+        "needle",
+        "axe",
+        "tree",
+        "root",
+        "seed",
+        "pea"
+      ],
+      "route_types": [
+        "found",
+        "feature",
+        "use",
+        "part",
+        "family",
+        "kind"
+      ],
+      "tiles": [
+        "root",
+        "scissors",
+        "grass",
+        "dress",
+        "seed",
+        "tree",
+        "shirt",
+        "needle",
+        "cloth",
+        "axe"
+      ]
+    },
+    {
+      "date": "2027-01-20",
+      "start": "sauce",
+      "target": "moss",
+      "route": [
+        "sauce",
+        "pasta",
+        "wheat",
+        "seed",
+        "bean",
+        "cucumber",
+        "moss"
+      ],
+      "route_types": [
+        "found",
+        "part",
+        "use",
+        "kind",
+        "family",
+        "feature"
+      ],
+      "tiles": [
+        "bean",
+        "corn",
+        "wheat",
+        "pot",
+        "cabbage",
+        "cucumber",
+        "cook",
+        "meal",
+        "pasta",
+        "seed"
+      ]
+    },
+    {
+      "date": "2027-01-21",
+      "start": "ink",
+      "target": "lamb",
+      "route": [
+        "ink",
+        "octopus",
+        "sea",
+        "bacon",
+        "pig",
+        "sheep",
+        "lamb"
+      ],
+      "route_types": [
+        "use",
+        "found",
+        "feature",
+        "part",
+        "family",
+        "kind"
+      ],
+      "tiles": [
+        "burger",
+        "sheep",
+        "ocean",
+        "animal",
+        "crow",
+        "shadow",
+        "octopus",
+        "sea",
+        "pig",
+        "bacon"
+      ]
+    },
+    {
+      "date": "2027-01-22",
+      "start": "bed",
+      "target": "wine",
+      "route": [
+        "bed",
+        "pillow",
+        "moss",
+        "bush",
+        "berry",
+        "fruit",
+        "wine"
+      ],
+      "route_types": [
+        "found",
+        "feature",
+        "family",
+        "use",
+        "kind",
+        "part"
+      ],
+      "tiles": [
+        "bush",
+        "pillow",
+        "couch",
+        "blanket",
+        "moss",
+        "juice",
+        "rest",
+        "sofa",
+        "berry",
+        "fruit"
+      ]
+    },
+    {
+      "date": "2027-01-23",
+      "start": "picnic",
+      "target": "ostrich",
+      "route": [
+        "picnic",
+        "sandwich",
+        "food",
+        "mouth",
+        "tooth",
+        "swan",
+        "ostrich"
+      ],
+      "route_types": [
+        "found",
+        "kind",
+        "use",
+        "part",
+        "feature",
+        "family"
+      ],
+      "tiles": [
+        "tooth",
+        "pigeon",
+        "swan",
+        "food",
+        "penguin",
+        "mouth",
+        "sandwich",
+        "basket",
+        "parrot",
+        "snack"
+      ]
+    },
+    {
+      "date": "2027-01-24",
+      "start": "mask",
+      "target": "flute",
+      "route": [
+        "mask",
+        "face",
+        "person",
+        "referee",
+        "whistle",
+        "trumpet",
+        "flute"
+      ],
+      "route_types": [
+        "use",
+        "part",
+        "kind",
+        "found",
+        "feature",
+        "family"
+      ],
+      "tiles": [
+        "face",
+        "person",
+        "thief",
+        "drum",
+        "referee",
+        "trumpet",
+        "actor",
+        "doctor",
+        "whistle",
+        "villain"
+      ]
+    },
+    {
+      "date": "2027-01-25",
+      "start": "monkey",
+      "target": "canvas",
+      "route": [
+        "monkey",
+        "banana",
+        "butter",
+        "knife",
+        "metal",
+        "cloth",
+        "canvas"
+      ],
+      "route_types": [
+        "found",
+        "feature",
+        "use",
+        "part",
+        "family",
+        "kind"
+      ],
+      "tiles": [
+        "gorilla",
+        "metal",
+        "jungle",
+        "butter",
+        "banana",
+        "knife",
+        "forest",
+        "vine",
+        "brush",
+        "cloth"
+      ]
+    },
+    {
+      "date": "2027-01-26",
+      "start": "rocket",
+      "target": "music",
+      "route": [
+        "rocket",
+        "jet",
+        "pilot",
+        "person",
+        "audience",
+        "choir",
+        "music"
+      ],
+      "route_types": [
+        "feature",
+        "found",
+        "kind",
+        "part",
+        "family",
+        "use"
+      ],
+      "tiles": [
+        "helicopter",
+        "fuel",
+        "person",
+        "audience",
+        "speed",
+        "sky",
+        "choir",
+        "jet",
+        "pilot",
+        "lightning"
+      ]
+    },
+    {
+      "date": "2027-01-27",
+      "start": "robot",
+      "target": "thief",
+      "route": [
+        "robot",
+        "metal",
+        "wood",
+        "axe",
+        "sword",
+        "pirate",
+        "thief"
+      ],
+      "route_types": [
+        "part",
+        "family",
+        "use",
+        "feature",
+        "found",
+        "kind"
+      ],
+      "tiles": [
+        "axe",
+        "crime",
+        "computer",
+        "wire",
+        "pirate",
+        "saw",
+        "metal",
+        "wood",
+        "sword",
+        "program"
+      ]
+    },
+    {
+      "date": "2027-01-28",
+      "start": "skin",
+      "target": "fire",
+      "route": [
+        "skin",
+        "peach",
+        "lemon",
+        "vinegar",
+        "oil",
+        "fuel",
+        "fire"
+      ],
+      "route_types": [
+        "part",
+        "family",
+        "feature",
+        "found",
+        "kind",
+        "use"
+      ],
+      "tiles": [
+        "flame",
+        "stove",
+        "fuel",
+        "energy",
+        "vinegar",
+        "oil",
+        "pear",
+        "lemon",
+        "heat",
+        "peach"
+      ]
+    },
+    {
+      "date": "2027-01-29",
+      "start": "car",
+      "target": "jungle",
+      "route": [
+        "car",
+        "garage",
+        "building",
+        "attic",
+        "dust",
+        "desert",
+        "jungle"
+      ],
+      "route_types": [
+        "use",
+        "kind",
+        "part",
+        "found",
+        "feature",
+        "family"
+      ],
+      "tiles": [
+        "attic",
+        "desert",
+        "door",
+        "garage",
+        "dust",
+        "roof",
+        "building",
+        "swamp",
+        "bike",
+        "tire"
+      ]
+    },
+    {
+      "date": "2027-01-30",
+      "start": "office",
+      "target": "whistle",
+      "route": [
+        "office",
+        "paper",
+        "wood",
+        "violin",
+        "sound",
+        "noise",
+        "whistle"
+      ],
+      "route_types": [
+        "found",
+        "family",
+        "part",
+        "use",
+        "kind",
+        "feature"
+      ],
+      "tiles": [
+        "chair",
+        "shelf",
+        "paper",
+        "pen",
+        "desk",
+        "noise",
+        "violin",
+        "sound",
+        "pencil",
+        "wood"
+      ]
+    },
+    {
+      "date": "2027-01-31",
+      "start": "theater",
+      "target": "sea",
+      "route": [
+        "theater",
+        "building",
+        "stairs",
+        "climb",
+        "mountain",
+        "canyon",
+        "sea"
+      ],
+      "route_types": [
+        "kind",
+        "part",
+        "use",
+        "found",
+        "family",
+        "feature"
+      ],
+      "tiles": [
+        "climb",
+        "canyon",
+        "mountain",
+        "city",
+        "building",
+        "stairs",
+        "cinema",
+        "island",
+        "stadium",
+        "wall"
+      ]
+    },
+    {
+      "date": "2027-02-01",
+      "start": "surf",
+      "target": "peacock",
+      "route": [
+        "surf",
+        "wave",
+        "water",
+        "swamp",
+        "forest",
+        "bird",
+        "peacock"
+      ],
+      "route_types": [
+        "use",
+        "part",
+        "feature",
+        "family",
+        "found",
+        "kind"
+      ],
+      "tiles": [
+        "beach",
+        "forest",
+        "wave",
+        "ocean",
+        "water",
+        "bird",
+        "coast",
+        "hawk",
+        "sea",
+        "swamp"
+      ]
+    },
+    {
+      "date": "2027-02-02",
+      "start": "ash",
+      "target": "smile",
+      "route": [
+        "ash",
+        "rhino",
+        "nose",
+        "ear",
+        "sound",
+        "laugh",
+        "smile"
+      ],
+      "route_types": [
+        "feature",
+        "part",
+        "family",
+        "use",
+        "kind",
+        "found"
+      ],
+      "tiles": [
+        "face",
+        "pigeon",
+        "joy",
+        "laugh",
+        "nose",
+        "rhino",
+        "volcano",
+        "ear",
+        "smoke",
+        "sound"
+      ]
+    },
+    {
+      "date": "2027-02-03",
+      "start": "snake",
+      "target": "shelf",
+      "route": [
+        "snake",
+        "turtle",
+        "ocean",
+        "bacon",
+        "food",
+        "fridge",
+        "shelf"
+      ],
+      "route_types": [
+        "family",
+        "found",
+        "feature",
+        "kind",
+        "use",
+        "part"
+      ],
+      "tiles": [
+        "fridge",
+        "lizard",
+        "zoo",
+        "turtle",
+        "food",
+        "ocean",
+        "pan",
+        "crocodile",
+        "jar",
+        "bacon"
+      ]
+    },
+    {
+      "date": "2027-02-04",
+      "start": "tower",
+      "target": "rice",
+      "route": [
+        "tower",
+        "building",
+        "kitchen",
+        "spoon",
+        "yogurt",
+        "milk",
+        "rice"
+      ],
+      "route_types": [
+        "kind",
+        "part",
+        "found",
+        "use",
+        "family",
+        "feature"
+      ],
+      "tiles": [
+        "kitchen",
+        "roof",
+        "city",
+        "yogurt",
+        "soup",
+        "palace",
+        "building",
+        "wall",
+        "spoon",
+        "milk"
+      ]
+    },
+    {
+      "date": "2027-02-05",
+      "start": "park",
+      "target": "plate",
+      "route": [
+        "park",
+        "grass",
+        "lettuce",
+        "vegetable",
+        "soup",
+        "bowl",
+        "plate"
+      ],
+      "route_types": [
+        "found",
+        "feature",
+        "kind",
+        "part",
+        "use",
+        "family"
+      ],
+      "tiles": [
+        "vegetable",
+        "squirrel",
+        "dog",
+        "glass",
+        "grass",
+        "bowl",
+        "soup",
+        "lettuce",
+        "spoon",
+        "bush"
+      ]
+    }
+  ]
+}
