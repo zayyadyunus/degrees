@@ -784,36 +784,36 @@
     },
     {
       "date": "2026-12-21",
-      "start": "surf",
-      "target": "peacock",
+      "start": "artist",
+      "target": "jewel",
       "route": [
-        "surf",
-        "wave",
-        "water",
-        "swamp",
-        "forest",
-        "bird",
-        "peacock"
+        "artist",
+        "brush",
+        "shovel",
+        "sand",
+        "rock",
+        "diamond",
+        "jewel"
       ],
       "route_types": [
+        "found",
+        "family",
         "use",
         "part",
         "feature",
-        "family",
-        "found",
         "kind"
       ],
       "tiles": [
-        "beach",
-        "forest",
-        "wave",
-        "ocean",
-        "water",
-        "bird",
-        "coast",
-        "hawk",
-        "sea",
-        "swamp"
+        "picture",
+        "shovel",
+        "brush",
+        "diamond",
+        "paint",
+        "canvas",
+        "comic",
+        "stone",
+        "sand",
+        "rock"
       ]
     },
     {

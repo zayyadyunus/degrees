@@ -430,7 +430,7 @@ banana with: ?breakfast ?cereal ?yogurt
 baseball in: stadium
 baseball kind: game sport
 baseball with: field
-basement kind: floor ?room
+basement kind: ?floor ?room
 basement part: building home house
 basket made: ?bamboo
 basket part: ?basketball
@@ -1073,7 +1073,7 @@ food in: ?cafe kitchen market ?shop ?stomach store
 food makes: ?energy
 food part: ?breakfast picnic
 food with: ?festival ?party table
-foot part: ?animal body human leg man person
+foot part: ?animal body human leg man person ?kangaroo
 foot use: ?jump ?run
 foot with: ?dance ?floor ?path
 football in: stadium
@@ -1149,7 +1149,7 @@ glass use: beer juice lemonade milk ?soda water wine
 glass with: table
 glove kind: clothes
 glove made: ?cloth
-glove use: baseball hand
+glove use: ?baseball hand
 glove with: ?ball winter
 glue part: ?envelope
 glue use: ?wood
@@ -1230,7 +1230,7 @@ hate kind: emotion feeling
 hate with: ?war
 hawk in: ?forest ?mountain sky
 hawk kind: animal bird
-head part: animal body ?coin human person
+head part: animal body ?coin human person ?horse
 heart kind: ?muscle
 heart made: ?muscle
 heart part: animal body human
@@ -1435,7 +1435,7 @@ lawyer with: ?crime ?justice law
 leaf in: ?forest ?garden ?jungle
 leaf part: ?bamboo branch bush cabbage lettuce oak rose tree tulip vine
 leaf with: ?apple autumn ?giraffe ?koala
-leg part: animal body chair human person
+leg part: animal body chair human person ?horse ?kangaroo ?spider
 leg use: ?jump run
 lemon kind: food fruit
 lemon makes: ?juice
@@ -1653,7 +1653,7 @@ oil in: ?bottle ?kitchen
 oil kind: fuel
 oil made: coconut corn ?vegetable
 oil makes: ?energy
-oil use: ?car engine ?flame ?lamp ?machine ?truck
+oil use: ?car ?engine ?flame ?lamp ?machine ?truck
 oil with: ?cook ?machine pan ?potato ?salad vinegar ?water
 onion in: ?farm ?garden ?kitchen
 onion kind: food ?root vegetable
@@ -1976,7 +1976,7 @@ safety with: ?health
 sail in: ?ocean
 sail made: ?canvas cloth
 sail part: boat ?raft ship
-sail use: ?breeze ?journey ?sailor ?travel wind
+sail use: ?breeze ?journey ?sailor ?travel ?wind
 sail with: ?lake ?sea
 sailor in: sea ship
 sailor kind: ?man person ?worker
@@ -2050,7 +2050,7 @@ season with: ?sport
 secret with: ?friend ?lie ?surprise
 seed in: ?farm ?field ?garden
 seed kind: ?food
-seed makes: ?bush ?daisy ?flower grass ?lettuce pumpkin tree ?vegetable wheat
+seed makes: ?bush ?daisy ?flower grass ?lettuce ?pumpkin tree ?vegetable wheat
 seed part: apple berry cherry ?corn cucumber fruit grape lemon melon peach pear plum pumpkin strawberry tomato ?vine
 seed with: ?bird ?farmer
 shadow kind: ?shape
@@ -2292,8 +2292,7 @@ sunset part: ?day ?evening
 sunset with: ?beach ?dawn ?moon ?night sun sunrise
 surf in: ?beach ocean ?sea
 surf kind: ?sport
-surf use: wave
-surf with: beach ?coast ?shore ?summer ?water
+surf with: beach wave ?coast ?shore ?summer ?water
 surprise kind: emotion feeling
 surprise with: ?birthday
 swamp with: ?water

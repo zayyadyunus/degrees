@@ -163,3 +163,10 @@ def test_broken_practice_board_is_caught():
 def test_unknown_tile_is_caught():
     bad = TypedPuzzle("s", "t", ROUTE, ROUTE_TYPES, (*TILES[:-1], "zebra"))
     assert "unknown tiles" in problem(make_links(), bad)
+
+
+def test_arguable_link_on_route_is_caught():
+    links = make_links()
+    pair = frozenset(("b", "c"))
+    links.arguable.add((pair, "part"))           # b-c demoted after the board was built
+    assert "arguable part link" in problem(links, PUZZLE)

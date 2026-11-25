@@ -64,6 +64,10 @@ def problem(links: Links, p: TypedPuzzle) -> str | None:
     for a, b, t in zip(p.route, p.route[1:], p.route_types):
         if t not in links.types(a, b):
             return f"{a} -> {b} isn't a {t} link"
+        # Arguable links ("?word") are accepted in play but never on a
+        # route: a board built before a link was demoted is stale.
+        if t not in links.obvious(a, b):
+            return f"{a} -> {b} is an arguable {t} link"
     if len(p.tiles) != BOARD or len(set(p.tiles)) != BOARD:
         return f"board needs {BOARD} different tiles"
     if not set(p.route[1:-1]) <= set(p.tiles) or {p.start, p.target} & set(p.tiles):
