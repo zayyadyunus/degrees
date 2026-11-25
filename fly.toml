@@ -14,6 +14,9 @@ primary_region = "lhr"
   DEGREES_CLIENT_IP_HEADER = "Fly-Client-IP"
   # Daily puzzle #1. Must match the first date in backend/data/dailies.json.
   DEGREES_DAILY_EPOCH = "2026-11-28"
+  # Dailies (and practice, by UTC date) from here on use the six-type rules.
+  # Must have frozen six-type dailies from this date (data/typed_dailies.json).
+  DEGREES_SIXTYPE_FROM = "2027-01-09"
 
 [http_service]
   internal_port = 8000
