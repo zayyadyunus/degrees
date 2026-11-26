@@ -23,11 +23,11 @@ const EXAMPLE_CHAIN = ["night", "dark", "light", "sun"];
 
 const SIX_TYPE_EXAMPLES: [string, string][] = [
   ["Kind of", "eagle → bird · violin → instrument"],
-  ["Same family", "lion ↔ tiger · fork ↔ spoon"],
+  ["Same family", "lion ↔ tiger · rain ↔ snow"],
   ["Part of / made of", "wheel → car · glass → sand"],
   ["Share a feature", "snow ↔ milk (both white)"],
   ["Used for / makes", "hammer → nail · bee → honey"],
-  ["Found with", "sand → beach · salt → pepper"],
+  ["Found with", "fish → sea · star → sky"],
 ];
 
 export function HowToPlayModal({

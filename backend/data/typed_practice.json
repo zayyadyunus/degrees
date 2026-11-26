@@ -529,36 +529,36 @@
    ]
   },
   {
-   "start": "ham",
-   "target": "noise",
+   "start": "finger",
+   "target": "cave",
    "route": [
-    "ham",
-    "pig",
-    "mud",
-    "rain",
-    "storm",
-    "thunder",
-    "noise"
+    "finger",
+    "neck",
+    "necklace",
+    "jewel",
+    "stone",
+    "rock",
+    "cave"
    ],
    "route_types": [
-    "part",
-    "found",
-    "feature",
     "family",
     "use",
-    "kind"
+    "part",
+    "kind",
+    "feature",
+    "found"
    ],
    "tiles": [
-    "thunder",
-    "mud",
-    "sound",
-    "potato",
-    "pig",
-    "sweat",
-    "sausage",
-    "storm",
-    "flood",
-    "rain"
+    "hand",
+    "moss",
+    "gold",
+    "knee",
+    "body",
+    "neck",
+    "stone",
+    "necklace",
+    "jewel",
+    "rock"
    ]
   },
   {

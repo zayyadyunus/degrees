@@ -14,7 +14,7 @@
 #            category words (fruit isn't sweet: lemon is a fruit), and no
 #            relative features (big, small): every pair in a list is a link.
 #   use      a is used for b / a makes b         hammer -> nail, bee -> honey
-#   found    a is found in / with b              sand -> beach, salt -> pepper
+#   found    a is found in / with b              fish -> sea, salt -> pepper
 #
 # Syntax
 #   kinds NAME: w1 w2 ...       each word is a kind of NAME, but NOT one family
@@ -93,7 +93,7 @@ category ~kitchen_appliance: fridge oven stove ?kettle
 category ~furniture: bed chair couch sofa desk table ?shelf
 category ~bedding: pillow blanket
 category ~floor_covering: carpet rug
-category clothes: shirt pants dress skirt coat jacket sweater sock scarf glove ?uniform ?shoe
+category clothes: shirt pants dress skirt coat jacket sweater sock scarf glove ?uniform ?shoe ?hat
 category ~jewelry: bracelet necklace
 category metal: gold silver
 category ~material: wood metal cloth paper
@@ -105,7 +105,7 @@ category boat: canoe ?raft
 category emotion: anger fear joy love hate sadness jealousy guilt shame pride loneliness boredom excitement surprise worry ?panic
 category season: spring summer autumn winter
 category ~unit_of_time: hour day week month year
-category ~time_of_day: morning evening night dawn
+category ~time_of_day: morning evening night dawn ?sunrise ?sunset
 category weather: rain snow fog storm wind ?frost
 category ~body_part: arm leg hand foot head neck shoulder knee elbow finger toe thumb
 category ~facial_feature: eye ear nose mouth lip chin cheek
@@ -153,6 +153,20 @@ category ~fastener: nail screw
 category ~adhesive: glue tape
 category ~cord: rope string thread ?wire
 category ~washing: bath shower
+# Companions that are also one family ("goes with" read as "same family").
+# Arguable, so they never shape a route: they're here so that a player who
+# calls salt/pepper "same family" isn't struck for it.
+category ~seasoning: ?salt ?pepper
+category ~dressing: ?oil ?vinegar
+category ~facial_expression: ?laugh ?smile
+category ~school_subject: ?math ?science
+category ~flavor: ?chocolate ?vanilla
+category ~produce: ?fruit ?vegetable
+category ~thunderstorm: ?rain ?thunder ?lightning
+category ~adult: ?man ?woman
+category ~frozen_water: ?ice ?snow
+family: ?cartoon ?comic
+family: ?garden ?yard
 
 # ---- features --------------------------------------------------------
 dirty feature: mud ?dust ?toilet ?swamp
